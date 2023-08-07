@@ -1,0 +1,26 @@
+{
+    "message": "successfully found data",
+    "data": {
+        "id": 0,
+        "purchase_order_master_id": null,
+        "issue_master_id": null,
+        "recv_child": [
+            {
+                "id": 1,
+                "receive_master_id": 0,
+                "item_info": {
+                    "id": 12,
+                    "company_id": "1"
+                }
+            },
+            {
+                "id": 2,
+                "receive_master_id": 0,
+                "item_info": {
+                    "id": 13,
+                    "company_id": "1"
+                }
+            }
+        ]
+    }
+}

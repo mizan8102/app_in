@@ -1,0 +1,3932 @@
+openapi: 3.0.3
+info:
+  title: Laravel
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+paths:
+  /api/logout:
+    post:
+      summary: 'log out function'
+      operationId: logOutFunction
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/registration:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/registration/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the registration.'
+        example: sed
+        required: true
+        schema:
+          type: string
+  /api/customer:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                company_id:
+                  type: string
+                  description: ''
+                  example: odit
+                customer_name:
+                  type: string
+                  description: ''
+                  example: sed
+                customer_name_bn:
+                  type: string
+                  description: ''
+                  example: quod
+                phone_number:
+                  type: string
+                  description: ''
+                  example: iusto
+                address:
+                  type: string
+                  description: ''
+                  example: adipisci
+                is_active:
+                  type: string
+                  description: ''
+                  example: odio
+                registration_status:
+                  type: string
+                  description: ''
+                  example: debitis
+              required:
+                - company_id
+                - customer_name
+                - customer_name_bn
+                - phone_number
+                - address
+                - is_active
+                - registration_status
+      security: []
+  '/api/customer/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the customer.'
+        example: ut
+        required: true
+        schema:
+          type: string
+  /api/program:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                store_id:
+                  type: string
+                  description: ''
+                  example: null
+                floor_id:
+                  type: string
+                  description: ''
+                  example: cupiditate
+                customer_id:
+                  type: string
+                  description: ''
+                  example: quas
+                program_type_id:
+                  type: string
+                  description: ''
+                  example: sed
+                program_name:
+                  type: string
+                  description: ''
+                  example: omnis
+                program_name_bn:
+                  type: string
+                  description: ''
+                  example: eius
+                hall_room_charge_vat_per:
+                  type: string
+                  description: ''
+                  example: at
+                prog_date:
+                  type: string
+                  description: ''
+                  example: ipsa
+                ride_charge:
+                  type: string
+                  description: ''
+                  example: illo
+                service_charge:
+                  type: string
+                  description: ''
+                  example: placeat
+                discount:
+                  type: string
+                  description: ''
+                  example: et
+                program_session_id:
+                  type: string
+                  description: ''
+                  example: nesciunt
+                new_guest:
+                  type: string
+                  description: ''
+                  example: null
+                vat_on_food:
+                  type: string
+                  description: ''
+                  example: et
+                remarks:
+                  type: string
+                  description: ''
+                  example: null
+                prog_start_time:
+                  type: string
+                  description: ''
+                  example: null
+                prog_end_time:
+                  type: string
+                  description: ''
+                  example: null
+                number_of_guest:
+                  type: integer
+                  description: ''
+                  example: 6
+                hall_room_charge:
+                  type: integer
+                  description: ''
+                  example: 7
+                total_amount_without_vat:
+                  type: string
+                  description: ''
+                  example: odio
+                hall_room_vat:
+                  type: string
+                  description: ''
+                  example: consectetur
+                food_vat_per:
+                  type: string
+                  description: ''
+                  example: omnis
+                food_charge:
+                  type: string
+                  description: ''
+                  example: culpa
+                total_amount:
+                  type: string
+                  description: ''
+                  example: ut
+                vat_amount:
+                  type: string
+                  description: ''
+                  example: quidem
+                total_amount_with_vat:
+                  type: string
+                  description: ''
+                  example: occaecati
+                grandTotal:
+                  type: string
+                  description: ''
+                  example: nobis
+                due_amount:
+                  type: string
+                  description: ''
+                  example: sint
+                is_active:
+                  type: string
+                  description: ''
+                  example: null
+                is_print:
+                  type: string
+                  description: ''
+                  example: null
+                created_at:
+                  type: string
+                  description: ''
+                  example: null
+                updated_at:
+                  type: string
+                  description: ''
+                  example: null
+                created_by:
+                  type: string
+                  description: ''
+                  example: null
+                updated_by:
+                  type: string
+                  description: ''
+                  example: null
+                paid_amount:
+                  type: string
+                  description: ''
+                  example: aperiam
+                program_childs:
+                  type: object
+                  description: ''
+                  example: null
+                  properties: []
+                childs:
+                  type: object
+                  description: ''
+                  example: null
+                  properties: []
+              required:
+                - floor_id
+                - customer_id
+                - program_type_id
+                - program_name
+                - program_name_bn
+                - hall_room_charge_vat_per
+                - prog_date
+                - ride_charge
+                - service_charge
+                - discount
+                - program_session_id
+                - vat_on_food
+                - number_of_guest
+                - hall_room_charge
+                - total_amount_without_vat
+                - hall_room_vat
+                - food_vat_per
+                - food_charge
+                - total_amount
+                - vat_amount
+                - total_amount_with_vat
+                - grandTotal
+                - due_amount
+                - paid_amount
+      security: []
+  '/api/program/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                store_id:
+                  type: string
+                  description: ''
+                  example: null
+                floor_id:
+                  type: string
+                  description: ''
+                  example: animi
+                customer_id:
+                  type: string
+                  description: ''
+                  example: asperiores
+                program_type_id:
+                  type: string
+                  description: ''
+                  example: provident
+                program_name:
+                  type: string
+                  description: ''
+                  example: assumenda
+                program_name_bn:
+                  type: string
+                  description: ''
+                  example: vero
+                hall_room_charge_vat_per:
+                  type: string
+                  description: ''
+                  example: qui
+                prog_date:
+                  type: string
+                  description: ''
+                  example: sapiente
+                ride_charge:
+                  type: string
+                  description: ''
+                  example: eos
+                service_charge:
+                  type: string
+                  description: ''
+                  example: enim
+                discount:
+                  type: string
+                  description: ''
+                  example: est
+                program_session_id:
+                  type: string
+                  description: ''
+                  example: eius
+                new_guest:
+                  type: string
+                  description: ''
+                  example: null
+                vat_on_food:
+                  type: string
+                  description: ''
+                  example: quia
+                remarks:
+                  type: string
+                  description: ''
+                  example: null
+                prog_start_time:
+                  type: string
+                  description: ''
+                  example: null
+                prog_end_time:
+                  type: string
+                  description: ''
+                  example: null
+                number_of_guest:
+                  type: integer
+                  description: ''
+                  example: 9
+                hall_room_charge:
+                  type: integer
+                  description: ''
+                  example: 14
+                total_amount_without_vat:
+                  type: string
+                  description: ''
+                  example: repellendus
+                hall_room_vat:
+                  type: string
+                  description: ''
+                  example: enim
+                food_vat_per:
+                  type: string
+                  description: ''
+                  example: doloribus
+                food_charge:
+                  type: string
+                  description: ''
+                  example: nam
+                total_amount:
+                  type: string
+                  description: ''
+                  example: eum
+                vat_amount:
+                  type: string
+                  description: ''
+                  example: ad
+                total_amount_with_vat:
+                  type: string
+                  description: ''
+                  example: odit
+                grandTotal:
+                  type: string
+                  description: ''
+                  example: culpa
+                due_amount:
+                  type: string
+                  description: ''
+                  example: mollitia
+                is_active:
+                  type: string
+                  description: ''
+                  example: null
+                is_print:
+                  type: string
+                  description: ''
+                  example: null
+                created_at:
+                  type: string
+                  description: ''
+                  example: null
+                updated_at:
+                  type: string
+                  description: ''
+                  example: null
+                created_by:
+                  type: string
+                  description: ''
+                  example: null
+                updated_by:
+                  type: string
+                  description: ''
+                  example: null
+                paid_amount:
+                  type: string
+                  description: ''
+                  example: non
+                program_childs:
+                  type: object
+                  description: ''
+                  example: null
+                  properties: []
+                childs:
+                  type: object
+                  description: ''
+                  example: null
+                  properties: []
+              required:
+                - floor_id
+                - customer_id
+                - program_type_id
+                - program_name
+                - program_name_bn
+                - hall_room_charge_vat_per
+                - prog_date
+                - ride_charge
+                - service_charge
+                - discount
+                - program_session_id
+                - vat_on_food
+                - number_of_guest
+                - hall_room_charge
+                - total_amount_without_vat
+                - hall_room_vat
+                - food_vat_per
+                - food_charge
+                - total_amount
+                - vat_amount
+                - total_amount_with_vat
+                - grandTotal
+                - due_amount
+                - paid_amount
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the program.'
+        example: mollitia
+        required: true
+        schema:
+          type: string
+  /api/printqr:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/printqr/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the printqr.'
+        example: tempora
+        required: true
+        schema:
+          type: string
+  /api/indent:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                floor_id:
+                  type: string
+                  description: ''
+                  example: fugit
+                floor_name:
+                  type: string
+                  description: ''
+                  example: inventore
+                prog_date:
+                  type: string
+                  description: ''
+                  example: id
+                program_master_id:
+                  type: string
+                  description: ''
+                  example: molestias
+                prod_type_id:
+                  type: string
+                  description: ''
+                  example: exercitationem
+                indent_number:
+                  type: string
+                  description: ''
+                  example: reiciendis
+                indent_date:
+                  type: string
+                  description: ''
+                  example: enim
+                remarks:
+                  type: string
+                  description: ''
+                  example: null
+                submitted_by:
+                  type: string
+                  description: ''
+                  example: in
+                recommended_by:
+                  type: string
+                  description: ''
+                  example: null
+                approved_by:
+                  type: string
+                  description: ''
+                  example: null
+                indent_child:
+                  type: object
+                  description: ''
+                  example: null
+                  properties: []
+              required:
+                - floor_id
+                - floor_name
+                - prog_date
+                - program_master_id
+                - prod_type_id
+                - indent_number
+                - indent_date
+                - submitted_by
+      security: []
+  '/api/indent/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the indent.'
+        example: nisi
+        required: true
+        schema:
+          type: string
+  /api/indentdashboard:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/indentdashboard/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the indentdashboard.'
+        example: enim
+        required: true
+        schema:
+          type: string
+  /api/indentrequision:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/indentrequision/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the indentrequision.'
+        example: assumenda
+        required: true
+        schema:
+          type: string
+  /api/saveRequisition:
+    post:
+      summary: ''
+      operationId: postApiSaveRequisition
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                indent_number:
+                  type: string
+                  description: ''
+                  example: quas
+                requisition_number:
+                  type: string
+                  description: ''
+                  example: null
+                requisition_date:
+                  type: string
+                  description: ''
+                  example: eius
+                submitted_by:
+                  type: string
+                  description: ''
+                  example: veritatis
+                is_Status:
+                  type: string
+                  description: ''
+                  example: sed
+                recommended_by:
+                  type: string
+                  description: ''
+                  example: optio
+                approved_by:
+                  type: string
+                  description: ''
+                  example: maiores
+                totalAmount:
+                  type: string
+                  description: ''
+                  example: facere
+                remarks:
+                  type: string
+                  description: ''
+                  example: null
+                requisitions_child:
+                  type: object
+                  description: ''
+                  example: null
+                  properties: []
+              required:
+                - indent_number
+                - requisition_date
+                - submitted_by
+                - is_Status
+                - recommended_by
+                - approved_by
+                - totalAmount
+      security: []
+  /api/requisitionDashboard:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/requisitionDashboard/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the requisitionDashboard.'
+        example: sit
+        required: true
+        schema:
+          type: string
+  /api/purchaseorderinit:
+    post:
+      summary: ''
+      operationId: postApiPurchaseorderinit
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/purchaseorder:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/purchaseorder/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the purchaseorder.'
+        example: 7
+        required: true
+        schema:
+          type: integer
+  /api/purchaseOrderDashboard:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/purchaseOrderDashboard/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the purchaseOrderDashboard.'
+        example: exercitationem
+        required: true
+        schema:
+          type: string
+  /api/changeDeducatedDate:
+    post:
+      summary: 'deducated by date'
+      operationId: deducatedByDate
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/changeDeducatedRational:
+    post:
+      summary: 'deduction by rational'
+      operationId: deductionByRational
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/inventoryIndent:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                program_master_id:
+                  type: string
+                  description: ''
+                  example: null
+                prod_type_id:
+                  type: string
+                  description: ''
+                  example: null
+                indent_number:
+                  type: string
+                  description: ''
+                  example: null
+                indent_date:
+                  type: string
+                  description: ''
+                  example: tenetur
+                remarks:
+                  type: string
+                  description: ''
+                  example: null
+                company_id:
+                  type: string
+                  description: ''
+                  example: null
+                branch_id:
+                  type: string
+                  description: ''
+                  example: null
+                demand_store:
+                  type: string
+                  description: ''
+                  example: null
+                to_store_id:
+                  type: string
+                  description: ''
+                  example: illo
+                issue_status:
+                  type: string
+                  description: ''
+                  example: null
+                close_status:
+                  type: string
+                  description: ''
+                  example: null
+                submitted_by:
+                  type: string
+                  description: ''
+                  example: null
+                recommended_by:
+                  type: string
+                  description: ''
+                  example: null
+                approved_by:
+                  type: string
+                  description: ''
+                  example: null
+                item_row:
+                  type: object
+                  description: ''
+                  example: null
+                  properties: []
+              required:
+                - indent_date
+                - to_store_id
+      security: []
+  '/api/inventoryIndent/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the inventoryIndent.'
+        example: et
+        required: true
+        schema:
+          type: string
+  /api/getAllIndentMergeValueForRequisition:
+    post:
+      summary: ''
+      operationId: postApiGetAllIndentMergeValueForRequisition
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/requisitionInventory:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/requisitionInventory/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the requisitionInventory.'
+        example: a
+        required: true
+        schema:
+          type: string
+  /api/receivedmaterialInit:
+    post:
+      summary: ''
+      operationId: postApiReceivedmaterialInit
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/receiveirowmaterial:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/receiveirowmaterial/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the receiveirowmaterial.'
+        example: vitae
+        required: true
+        schema:
+          type: string
+  /api/receivedDashboard:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/receivedDashboard/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the receivedDashboard.'
+        example: sed
+        required: true
+        schema:
+          type: string
+  /api/rmissue:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/rmissue/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the rmissue.'
+        example: enim
+        required: true
+        schema:
+          type: string
+  /api/ioc_price_declarations:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prc_decl_name:
+                  type: string
+                  description: ''
+                  example: omnis
+                prc_decl_number:
+                  type: string
+                  description: ''
+                  example: perspiciatis
+                effective_from:
+                  type: string
+                  description: ''
+                  example: quod
+                item_information_id:
+                  type: string
+                  description: ''
+                  example: debitis
+                date_of_submission:
+                  type: string
+                  description: ''
+                  example: quo
+              required:
+                - prc_decl_name
+                - prc_decl_number
+                - effective_from
+                - item_information_id
+                - date_of_submission
+      security: []
+  '/api/ioc_price_declarations/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the ioc price declaration.'
+        example: 10
+        required: true
+        schema:
+          type: integer
+  /api/ioc_price_declarations/with_param:
+    post:
+      summary: 'Display a listing of the resource by pagination of user input'
+      operationId: displayAListingOfTheResourceByPaginationOfUserInput
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/input_services:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/input_services/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the input service.'
+        example: 16
+        required: true
+        schema:
+          type: integer
+  /api/value_added_services:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/value_added_services/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the value added service.'
+        example: 12
+        required: true
+        schema:
+          type: integer
+  /api/get_uom_from_item_uom:
+    post:
+      summary: ''
+      operationId: postApiGet_uom_from_item_uom
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/uoms:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/uoms/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the uom.'
+        example: dolorem
+        required: true
+        schema:
+          type: string
+  /api/vat_reg_types:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/vat_reg_types/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the vat reg type.'
+        example: id
+        required: true
+        schema:
+          type: string
+  /api/r_floors:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                floor_name:
+                  type: string
+                  description: ''
+                  example: labore
+                floor_name_bn:
+                  type: string
+                  description: ''
+                  example: iste
+                is_active:
+                  type: string
+                  description: ''
+                  example: voluptas
+              required:
+                - floor_name
+                - floor_name_bn
+                - is_active
+      security: []
+  '/api/r_floors/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the r floor.'
+        example: 9
+        required: true
+        schema:
+          type: integer
+  /api/get_r_floors_with_param:
+    post:
+      summary: ''
+      operationId: postApiGet_r_floors_with_param
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/supplier_details:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                supplier_name:
+                  type: string
+                  description: '"vat_reg_id" => "required",.'
+                  example: est
+                supplier_name_bn:
+                  type: string
+                  description: ''
+                  example: ipsam
+                phone_number:
+                  type: string
+                  description: "\"supplier_bin_number\" => \"required\",\n\"supplier_bin_number_bn\" => \"required\",."
+                  example: quis
+                is_active:
+                  type: string
+                  description: ''
+                  example: cumque
+              required:
+                - supplier_name
+                - supplier_name_bn
+                - phone_number
+                - is_active
+      security: []
+  '/api/supplier_details/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the supplier detail.'
+        example: 17
+        required: true
+        schema:
+          type: integer
+  /api/get_supplier_details_with_param:
+    post:
+      summary: ''
+      operationId: postApiGet_supplier_details_with_param
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/var_items:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                itm_sub_grp_id:
+                  type: string
+                  description: ''
+                  example: tenetur
+                itm_code:
+                  type: string
+                  description: ''
+                  example: saepe
+                prod_type_id:
+                  type: string
+                  description: ''
+                  example: minima
+                display_itm_code:
+                  type: string
+                  description: '"prod_cat_id" => "required",.'
+                  example: ea
+                display_itm_name:
+                  type: string
+                  description: ''
+                  example: quis
+                display_itm_name_bn:
+                  type: string
+                  description: ''
+                  example: vitae
+                uom_id:
+                  type: string
+                  description: "\"mushak_itm_name\" => \"required\",\n\"mushak_itm_name_bn\" => \"required\",."
+                  example: ea
+                stock_unit_id:
+                  type: string
+                  description: ''
+                  example: sequi
+                sales_unit_id:
+                  type: string
+                  description: ''
+                  example: minima
+                is_active:
+                  type: string
+                  description: ''
+                  example: odit
+              required:
+                - itm_sub_grp_id
+                - itm_code
+                - prod_type_id
+                - display_itm_code
+                - display_itm_name
+                - display_itm_name_bn
+                - uom_id
+                - stock_unit_id
+                - sales_unit_id
+                - is_active
+      security: []
+  '/api/var_items/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                itm_sub_grp_id:
+                  type: string
+                  description: ''
+                  example: perferendis
+                itm_code:
+                  type: string
+                  description: ''
+                  example: magni
+                prod_type_id:
+                  type: string
+                  description: ''
+                  example: consectetur
+                display_itm_code:
+                  type: string
+                  description: '"prod_cat_id" => "required",.'
+                  example: ipsa
+                display_itm_name:
+                  type: string
+                  description: ''
+                  example: ad
+                display_itm_name_bn:
+                  type: string
+                  description: ''
+                  example: aut
+                uom_id:
+                  type: string
+                  description: "\"mushak_itm_name\" => \"required\",\n\"mushak_itm_name_bn\" => \"required\",."
+                  example: et
+                stock_unit_id:
+                  type: string
+                  description: ''
+                  example: debitis
+                sales_unit_id:
+                  type: string
+                  description: ''
+                  example: odio
+                is_active:
+                  type: string
+                  description: ''
+                  example: officiis
+              required:
+                - itm_sub_grp_id
+                - itm_code
+                - prod_type_id
+                - display_itm_code
+                - display_itm_name
+                - display_itm_name_bn
+                - uom_id
+                - stock_unit_id
+                - sales_unit_id
+                - is_active
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the var item.'
+        example: eveniet
+        required: true
+        schema:
+          type: string
+  /api/get_var_items_param:
+    post:
+      summary: ''
+      operationId: postApiGet_var_items_param
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/get_all_var_items_param:
+    post:
+      summary: ''
+      operationId: postApiGet_all_var_items_param
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/check_program:
+    post:
+      summary: ''
+      operationId: postApiCheck_program
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/duepay:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/duepay/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the duepay.'
+        example: minus
+        required: true
+        schema:
+          type: string
+  /api/role:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role_name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: mmgvbfeao
+                role_name_bn:
+                  type: string
+                  description: ''
+                  example: libero
+              required:
+                - role_name
+                - role_name_bn
+      security: []
+  '/api/role/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role_name:
+                  type: string
+                  description: ''
+                  example: porro
+                role_name_bn:
+                  type: string
+                  description: ''
+                  example: consequatur
+              required:
+                - role_name
+                - role_name_bn
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the role.'
+        example: consequatur
+        required: true
+        schema:
+          type: string
+  /api/getAllRole:
+    post:
+      summary: ''
+      operationId: postApiGetAllRole
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/supplier_mapping:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/supplier_mapping/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the supplier mapping.'
+        example: 4
+        required: true
+        schema:
+          type: integer
+  /api/openstock:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/openstock/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the openstock.'
+        example: tempore
+        required: true
+        schema:
+          type: string
+  /api/openStockReport:
+    post:
+      summary: ''
+      operationId: postApiOpenStockReport
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/transferOut:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                indent_master_id:
+                  type: string
+                  description: ''
+                  example: magnam
+                transfer_date:
+                  type: string
+                  description: ''
+                  example: praesentium
+                challan_number:
+                  type: string
+                  description: ''
+                  example: null
+                challan_number_bn:
+                  type: string
+                  description: ''
+                  example: null
+                challan_date:
+                  type: string
+                  description: ''
+                  example: et
+                issuing_store_id:
+                  type: string
+                  description: ''
+                  example: null
+                receiving_store_id:
+                  type: string
+                  description: ''
+                  example: null
+                issue_master_id:
+                  type: string
+                  description: ''
+                  example: null
+                receive_master_id:
+                  type: string
+                  description: ''
+                  example: null
+                transfer_status:
+                  type: string
+                  description: ''
+                  example: null
+                vehicle_no:
+                  type: string
+                  description: ''
+                  example: null
+                total_item_amount:
+                  type: string
+                  description: ''
+                  example: null
+                total_amount_bn:
+                  type: string
+                  description: ''
+                  example: null
+                total_sd_amount:
+                  type: string
+                  description: ''
+                  example: null
+                total_sd_amount_bn:
+                  type: string
+                  description: ''
+                  example: null
+                total_vat_amount:
+                  type: string
+                  description: ''
+                  example: null
+                total_vat_amount_bn:
+                  type: string
+                  description: ''
+                  example: null
+                monthly_process_status:
+                  type: string
+                  description: ''
+                  example: null
+                yearly_process_status:
+                  type: string
+                  description: ''
+                  example: null
+                remarks:
+                  type: string
+                  description: ''
+                  example: null
+                created_at:
+                  type: string
+                  description: ''
+                  example: null
+                updated_at:
+                  type: string
+                  description: ''
+                  example: null
+                created_by:
+                  type: string
+                  description: ''
+                  example: null
+                updated_by:
+                  type: string
+                  description: ''
+                  example: null
+              required:
+                - indent_master_id
+                - transfer_date
+                - challan_date
+      security: []
+  '/api/transferOut/{id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the transferOut.'
+        example: consequuntur
+        required: true
+        schema:
+          type: string
+  /api/indent_kitchen_to_sub_store:
+    post:
+      summary: ''
+      operationId: postApiIndent_kitchen_to_sub_store
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prod_type_id:
+                  type: string
+                  description: ''
+                  example: est
+                indent_date:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2023-03-13T04:53:19'
+                remarks:
+                  type: string
+                  description: 'Must not be greater than 200 characters.'
+                  example: wf
+                indentItems:
+                  type: array
+                  description: 'Must have at least 1 items.'
+                  example: xqkgdyrvpypxqwztr
+                  items:
+                    type: string
+                submited_by:
+                  type: string
+                  description: ''
+                  example: soluta
+                approved_by:
+                  type: string
+                  description: ''
+                  example: ipsum
+                recommented_by:
+                  type: string
+                  description: ''
+                  example: neque
+                demand_store_id:
+                  type: string
+                  description: ''
+                  example: praesentium
+                to_store_id:
+                  type: string
+                  description: ''
+                  example: similique
+              required:
+                - prod_type_id
+                - indent_date
+                - indentItems
+                - submited_by
+                - approved_by
+                - recommented_by
+                - demand_store_id
+                - to_store_id
+      security: []
+  /api/get_food_menus:
+    post:
+      summary: ''
+      operationId: postApiGet_food_menus
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/get_food_items_param:
+    post:
+      summary: ''
+      operationId: postApiGet_food_items_param
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/check_user_card_no:
+    post:
+      summary: ''
+      operationId: postApiCheck_user_card_no
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/order_place:
+    post:
+      summary: ''
+      operationId: postApiOrder_place
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                order_type:
+                  type: string
+                  description: ''
+                  example: atque
+              required:
+                - order_type
+      security: []
+  /api/order_update:
+    post:
+      summary: ''
+      operationId: postApiOrder_update
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/update_order_status:
+    post:
+      summary: ''
+      operationId: postApiUpdate_order_status
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/update_process_status:
+    post:
+      summary: ''
+      operationId: postApiUpdate_process_status
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/close_order_operations:
+    post:
+      summary: ''
+      operationId: postApiClose_order_operations
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/swap_table:
+    post:
+      summary: ''
+      operationId: postApiSwap_table
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/login:
+    post:
+      summary: ''
+      operationId: postApiLogin
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Content-Type
+          description: ''
+          example: application/json
+          schema:
+            type: string
+        -
+          in: header
+          name: Accept
+          description: ''
+          example: application/json
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: jarret16@example.net
+                password:
+                  type: string
+                  description: ''
+                  example: nemo
+                remember:
+                  type: boolean
+                  description: ''
+                  example: true
+              required:
+                - email
+                - password
+      security: []
+tags:
+  -
+    name: Endpoints
+    description: ''

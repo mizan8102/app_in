@@ -1,0 +1,18 @@
+@base_url=http://188.166.242.10/chiklee_dev/chiklee_api/public/api
+@accessToke="866|8Mm1wbEc53nOah0YsMUrUXJuEIBIVitCMtmtrLil"
+
+###login request 
+
+POST {{base_url}}/login HTTP/1.1
+content-type: application/json
+
+{
+  "email": "developer@gmail.com",
+  "password":12345678
+}
+
+###
+
+GET http://188.166.242.10/chiklee_dev/chiklee_api/public/api/initprocatagory
+content-type: application/json
+Authorization:{{accessToke}}

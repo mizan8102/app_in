@@ -1,0 +1,66 @@
+{
+    "to_store_id": 1,
+    "remarks": "Hello",
+    "item_row": [
+        {
+            "uom_id": 4,
+            "id": 37,
+            "item_information_id": 17,
+            
+            "uom_short_code": "Kg",
+            "required_date": "23-04-2023",
+            "indent_quantity": 34,
+            "remarks": "Hello"
+        },
+        {
+            "uom_id": 5,
+            "id": 38,
+            "item_information_id": 118,
+            
+            "uom_short_code": "1:1",
+            "indent_quantity": 45,
+            "required_date": "23-04-2023",
+            "remarks": "Hello"
+        },
+        {
+            "uom_id": 5,
+            "id": 39,
+            "item_information_id": 117,
+            
+            "uom_short_code": "1:1",
+            "indent_quantity": 65,
+            "required_date": "23-04-2023",
+            "remarks": "Hello"
+        },
+        {
+            "uom_id": 4,
+            "id": 40,
+            "item_information_id": 10,
+            
+            "uom_short_code": "Kg",
+            "remarks": "Hello",
+            "required_date": "23-04-2023",
+            "indent_quantity": 56
+        },
+        {
+            "uom_id": 5,
+            "id": 41,
+            "item_information_id": 126,
+            
+            "remarks": "Hello",
+            "required_date": "23-04-2023",
+            "uom_short_code": "1:1",
+            "indent_quantity": 76
+        },
+        {
+            "uom_id": 5,
+            "id": 42,
+            "item_information_id": 127,
+            
+            "remarks": "Hello",
+            "required_date": "23-04-2023",
+            "uom_short_code": "1:1",
+            "indent_quantity": 76
+        }
+    ]
+}
