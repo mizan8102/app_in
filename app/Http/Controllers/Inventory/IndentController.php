@@ -30,9 +30,12 @@ class IndentController extends Controller
     {
         $search = request('search', '');
         $perPage = request('perPage', 10);
-            return ItemMasterModel::leftJoin('cs_company_store_location','cs_company_store_location.id','to_store_id')
+            return ItemMasterModel::
+            leftJoin('cs_company_store_location','cs_company_store_location.id','to_store_id')
+            ->leftJoin('cs_company_store_location as DemandStore','DemandStore.id','demand_store_id')
                 ->leftJoin('var_item_master_group','var_item_master_group.id','trns00a_indent_master.master_group_id')
-            ->select('trns00a_indent_master.*','cs_company_store_location.sl_name','var_item_master_group.itm_mstr_grp_name')
+            ->select('trns00a_indent_master.*','cs_company_store_location.sl_name',
+            'var_item_master_group.itm_mstr_grp_name','DemandStore.sl_name as demand_store')
             ->where('product_req',0)
                 ->where('close_status',0)
             ->where('indent_number', 'like', "%{$search}%")

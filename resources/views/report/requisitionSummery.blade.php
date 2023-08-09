@@ -216,7 +216,7 @@
     <div class="row" style="none">
         <div class="column1">
             <!-- <img class="logo" src="https://www.pinclipart.com/picdir/middle/187-1872894_bangladesh-govt-logo-png-clipart.png" alt=""> -->
-            <img class="logo" src="http://chiklee-park.com/assets/img/2022-01-04/A2.png" alt="">
+            <img class="logo" src="{{ asset('/logo/logo.png')}}" alt="">
         </div>
         <div class="column3">
             <div class="head_middle">
@@ -239,9 +239,9 @@
         </div>
         <div style="margin-left:3px; margin-top:20px;">
             <p style="text-align: left; font-size: 12px">
-                <b> Period: 3/29/23 to 4/1/23 </b><br>
-                <b>Requisition to:</b> <br>
-                <b>Product Master Group:</b> Dry Item <br>
+                <b> Period: {{  date('Y-m-d',strtotime($form))}} - {{  date('Y-m-d',strtotime($to))}} </b><br>
+                <!-- <b>Requisition to:</b> <br>
+                <b>Product Master Group:</b> Dry Item <br> -->
             </p>
             <div class="columne" style="text-align:right; float:right; margin-right:10px; font-size: 12px;">
                 <p style="padding-top:-10px;">
@@ -275,15 +275,15 @@
                     <td style="text-align: center;">{{ $indent->prodReqDate}}</td>
                     <td style="text-align: left;">{{ $indent->reqByName}} </td>
                     <td style="text-align: left;">{{ $indent->mstrGroupName }}</td>
-                    <td style="text-align: center;">{{ $indent->issueStatus }}</td>
-                    <td style="text-align: center;">{{ $indent->closeStatus }}</td>
+                    <td style="text-align: center;">{{ $indent->issueStatus ? "YES" : "NO" }}</td>
+                    <td style="text-align: center;">{{ $indent->closeStatus ? "YES" : "NO" }}</td>
                     <td style="text-align: left;">{{ $indent->approvedName }}</td>
                     <td style="text-align: left;">{{ $indent->remarks }}</td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
-        <div class="footer" style="margin-left: 20px; font-size: x-small;">
+        <!-- <div class="footer" style="margin-left: 20px; font-size: x-small;">
             <div class="sig">
                 <p>____________________________<br> Submitted By</p>
             </div>
@@ -293,7 +293,7 @@
             <div class="sig">
                 <p>____________________________<br> Approved By</p>
             </div>
-        </div>
+        </div> -->
         <htmlpagefooter name="page-footer">
             <div>
                 <p><span style="font-size:18px; font-weight:bold;">&nbsp;&nbsp;&nbsp;Chiklee</span>

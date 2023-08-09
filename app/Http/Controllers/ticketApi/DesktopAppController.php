@@ -367,7 +367,7 @@ class DesktopAppController extends Controller
             $i++;
         }
         
-        $isStore = Http::post("http://159.223.67.50/chiklee_api/public/api/ticket_api/item-isssue-create-one",$resultArr)->json();
+        $isStore = Http::post("http://159.223.67.50/chiklee_test_server/chiklee_api/public/api/ticket_api/item-isssue-create-one",$resultArr)->json();
         return [
             'status'=>$isStore['status'],
             'reason'=>$isStore['reason'],

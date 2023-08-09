@@ -66,18 +66,18 @@
     }
     table tr th{
         /* background: #F4F4F4; */
-        font-size:12px;
+        font-size:10px;
     }
     table tr td{
-        font-size:11px;
-        padding:3px 3px;
+        
+        padding:2px 2px;
     }
     table{
         border-collapse:collapse;
         float:left;
         margin-right:5px;
         margin-left:5px;
-        margin-bottom:40px;
+       
     }
     .box-text p{
         line-height:10px;
@@ -102,7 +102,7 @@
         margin-bottom:10px;
     }
     .logo{
-        width: 275px;
+        width: 250px;
         /*margin-left: 365px;*/
         margin-top: 10px;
     }
@@ -215,7 +215,8 @@
     <div class="row" style="none">
         <div class="column1">
             <!-- <img class="logo" src="https://www.pinclipart.com/picdir/middle/187-1872894_bangladesh-govt-logo-png-clipart.png" alt=""> -->
-            <img class="logo" src="http://chiklee-park.com/assets/img/2022-01-04/A2.png" alt="">
+            <img class="logo" src="{{ asset('/logo/logo.png') }}" alt="">
+
         </div>
         <div class="column3">
             <div class="head_middle">
@@ -242,17 +243,44 @@
                 <b>To:</b> {{$indents[0]->toStoreName}}</span> <br>
                 <b>Requisition Date: {{  date('d-m-Y',strtotime($indents[0]->prodReqDate))}}</b>
             </p>
-            <div class="columne" style="text-align:right; float:right; margin-right:10px; font-size: 12px;">
-                <p style="padding-top:-10px;">
+          
+            <div class="columne" style="text-align:right; float:right; margin-right:5px; font-size: 12px;">
+                <p style="padding-top:10px;">
                     <strong>Print: </strong>
                     @php 
                         $mytime = Carbon\Carbon::now()->format ('d-m-Y h:i A');
                         echo $mytime;
-                    @endphp
+                    @endphp 
+                     <table width="100%" style="transform: scale(0.05)!important;">
+                        <thead style="font-size: 8px!important">
+                            <tr style="background-color: rgb(3,73,91);">
+                               
+                                <th style="text-align: center;     color: rgb(255,255,255);">Ind No</th>
+                                <th style="text-align: center;    color: rgb(255,255,255);">Date</th>
+                                <th style="text-align: center;  color: rgb(255,255,255);">Mas.Grp.</th>
+                                <th style="text-align: center;  color: rgb(255,255,255);">From Store</th>
+                                <th style="text-align: center;   color: rgb(255,255,255);">To Store</th>
+                            </tr>
+                        </thead>
+                    <tbody>
+                        @foreach($issue_table as $in)
+                        <tr >
+                         
+                            <td style="scale: 0.25em; font-size:8px; ">{{$in->indent_number}}</td>
+                            <td style="font-size:8px; ">{{ date('d-m-Y', strtotime($in->indent_date)) }}</td>
+                            <td style="font-size:8px; ">{{$in->itm_mstr_grp_name}}</td>
+                            <td style="font-size:8px; ">{{$in->from_store}}</td>
+                            <td style="font-size:8px; ">{{$in->to_store}}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                    </table>
                 </p>
+                </p>
+               
             </div>
         </div>
-        <table width="100%" style="margin-top:90px;">
+        <table width="100%" style="margin-top:20px;  margin-bottom:80px;">
             <thead>
                 <tr style="background-color: rgb(3,73,91);">
                     <th style="text-align: center; color: rgb(255,255,255);">SL</th>
@@ -268,27 +296,27 @@
             <tbody>
                 @foreach($indents as $key=>$indent)
                 <tr>
-                    <td style="text-align: center;" width="8%">{{ $key+1 }}</td>
-                    <td style="text-align: left;" width="20%">{{ $indent->prodReqDate }}</td>
+                    <td style="text-align: center; font-size:11px;" width="8%">{{ $key+1 }}</td>
+                    <td style="text-align: left; font-size:11px;" width="20%">{{ $indent->prodReqDate }}</td>
                     
-                    <td style="text-align: left;" width="20%">{{ $indent->toStoreName }}</td>
-                    <td style="text-align: center;" width="20%">{{ $indent->itemName }}</td>
-                    <td style="text-align: center;" width="20%">{{ $indent->uom }}</td>
-                    <td style="text-align: center;" width="10%">{{ $indent->prodReqQty }}</td>
-                    <td style="text-align: left;" width="12%">{{ $indent->remarks }}</td>
+                    <td style="text-align: left; font-size:11px;" width="20%">{{ $indent->toStoreName }}</td>
+                    <td style="text-align: center; font-size:11px;" width="20%">{{ $indent->itemName }}</td>
+                    <td style="text-align: center; font-size:11px;" width="20%">{{ $indent->uom }}</td>
+                    <td style="text-align: center; font-size:11px;" width="10%">{{ $indent->prodReqQty }}</td>
+                    <td style="text-align: left; font-size:11px;" width="12%">{{ $indent->remarks }}</td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
         <div class="footer" style="margin-left: 20px; font-size: x-small;">
             <div class="sig">
-                <p>____________________________<br> Submitted By</p>
+              <span>{{ $issue_table[0]['name'] }}</span>  <p>____________________________<br> Submitted By</p>
             </div>
             <div class="sig">
-                <p>____________________________<br> Recommended By</p>
+              <p></p>  <p>____________________________<br> Recommended By</p>
             </div>
             <div class="sig">
-                <p>____________________________<br> Approved By</p>
+              <p></p>  <p>____________________________<br> Approved By</p>
             </div>
         </div>
         <htmlpagefooter name="page-footer">

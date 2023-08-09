@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ItemMasterGroup extends Model
 {
@@ -23,4 +23,7 @@ class ItemMasterGroup extends Model
         return $this->hasMany(ProductGroup::class, 'itm_mstr_grp_id', 'id');
     }
    
+    public function indent(){
+        return $this->hasMany(ItemMasterModel::class, 'master_group_id','id');
+    }
 }
