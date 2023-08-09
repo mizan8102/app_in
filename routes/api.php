@@ -389,6 +389,7 @@ Route::prefix('ticket_api')->group(function () {
     Route::post('/store-pos-take-order-payment-transaction', [DesktopApp2Controller::class, 'StoreOrderPaymentTransaction']);
     Route::post('/item-isssue-create-one-take-order-payment', [DesktopApp2Controller::class, 'ItemIssueCreateOneTakeOrderPayment']);
     Route::get('/get-runnnig-order-list', [DesktopApp2Controller::class, 'GetRunningOrderList']);
+    Route::post('/get-trans-files', [DesktopApp2Controller::class, 'getTransFile']);
 });
 
 Route::prefix('report')->group(function () {

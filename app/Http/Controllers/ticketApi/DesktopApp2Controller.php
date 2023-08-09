@@ -2133,6 +2133,22 @@ class DesktopApp2Controller extends Controller
             return $result;
     }
 
+    public function getTransFile(Request $request){
+
+        if($request->hasFile('transFile')){
+            
+
+             $fileName = date('ymdhis').'_'.time().'_'.$request->file('transFile')->getClientOriginalName();
+            $dirPath = public_path('trns_file');
+            $request->file('transFile')->move($dirPath, $fileName);
+            return ['status'=>'success'];
+        }else{
+            return ['status'=>'failed'];
+        }
+
+
+    }
+
 
 
 
