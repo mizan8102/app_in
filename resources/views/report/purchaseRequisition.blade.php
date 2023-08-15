@@ -275,7 +275,7 @@
     <div class="row" style="none">
         <div class="column1">
             <!-- <img class="logo" src="https://www.pinclipart.com/picdir/middle/187-1872894_bangladesh-govt-logo-png-clipart.png" alt=""> -->
-            <img class="logo" src="http://chiklee-park.com/assets/img/2022-01-04/A2.png" alt="">
+            <img class="logo" src="{{ asset('/logo/logo.png')}}" alt="">
         </div>
         <div class="column3">
             <div class="head_middle">
@@ -320,8 +320,8 @@
                 <th style="text-align: center; color: rgb(255,255,255);">SL</th>
                 <th style="text-align: center; color: rgb(255,255,255);">Requisition NO</th>
                 <th style="text-align: center; color: rgb(255,255,255);">Requisition Date</th>
-                <th style="text-align: center; color: rgb(255,255,255);">Store</th>
-                <th style="text-align: center; color: rgb(255,255,255);">Product Type</th>
+                <!-- <th style="text-align: center; color: rgb(255,255,255);">Store</th>
+                <th style="text-align: center; color: rgb(255,255,255);">Product Type</th> -->
                 <th style="text-align: center; color: rgb(255,255,255);">Item Name</th>
                 <th style="text-align: center; color: rgb(255,255,255);">UOM</th>
                 <th style="text-align: center; color: rgb(255,255,255);">Rate</th>
@@ -336,20 +336,20 @@
             <tr>
                 <td style="text-align: center;" width="9%">{{ $key+1 }}</td>
                 <td style="text-align: center;" width="9%">{{ $item->prchReqNo }}</td>
-                <td style="text-align: center;" width="9%">{{ $item->prchReqDate }}</td>
-                <td style="text-align: center;" width="9%">{{ $item->toStoreName }}</td>
-                <td style="text-align: center;" width="9%">{{ $item->prodTypeName }}</td>
+                <td style="text-align: center;" width="9%">{{ date('d-m-Y',strtotime($item->prchReqDate))  }}</td>
+                <!-- <td style="text-align: center;" width="9%">{{ $item->toStoreName }}</td>
+                <td style="text-align: center;" width="9%">{{ $item->prodTypeName }}</td> -->
                 <td style="text-align: center;" width="9%">{{ $item->itemName }}</td>
                 <td style="text-align: center;" width="9%">{{ $item->uom }}</td>
                 <td style="text-align: center;" width="9%">{{ $item->prchReqRate }}</td>
                 <td style="text-align: center;" width="9%">{{ $item->prchReqQty }}</td>
-                <td style="text-align: center;" width="9%">{{ $item->prchReqAmount }}</td>
+                <td style="text-align: right;" width="9%">{{ number_format($item->prchReqAmount,2) }}</td>
                 <td style="text-align: center;" width="9%">{{ $item->remarks }}</td>
             </tr>
             @endforeach
             {{-- total --}}
             <tr style="border-bottom: 1px solid black;">
-                <td style="text-align: right;" colspan="9"><strong>Total: </strong></td>
+                <td style="text-align: right;" colspan="7"><strong>Total: </strong></td>
                 <td style="text-align: center;" colspan=""><strong>{{ number_format(collect($preqs)->sum('prchReqAmount'),2) }}</strong></td>
                 <!-- <td></td> -->
                 <td></td>
@@ -359,19 +359,20 @@
     <div>
         <p class="box">
             <span style="text-decoration: underline;">
-                <b>Remarks</b>
+                <b>Remarks:  </b>
             </span>
+           {{ $data->remarks}}
         </p>
     </div>
     <div class="footer" style="margin-left: 20px; font-size: x-small;">
         <div class="sig">
-            <p>____________________________<br> Submitted By</p>
+           <span>{{ $data->name }}</span> <p>____________________________<br> Submitted By</p>
         </div>
         <div class="sig">
-            <p>____________________________<br> Recommended By</p>
+           <div> </div> <p>____________________________<br> Recommended By</p>
         </div>
         <div class="sig">
-            <p>____________________________<br> Approved By</p>
+           <div> </div> <p>____________________________<br> Approved By</p>
         </div>
     </div>
     <htmlpagefooter name="page-footer">

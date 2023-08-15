@@ -29,22 +29,52 @@ class PurchaseOrderController extends Controller
         $search = request('search', '');
         $perPage = request('perPage', 10);
 
-        $item=PurchaseReqMaster::select('trns00c_purchase_req_master.*','var_item_master_group.itm_mstr_grp_name','5f_sv_product_type.prod_cat_id',
-        'var_item_master_group.prod_type_id'
-        )
-        ->leftJoin('var_item_master_group','var_item_master_group.id','trns00c_purchase_req_master.master_group_id')
+        $pending_requisition= ItemMasterGroup::select('var_item_master_group.*','5f_sv_product_type.prod_cat_id')
+        ->with(['purchase_req' =>function($query){
+            $query->select('*','trns00c_purchase_req_master.id as purchaseReq_mas_id',
+            'cs_company_store_location.sl_name as store_name',
+            DB::raw("DATE_FORMAT(requisition_date, '%d-%m-%Y') AS requisition_date"))
+            ->leftJoin('cs_company_store_location','cs_company_store_location.id','trns00c_purchase_req_master.store_id')
+            ->where('trns00c_purchase_req_master.is_active',1);
+           
+        }])
         ->leftJoin('5f_sv_product_type','5f_sv_product_type.id','var_item_master_group.prod_type_id')
-        ->where('trns00c_purchase_req_master.approved_status',0)
-        ->orderBy('var_item_master_group.id','ASC')->get();
+        ->where('5f_sv_product_type.id',2)
+        ->get();
+        $result=[];
+        $i=0;
+        foreach($pending_requisition as $pi){
+            $result[$i]['master_group']= $pi->itm_mstr_grp_name;
+            $result[$i]['master_group_id']= $pi->id;
+            if($pi['purchase_req']){
+                $result[$i]['data'] = collect($pi['purchase_req'])->pluck('purchaseReq_mas_id');
+                $result[$i]['count'] = collect($pi['purchase_req'])->count();
+                $result[$i]['requistions'] = $pi['purchase_req'];
+            }else{
+                $result[$i]['data'] = [];
+                $result[$i]['count'] = 0;
+                $result[$i]['requistions'] =[];
+            }
+            $i++;
+        }
+
+        // $item=PurchaseReqMaster::select('trns00c_purchase_req_master.*','var_item_master_group.itm_mstr_grp_name','5f_sv_product_type.prod_cat_id',
+        // 'var_item_master_group.prod_type_id'
+        // )
+        // ->leftJoin('var_item_master_group','var_item_master_group.id','trns00c_purchase_req_master.master_group_id')
+        // ->leftJoin('5f_sv_product_type','5f_sv_product_type.id','var_item_master_group.prod_type_id')
+        // ->where('trns00c_purchase_req_master.approved_status',0)
+        // ->orderBy('var_item_master_group.id','ASC')->get();
 
         $po= PurchaseOrder::leftJoin('cs_supplier_details','cs_supplier_details.id','supplier_id')
         ->select('trns00e_purchase_order_master.*','cs_supplier_details.supplier_name')
         ->where('purchase_order_number','like', "%{$search}%")
+        ->orderBy('trns00e_purchase_order_master.id','DESC')
         ->paginate($perPage);
 
         return sendResponse([
             "data"         => $po,
-            "pendingOrder" => Helper::master_group_wise_item_count($item)
+            "pendingOrder" => $result
         ],200);
 
     }
@@ -53,13 +83,22 @@ class PurchaseOrderController extends Controller
         return PurchaseOrder::with(['purchase_order_child' => function($query){
             $query->select('*',DB::raw('order_quantity*rate As lineTotal'))->leftJoin('var_item_info','trns00f_purchase_order_child.item_info_id','var_item_info.id');
         }
-        ])->select('cs_company_store_location.sl_name','cs_supplier_details.*','trns00e_purchase_order_master.*')
+        ])
+        ->select('cs_company_store_location.sl_name','cs_supplier_details.*','trns00e_purchase_order_master.*',
+        '5f_sv_product_type.prod_type_name','5h_sv_product_category.prod_cat_name','var_item_master_group.itm_mstr_grp_name',
+        '5x4_paymode_type.paymode_name')
         ->leftJoin('cs_company_store_location','cs_company_store_location.id','delivery_point')
-        ->leftJoin('cs_supplier_details','cs_supplier_details.id','supplier_id')->where('trns00e_purchase_order_master.id',$id)->get();
+        ->leftJoin('cs_supplier_details','cs_supplier_details.id','supplier_id')
+        ->leftJoin('var_item_master_group','var_item_master_group.id','trns00e_purchase_order_master.master_group_id')
+        ->leftjoin('5f_sv_product_type','5f_sv_product_type.id','var_item_master_group.prod_type_id')
+        ->leftJoin('5h_sv_product_category','5h_sv_product_category.id','5f_sv_product_type.prod_cat_id')
+        ->leftJoin('5x4_paymode_type','5x4_paymode_type.id','trns00e_purchase_order_master.pay_term')
+        ->where('trns00e_purchase_order_master.id',$id)->get();
     }
 
     public function masterIdToGetTypeAndCategory($id){
-        return ItemMasterGroup::select('5f_sv_product_type.*','5h_sv_product_category.prod_cat_name')->leftjoin('5f_sv_product_type','5f_sv_product_type.id','var_item_master_group.prod_type_id')
+        return ItemMasterGroup::select('5f_sv_product_type.*','5h_sv_product_category.prod_cat_name')
+        ->leftjoin('5f_sv_product_type','5f_sv_product_type.id','var_item_master_group.prod_type_id')
         ->leftJoin('5h_sv_product_category','5h_sv_product_category.id','5f_sv_product_type.prod_cat_id')->where('var_item_master_group.id',$id)->first();
     }
     /**
@@ -219,25 +258,29 @@ class PurchaseOrderController extends Controller
         }
         try {
             $orderMasterID =Helper::codeGenerate('trns00e_purchase_order_master');
+           
+            $requistion= collect($request->all_requisition_number)->pluck('requisition_number')->toArray();;
+            $requistions_id= collect($request->all_requisition_number)->pluck('id')->toArray();;
             $orderMasterData =[
-                    'purchase_req_master_id'=>implode(",", $request->req_ids),
-                    'purchase_order_number'=>$orderMasterID,
-                    'company_id'=>Auth::user()->company_id,
-                    'branch_id'=>Auth::user()->branch_id,
-                    'store_id'=>Auth::user()->store_id,
-                    'pay_term'=>$request->pay_term,
-                    'purchase_order_date'=> date('Y-m-d',strtotime($request->date)) ,
-                    'supplier_id'=>$request->supplier_id,
-                    'delivery_point'=>$request->delivery_point,
-                    'delivery_date'=>date('Y-m-d',strtotime($request->delivery_date)) ,
-                    'master_group_id'=>$request->grp_master,
-                    'remarks'=>$request->remarks,
-                    'submitted_by'=>Auth::user()->id,
-                    'recommended_by'=>Auth::user()->id,
-                    'approved_by'=>Auth::user()->id,
-                    'approved_status'=>"1",
-                    'created_by'=>Auth::user()->id,
-                    'created_at'=>date('Y-m-d H:i:s'),
+                    'purchase_req_master_id' => implode(", ", $requistion),
+                    'purchase_order_number'  => $orderMasterID,
+                    'company_id'             => Auth::user()->company_id,
+                    'branch_id'              => Auth::user()->branch_id,
+                    'store_id'               => Auth::user()->store_id,
+                    'pay_term'               => $request->pay_term,
+                    'purchase_order_date'    => date('Y-m-d',strtotime($request->date)) ,
+                    'supplier_id'            => $request->supplier_id,
+                    'delivery_point'         => $request->delivery_point,
+                    'delivery_date'          => date('Y-m-d',strtotime($request->delivery_date)) ,
+                    'master_group_id'        => $request->grp_master,
+                    'remarks'                => $request->remarks,
+                    'submitted_by'           => Auth::user()->id,
+                    'recommended_by'         => Auth::user()->id,
+                    'approved_by'            => Auth::user()->id,
+                    'purchase_order_amount'  => $request->totalAmount,
+                    'approved_status'        => "1",
+                    'created_by'             => Auth::user()->id,
+                    'created_at'             => date('Y-m-d H:i:s'),
                 ];
             DB::beginTransaction();
             $data=PurchaseOrder::create($orderMasterData);
@@ -247,7 +290,7 @@ class PurchaseOrderController extends Controller
                         'item_info_id' => $item['item_information_id'],
                         'uom_id' => $item['uom_id'],
                         'uom_short_code' => $item['uom_short_code'],
-                        'relative_factor' => 0,
+                        'relative_factor' => $item['relative_factor'],
                         'order_quantity' => $item['order_quantity'],
                         'recv_quantity' => '',
                         'required_date' => date("Y-m-d", strtotime($item['required_date'])),
@@ -269,12 +312,30 @@ class PurchaseOrderController extends Controller
                         PurchaseReqQty::create($map_child);
                     }
             }
+            // close 
+            foreach($requistions_id as $ids){
+                if(!$this->purchaseReqClose($ids)){
+                    PurchaseReqMaster::where('id',$ids)->update(['is_active'=>0]);
+                }
+            }
+
             DB::commit();
             return $data;
         }catch (\Exception $e) {
                 DB::rollBack();
                 return response()->json( $e->getMessage(),422);
             }
+    }
+
+    // purchase close 
+    function purchaseReqClose($ids){
+        $data = DB::select("CALL `PurchaseReqClose`(".$ids.")");
+        foreach($data as $dd){
+            if(intval($dd->balance_qty) > 0){
+                return true;
+            }
+        }
+        return false;
     }
     /**
      * Display the specified resource.
@@ -336,6 +397,7 @@ class PurchaseOrderController extends Controller
                 )
                 ->whereIn('trns00d_purchase_req_child.purchase_req_master_id',$request)
                 ->where('supplier_mappings.sup_id',$id)
+                ->orderBy('trns00d_purchase_req_child.required_date','ASC')
                 ->get();
                 // return $raw_material;
                 $dd=collect($raw_material);
@@ -361,7 +423,7 @@ class PurchaseOrderController extends Controller
                                 $data['mapping_order_quantity_complete'] = $item_wise_prev_order_qty;
                                 $data['Child_id'] = $itemReqs->Child_id;
                                 $data['requisition_number'] = $itemReqs->purchase_req_master_id;
-                                $data['required_date'] = $itemReqs->required_date;
+                                $data['required_date'] =date('d-m-Y',strtotime($itemReqs->required_date));
                                 $itemReqArr[] = $data;
                             }
                         }
@@ -380,6 +442,7 @@ class PurchaseOrderController extends Controller
                         $result[$i]['uom_id']=$value[0]->uom_id;
                         $result[$i]['group_by_child']=$group_by_child;
                         $result[$i]['uom_short_code']=$value[0]->uom_short_code;
+                        $result[$i]['relative_factor']=$value[0]->relative_factor;
                         $result[$i]['req_quantity']=$rr;
                         $result[$i]['purchase_req_master']=$purchase_req_master;
                         $result[$i]['rate']=$value[0]->pu_rate;
@@ -431,7 +494,7 @@ class PurchaseOrderController extends Controller
     }
 
     public function init(Request $request){
-        $requisition_id=PurchaseReqMaster::select('requisition_number')->whereIn('id',$request)->get();
+        $requisition_id=PurchaseReqMaster::select('requisition_number','id')->whereIn('id',$request)->get();
         $map_supplier=PurchaseReqChild::leftJoin('supplier_mappings','supplier_mappings.item_id','trns00d_purchase_req_child.item_info_id')
         ->join('cs_supplier_details','cs_supplier_details.id','=','supplier_mappings.sup_id')
         ->select('cs_supplier_details.supplier_name','cs_supplier_details.id')
@@ -526,7 +589,9 @@ class PurchaseOrderController extends Controller
         $store=CsCompanyStoreLocation::select('id','sl_name')->get();
         $pro_cat=ProductCatagory::select('id','prod_cat_name')->get();
 
-        $dd=ProductCatagory::with('productTypes','productTypes.itemMasterGroups')->get();
+        $dd=ProductCatagory::with(['productTypes'=>function($query){
+            $query->whereNot('id',3);
+        },'productTypes.itemMasterGroups'])->get();
         // $dd= ProductCategoryResource::collection(ProductCatagory::with('productTypes','productTypes.itemMasterGroups')->get());
         $result=[];
         foreach ($dd as $key => $val) {
@@ -539,7 +604,7 @@ class PurchaseOrderController extends Controller
                 $result[$key]['children'][$pt_key]['key']       = $key . '-' . $pt_key;
                 $result[$key]['children'][$pt_key]['value']     = $pt->id;
                 $result[$key]['children'][$pt_key]['title']     = $pt->prod_type_name;
-                $result[$key]['children'][$pt_key]['disabled']     = true;
+                $result[$key]['children'][$pt_key]['disabled']  = true;
         
                 foreach ($pt->itemMasterGroups as $m_key => $mm) {
                     $result[$key]['children'][$pt_key]['children'][$m_key]['key'] = $key . '-' . $pt_key . '-' . $m_key;
@@ -569,7 +634,7 @@ class PurchaseOrderController extends Controller
         'trns00c_purchase_req_master.requisition_date','var_item_master_group.itm_mstr_grp_name','users.name','trns00c_purchase_req_master.remarks')
         ->leftJoin('users','users.id','trns00c_purchase_req_master.submitted_by')
         ->leftJoin('var_item_master_group','var_item_master_group.id','master_group_id')
-        ->where('trns00c_purchase_req_master.approved_status',0)
+        ->where('trns00c_purchase_req_master.is_active',1)
         // ->where('requisition_number','like',"%{$search}%")
         ->where('var_item_master_group.id',$grpMaster)
         ->get();

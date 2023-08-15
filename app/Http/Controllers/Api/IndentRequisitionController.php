@@ -232,7 +232,7 @@ class IndentRequisitionController extends Controller
                         $data['req_quantity'] =number_format((float) $itemReqs->indent_quantity - $item_wise_prev_order_qty, 3, '.', '');
                         $data['mapping_requisition_quantity_complete'] = $item_wise_prev_order_qty;
                         $data['Child_id'] = $itemReqs->Child_id;
-                        $data['required_date'] =$itemReqs->required_date;
+                        $data['required_date'] = date('d-m-Y', strtotime($itemReqs->required_date));
                         $itemReqArr[] = $data;
                     }
                 }
@@ -337,7 +337,7 @@ class IndentRequisitionController extends Controller
                     'indent_quantity' => $data['indent_quantity'],
                     'req_quantity' => $data['req_quantity'],
                     'required_date' => date('Y-m-d',strtotime($data['required_date'])),
-                    'remarks' => $data['remarks'],
+                    'Remarks' => $data['remarks'],
                     'remarks_bn' => $data['remarks'],
                 ]);
                 foreach($data['req_list'] as $distriubute_item){
@@ -353,6 +353,7 @@ class IndentRequisitionController extends Controller
             }
             }
            
+            ItemMasterModel::whereIn('id',$request->req_ids)->update(['pro_req_close' => 1]);
             DB::commit();
             return response()->json([
                 'message' => 'Purchase Requisition Created Successfully',

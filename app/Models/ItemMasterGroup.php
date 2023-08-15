@@ -26,4 +26,8 @@ class ItemMasterGroup extends Model
     public function indent(){
         return $this->hasMany(ItemMasterModel::class, 'master_group_id','id');
     }
+
+    public function purchase_req(){
+        return $this->hasMany(PurchaseReqMaster::class,'master_group_id','id');
+    } 
 }

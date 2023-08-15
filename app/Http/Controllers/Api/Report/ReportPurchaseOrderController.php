@@ -11,7 +11,7 @@ class ReportPurchaseOrderController extends Controller
 {
     public function getPOList()
     {
-        $data = DB::select('CALL GetPurchaseOrderID("' . request()->input('status') . '")');
+        $data = DB::select('CALL GetPurchaseOrderID()');
         $pos = [];
         foreach ($data as $i => $item) {
             $pos[$i]['id'] = $item->pOrderNo;

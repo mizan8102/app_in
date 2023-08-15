@@ -99,7 +99,7 @@ class IndentController extends Controller
         $perPage = $request->perPage |0;
         $selected = $request->selected ;
         $data = DB::select('CALL ItemStockStoreWise("'.Auth::user()->store_id.'","'.$masterId.'")');
-        return collect($data)->whereNotIn('itmID',$selected)->values();
+        return collect($data)->whereNotIn('itemInfoId',$selected)->values();
     }
     public function  itemShowforIndent(Request $request){
          $id=$request->itemNumber;

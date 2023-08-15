@@ -100,6 +100,14 @@ class IndentController extends Controller
             ->where('close_status',0) ->where('pro_req_close',0)
             ->groupBy('var_item_master_group.id')
             ->get();
+        }else if($type=='purchase_order'){
+            return ItemMasterGroup::select(DB::raw('CONVERT(var_item_master_group.id,INTEGER) as id'),'itm_mstr_grp_name as item_name',
+            DB::raw("CONCAT(itm_mstr_grp_name,' (',COUNT(*),')') as itm_mstr_grp_name "))
+            ->join('trns00c_purchase_req_master','trns00c_purchase_req_master.master_group_id','var_item_master_group.id')
+            ->where('var_item_master_group.prod_type_id',$id)
+            ->where('trns00c_purchase_req_master.is_active',1)
+            ->groupBy('var_item_master_group.id')
+            ->get();
         }else{
              return ItemMasterGroup::select(DB::raw('CONVERT(id,INTEGER) as id'),'itm_mstr_grp_name')->where('prod_type_id',$id)->get();
         }

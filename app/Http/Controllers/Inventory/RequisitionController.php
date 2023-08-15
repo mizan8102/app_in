@@ -35,6 +35,7 @@ class RequisitionController extends Controller
             ->where('trns00a_indent_master.close_status',0) ->where('trns00a_indent_master.pro_req_close',0);
         }])
         ->leftJoin('5f_sv_product_type','5f_sv_product_type.id','var_item_master_group.prod_type_id')
+        ->where('5f_sv_product_type.id',2)
         // ->leftJoin('5h_sv_product_category','5h_sv_product_category.id','5f_sv_product_type.prod_cat_id')
         ->get();
         $result=[];
@@ -205,6 +206,7 @@ class RequisitionController extends Controller
                 $information['created_at']=Carbon::now();
                 $information['updated_at']=Carbon::now();
                 $information['created_by']=Auth::id();
+                $information['Remarks']=$information['remarks'];
                 $information['updated_by']=" ";
                 $this->createIndentChild($information);
             }

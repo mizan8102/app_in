@@ -25,7 +25,7 @@ class IOCPriceDecController extends Controller
      */
     public function index()
     {
-        return request('value')? IOCPriceDeclaration::select('var_item_info.id','var_item_info.display_itm_name')->leftJoin("var_item_info","var_item_info.id","item_information_id")->groupBY('item_information_id')->get():
+        return request('value')? IOCPriceDeclaration::select('var_item_info.id','var_item_info.display_itm_name')->leftJoin("var_item_info","var_item_info.id","item_info_id")->groupBY('item_info_id')->get():
             IOCPriceDeclaration::all();
     }
 
@@ -104,7 +104,7 @@ class IOCPriceDecController extends Controller
             "prc_decl_name" => "required",
             "prc_decl_number" => "required",
             "effective_from" => "required",
-            "item_information_id" => "required|integer|min:1,item_information_id|exists:var_item_info,id",
+            "item_information_id" => "required|integer|min:1,item_info_id|exists:var_item_info,id",
             "date_of_submission" => "required",
             "qty" => "required",
             "item_info_rows.*.item_information_id"=>"required|numeric|regex:/^\d+(\.\d{1,2})?$/|exists:var_item_info,id",
@@ -137,7 +137,7 @@ class IOCPriceDecController extends Controller
                     "ioc_qty" => $request->qty,
                     "prc_decl_number" => $request->prc_decl_number,
                     "effective_from" => $effective_from,
-                    "item_information_id" => $request->item_information_id,
+                    "item_info_id" => $request->item_information_id,
                     "total_cost_rm" => $request->total_cost_rm,
                     "total_overhead_cost" => $request->total_overhead_cost,
                     "total_monthly_srv_cost" => $request->total_monthly_srv_cost,
@@ -156,7 +156,7 @@ class IOCPriceDecController extends Controller
                 foreach ($request['item_info_rows'] as $item) {
                     $ioc_item = IOCItemDetail::create([
                         "ioc_price_declaration_id" => $ioc_price_master->id,
-                        "item_information_id" => $item['item_information_id'],
+                        "item_info_id" => $item['item_information_id'],
                         "consumption_uom" => $item['consumption_uom'],
                         "consumption" => $item['consumption'],
                         "consumption_single_unit" => $item['unit_cons'],
@@ -215,7 +215,7 @@ class IOCPriceDecController extends Controller
             "tran01a_ioc_price_declaration.ioc_qty as qty",
             "tran01a_ioc_price_declaration.quantity as calculation_qty",
             "tran01a_ioc_price_declaration.date_of_submission",
-            "tran01a_ioc_price_declaration.item_information_id",
+            "tran01a_ioc_price_declaration.item_info_id as item_information_id",
             "tran01a_ioc_price_declaration.grand_total_cost",
             "tran01a_ioc_price_declaration.remarks",
 "tran01a_ioc_price_declaration.grand_total_cost",
@@ -227,12 +227,12 @@ class IOCPriceDecController extends Controller
             "var_item_info.estimate_time",
             "5m_sv_uom.uom_short_code"
         )
-            ->leftJoin('var_item_info','var_item_info.id','=','tran01a_ioc_price_declaration.item_information_id')
+            ->leftJoin('var_item_info','var_item_info.id','=','tran01a_ioc_price_declaration.item_info_id')
             ->leftJoin('5m_sv_uom','var_item_info.uom_id','=','5m_sv_uom.id')
             ->with(['itemInfoRows' => function ($query) {
                 return $query->with('uoms')->select(
                     "*"
-                )->leftJoin('var_item_info','var_item_info.id','=','tran01b_ioc_item_details.item_information_id')
+                )->leftJoin('var_item_info','var_item_info.id','=','tran01b_ioc_item_details.item_info_id')
                     ->leftJoin('5m_sv_uom','var_item_info.uom_id','=','5m_sv_uom.id');
             }, 'inputServiceRows' => function ($query) {
                 return $query->select(

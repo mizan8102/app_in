@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Report;
 
+use App\Models\PurchaseReqMaster;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -26,9 +27,11 @@ class ReportPurchaseRequisitionController extends Controller
     public function getPurchaseRequisitionPDFByNo(Request $request)
     {
         $preqs = DB::select('CALL Report_B_03A_PurchaseRequisition("' . $request->no . '")');
+        $data=PurchaseReqMaster::leftJoin('users','submitted_by','users.id')
+        ->where('requisition_number',$request->no)->first();
         $pdf = PDF::loadView(
             'report.purchaseRequisition',
-            ['preqs' => $preqs],
+            ['preqs' => $preqs, 'data' => $data],
             [
                 'mode'                 => '',
                 'format'               => 'A4-L',
@@ -57,7 +60,7 @@ class ReportPurchaseRequisitionController extends Controller
             ]
         );
 
-        return $pdf->stream('report.purchaseRequisition');
+        return $pdf->stream('purchaseRequisition.pdf');
     }
     public function purchaseRequisitionSummaryByDate(Request $request)
     {
@@ -71,11 +74,11 @@ class ReportPurchaseRequisitionController extends Controller
         $to = date('Y-m-d', strtotime($request->to));
         $reqData['from_date'] = date('d-m-Y', strtotime($request->from));
         $reqData['to_date'] = date('d-m-Y', strtotime($request->to));
-        $preqs = DB::select('CALL Report_B_03B_PurchaseRequisitionSummary("' . $from . '","' . $to . '")');
+        $pReqSum = DB::select('CALL Report_B_03B_PurchaseRequisitionSummary("' . $from . '","' . $to . '")');
 
         $pdf = PDF::loadView(
             'report.purchaseRequisitionSummery',
-            ['preqs' => $preqs, 'reqData' => $reqData],
+            ['pReqSum' => $pReqSum, 'reqData' => $reqData],
             [
                 'mode'                 => '',
                 'format'               => 'A4-L',
