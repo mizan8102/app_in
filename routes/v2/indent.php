@@ -16,3 +16,4 @@ Route::get('closeProductRequisition/{id}',[\App\Http\Controllers\Inventory\Requi
 
 Route::get('/initialize_program_for_indent',InitailizeProgram::class);
 Route::get('/programIndentInit/{id}',[ProgramIndentController::class,'programInit']);
+Route::resource('/programIndent', ProgramIndentController::class);

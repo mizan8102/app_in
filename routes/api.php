@@ -362,6 +362,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::resource('table', TableController::class);
 
         Route::resource('uom', HouseKeepingUOMController::class);
+
+        
     });
 });
 

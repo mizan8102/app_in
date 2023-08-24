@@ -24,6 +24,10 @@ class OrderMaster extends Model
         return $this->hasMany(OrderChild::class, 'order_master_id', 'id');
     }
 
+    public function varItemInfo(){
+        return $this->hasOne(VarItemInfo::class,'item_info_id','id');
+    }
+
     public function order_childs_supp()
     {
         return $this->hasMany(OrderChild::class, 'order_master_id', 'id')->where('is_supplimentary', 1);
@@ -32,6 +36,9 @@ class OrderMaster extends Model
     public function o_status()
     {
         return $this->belongsTo(OrderStatus::class, 'order_status', 'id');
+    }
+    public function hallRoom(){
+        return $this->hasOne(CsCompanyStoreLocation::class,'id','floor_id');
     }
 
 

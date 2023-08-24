@@ -102,7 +102,6 @@ class IndentController extends Controller
         try{
             DB::beginTransaction();
             $data=$request->validated();
-            // return $data;
             $data['company_id']=Auth::user()->company_id;
             $data['indent_date']=date('Y-m-d',strtotime($data['indent_date']));
             $data['branch_id']= Auth::user()->branch_id;
