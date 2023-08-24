@@ -400,7 +400,7 @@ class DesktopAppController extends Controller
             'reason'=>$isStore['reason'],
             'issue_master_id'=>$isStore['issue_master_id'],
             'itemstock_master_id'=>$isStore['itemstock_master_id'],
-            'OrderUniqID'=>$OrderUniqID,
+            'OrderUniqID'=>$isStore['OrderUniqID'],
             // 'print_data'=>$printDataArr,
         ];
     }
@@ -422,6 +422,7 @@ class DesktopAppController extends Controller
                 'reason'=>'Data Already Exist',
                 'issue_master_id'=>'',
                 'itemstock_master_id'=>'',
+                'OrderUniqID'=>$r->OrderUniqID,
             ];
             $isLog = true;
         }
@@ -727,7 +728,8 @@ class DesktopAppController extends Controller
                 'status'=>true,
                 'reason'=>'OK',
                 'issue_master_id'=>$issueMasterID,
-                'itemstock_master_id'=>$stockMasterID
+                'itemstock_master_id'=>$stockMasterID,
+                'OrderUniqID'=>$r->OrderUniqID,
             ]);
 
         }catch (\Exception $e) {

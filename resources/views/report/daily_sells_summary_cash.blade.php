@@ -341,7 +341,7 @@
         <div class="row" style="none">
             <div class="column1">
                 <!-- <img class="logo" src="https://www.pinclipart.com/picdir/middle/187-1872894_bangladesh-govt-logo-png-clipart.png" alt=""> -->
-                <img class="logo" style="width:80px;height:60px;" src="http://chiklee-park.com/assets/img/2022-01-04/A2.png" alt="">
+                <img class="logo" style="width:80px;height:60px;" src="{{ asset('logo/logo.png')}}" alt="">
             </div>
             <div class="column3">
                 <div class="head_middle">
@@ -357,11 +357,35 @@
                     </div>
                 </div>
             </div>
-            <div class="column1">
+            <!-- <div class="column1">
                 <p style="text-align: right; font-size:12px;">Chiklee#D_01C</p>
-            </div>
+                
+            </div> -->
+            <div style="display:block; margin-bottom:none!important;">
+            <p style="text-align: right; font-size:12px;">Chiklee#D_01C</p>
+                <table style= "margin-left: 0px;" width="100%">
+                    <thead style="border:none;">
+                        <tr style="background-color: rgb(3,73,91);font-size:9px">
+                            <th style="text-align: center; color: rgb(255,255,255);">Name</th>
+                            <th style="text-align: center; color: rgb(255,255,255);">Quantity</th>
+                            <th style="text-align: center; color: rgb(255,255,255);">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align: left;">Entry Ticket Day</td>
+                            <td style="text-align: right;">{{ number_format($day_ticket,0) }}</td>
+                            <td style="text-align: right;" rowspan="3">{{ intval($day_ticket)+intval($night_ticket)}}</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">Entry Ticket Evening</td>
+                            <td style="text-align: right;">{{ number_format($night_ticket,0) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
         </div>
-            <div style="margin-left:5px; margin-top:8px; display:block;">
+        </div>
+            <div style="margin-left:5px; margin-top:5px; margin-bottom:4px; display:block;">
 
                 <div class="report_params_areas" style="float:left;height:10px;width:50%">
                     <span style="text-align: right; font-size:12px"><b>Date: </b>{{ date('d-m-Y',strtotime($date))}}</span>
@@ -379,28 +403,6 @@
                 </div> -->
             </div>
         <div>
-        <div style="display:block; margin-top:2px; margin-bottom:none!important;">
-                <table style= "margin-left: 650px;" width="100%">
-                    <thead style="border:none;">
-                        <tr style="background-color: rgb(3,73,91);font-size:9px">
-                            <th style="text-align: center; color: rgb(255,255,255);">Name</th>
-                            <th style="text-align: center; color: rgb(255,255,255);">Quantity</th>
-                            <th style="text-align: center; color: rgb(255,255,255);">Total Quantity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="text-align: left;">Entry Ticket Day</td>
-                            <td style="text-align: right;">{{ number_format($day_ticket,0) }}</td>
-                            <td style="text-align: right;" rowspan="3">{{ intval($day_ticket)+intval($night_ticket)}}</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: left;">Entry Ticket Evening</td>
-                            <td style="text-align: right;">{{ number_format($night_ticket,0) }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-        </div>
         <div style="display:block;">
             <table width="100%">
                 <thead>
@@ -456,7 +458,7 @@
                         @php
                             $due_amt += doubleval($dd->total_issue_amount_with_vat) - doubleval($dd->paid_amount);
                             $receive +=doubleval($dd->total_issue_amount_with_vat-$dd->total_vat_amnt-$dd->total_discount);
-                            $due_to_cus +=doubleval(($dd->total_issue_amount_with_vat-$dd->total_vat_amnt-$dd->total_discount)-$dd->paid_amount);
+                            $due_to_cus +=($dd->total_issue_amount_with_vat-$dd->total_vat_amnt)-$dd->paid_amount;
                             $grand_total_amt +=doubleval($dd->paid_amount+$dd->cash_diposit+$dd->card_diposit+$dd->mfs_diposit);
                             $totalDue +=doubleval(($dd->paid_amount+$dd->cash_diposit+$dd->card_diposit+$dd->mfs_diposit)) - doubleval($dd->total_deposit);
                         @endphp

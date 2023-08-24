@@ -34,6 +34,7 @@ Route::prefix('report')->group(function () {
     Route::get('waiter-wise-daily-sell', [WaiterWiseDailySellController::class, 'waiterWisedailySell']);
     Route::get('kitchen-wise-sell', [KitchenWiseSellController::class, 'kitchenWiseSell']);
     Route::get('commercial-invoice', [CommercialInvoiceController::class, 'programManagement']);
+    Route::get('commercial-invoice-quotations', [CommercialInvoiceController::class, 'quotations']);
     Route::get('costing-consumption', [CostingConsumptionController::class, 'costingConsumption']);
     Route::get('costing-consumption-summary', [CostingConsumptionSummaryController::class, 'costingConsumptionSummary']);
     Route::get('opening-stock-summary', [OpeningStockSummaryController::class, 'openingStockSummary']);
@@ -73,7 +74,14 @@ Route::prefix('report')->group(function () {
 
     Route::get('/Report_Z_01_store_wise_item_list', [DailySellsSummaryController::class, 'dailyMismatchSales']);
 
+    // consting pdf IOC
+    Route::get('/costingConsumptionPDF', [CostingConsumptionController::class, 'costingConsumptionPDF']);
 
+    Route::get('/C_01B-pdf', [CostingConsumptionSummaryController::class, 'costingConsumptionSummaryPdf']);
+    Route::get('/C_01C', [DailySellsSummaryController::class, 'pdf']);
+
+
+    Route::get('/C_01D',[DailySellsSummaryController::class,'consumptionPdf']);
 });
 
 //// New Report by Lokman Hossain //////////////////////////////////////////////////////////////////

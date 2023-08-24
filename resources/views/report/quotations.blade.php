@@ -232,25 +232,25 @@
     {
         float: left;
         width: 18%;
-        padding-top: 20px;
+        padding-top: 10px;
     }
     .columnemail
     {
         float: left;
         width: 25%;
-        padding-top: 20px;
+        padding-top: 10px;
     }
     .columnworld
     {
         float: left;
         width: 22%;
-        padding-top: 20px;
+        padding-top: 10px;
     }
     .column1
     {
         float: left;
         width: 20%;
-        padding-top: 20px;
+        padding-top: 10px;
     }
     .column2 {
         float: left;
@@ -301,20 +301,17 @@
     }
     .logo
     {
-        width: 75px;
+        width: 125px;
         /*margin-left: 365px;*/
         margin-top: 5px;
         text-align:right;
-        margin-left:15px;
-        
     }
     .chiklee
     {
-        width: 65px;
+        width: 125px;
         /*margin-left: 365px;*/
-        padding-top: 15px;
+        padding-top: 5px;
         text-align:right;
-        margin-left:20px;
     }
     .columnfooter
     {
@@ -378,7 +375,7 @@
     }
 
     .footer{
-        margin-top:20px;
+        margin-top:70px;
         overflow: auto;
 
     }
@@ -389,7 +386,7 @@
     <body>
         <div class="rowhead" style="none">
             <div class="invoice">
-                <img class="logo" src="{{ asset('logo/logo.png') }}" alt="">
+                <img class="logo" src="{{asset('logo/logo.png')}}" alt="">
 
                     <P style="margin-left:20px; font-size:12px;"><strong>INVOICE TO<br></p>
 
@@ -404,6 +401,7 @@
             </div>
             <div class="column3">
                 <div class="head_middle">
+                    <h3>QUOTATION</h3>
                 </div>
             </div>
             <div class="invoice">
@@ -613,29 +611,6 @@
 
             </tbody>
         </table>
-        <h5 style="text-decoration: underline; margin-left:6px; text-align:center;">Total Charge Summary</h5>
-        <table width="100%" style="margin-top:0px;">
-            <thead>
-                <tr style="background-color: rgb(75,189,207);">
-                    <th style="text-align: center; color: rgb(255,255,255);">SL</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Date</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Amount</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="text-align: center;">01</td>
-                    <td style="text-align: left;" width="40%">Parking Charge</td>
-                    <td style="text-align: right;" width="40%">2322.00</td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">02</td>
-                    <td style="text-align: left;" width="40%">Decoration Charge</td>
-                    <td style="text-align: right;" width="40%">70650.00</td>
-                </tr>
-            </tbody>
-        </table>
         <div class="footer">
             <p style="font-size:10px;">
                 *Terms and Condition
@@ -652,7 +627,7 @@
         <htmlpagefooter name="page-footer">
             <div class="rowfooter" style="none">
                 <div class="columnfooter">
-                    <img class="chiklee" src="{{ asset('logo/logo.png') }}" alt="">
+                    <img class="chiklee" src="http://chiklee-park.com/assets/img/2022-01-04/A2.png" alt="">
                     <p style="font-size: 10px; margin-left:20px; margin-top:-2px;">A Product by Z IT</p>
                 </div>
                 <div class="columncall">

@@ -15,9 +15,13 @@ class OrderChild extends Model
 
     protected $guarded = [];
 
+    public function priceDeclaration(){
+        return $this->hasMany(IOCPriceDeclaration::class, 'item_info_id','item_info_id');
+    }
+
     public function item_info()
     {
-        return $this->belongsTo(VarItemInfo::class, 'id', 'item_info_id');
+        return $this->belongsTo(VarItemInfo::class, 'item_info_id', 'id');
     }
 
     public function p_status(){

@@ -312,7 +312,7 @@ class PurchaseOrderController extends Controller
                         PurchaseReqQty::create($map_child);
                     }
             }
-            // close 
+            // close cheque
             foreach($requistions_id as $ids){
                 if(!$this->purchaseReqClose($ids)){
                     PurchaseReqMaster::where('id',$ids)->update(['is_active'=>0]);

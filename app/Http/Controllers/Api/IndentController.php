@@ -239,7 +239,8 @@ class IndentController extends Controller
                     'tran01b_ioc_item_details.ioc_price_declaration_id AS ic_pc'
 
                 )
-                ->where('p_program_master.id', $id)->where('p_program_menu.prod_type_id', 3)->get();
+                ->where('p_program_master.id', $id)
+                ->where('p_program_menu.prod_type_id', 3)->get();
             $Data = collect($data);
             $result = [];
             $i = 0;

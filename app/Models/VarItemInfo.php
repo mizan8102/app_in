@@ -20,6 +20,10 @@ class VarItemInfo extends Model
     {
         return $this->belongsTo(PurchaseOrderChild::class, 'item_information_id', 'item_information_id');
     }
+
+    public function priceDeclarationItem(){
+        return $this->hasMany(IOCItemDetail::class,'ioc_price_declaration_id','ioc_ref_id');
+    }
     public function trns_uom(){
         return $this->hasOne(SvUOM::class,'id','trns_unit_id');
     }

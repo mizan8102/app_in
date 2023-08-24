@@ -149,9 +149,10 @@ class IOCPriceDecController extends Controller
                     "company_id" => Auth::user()->company_id,
                     "created_by" => Auth::user()->id,
                 ]);
-                VarItemInfo::where('id',$ioc_price_master->item_information_id)->update([
+                VarItemInfo::where('id',$ioc_price_master->item_info_id)->update([
                     "estimate_time" =>date("H:i",strtotime($request->estimate_time)) ,
-                    "ioc_rate" => $request->total_cost_unit
+                    "ioc_rate" => $request->total_cost_unit,
+                    "ioc_ref_id" => $ioc_price_master->id
                 ]);
                 foreach ($request['item_info_rows'] as $item) {
                     $ioc_item = IOCItemDetail::create([
@@ -241,7 +242,7 @@ class IOCPriceDecController extends Controller
             }, 'valueAddedRows' => function ($query) {
                 return $query->select(
                     "*"
-                )->leftJoin('5t_sv_input_service','5t_sv_input_service.id','tran01d_ioc_value_adding_svc.value_adding_service_id');
+                )->leftJoin('5r_sv_vas','5r_sv_vas.id','tran01d_ioc_value_adding_svc.value_adding_service_id');
             }, ])
             ->where('tran01a_ioc_price_declaration.id', $id)
             ->first();

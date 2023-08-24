@@ -220,8 +220,7 @@
     }
     .bg{
 
-
-            background: url('http://chiklee-park.com/assets/img/2022-01-04/A2.png');
+            background: url('{{ asset('logo/logo.png') }}');
             /* background: url('/bg.jpg'); */
             background-size: 60% 55%;
             background-repeat: no-repeat;
@@ -299,7 +298,7 @@
                 <div class="row">
                     <div class="column-chikle">
                         <!-- <img class="logo" src="https://www.pinclipart.com/picdir/middle/187-1872894_bangladesh-govt-logo-png-clipart.png" alt=""> -->
-                        <img class="logo" src="http://chiklee-park.com/assets/img/2022-01-04/A2.png" alt="">
+                        <img class="logo" src="{{ asset('logo/logo.png')}}" alt="">
                     </div>
                     <div class="column3">
                         <div class="head_middle">
@@ -312,7 +311,7 @@
                                 <p style="font-size: 8pt; margin-left:30px;">Chiriyakhana Road, Islampur. Honuman Tola, Rangpur, Bangladesh.<br>
                                     Phone: 01762-620404, Email: service@nature-aquatics.com
                                 </p>
-                                <p class="mr"><strong>Money Receipt</strong></p>
+                                <p class="mr"><strong>Money ReceiptWater</strong></p>
                             </div>
                         </div>
                     </div>
@@ -362,7 +361,7 @@
                 <div class="row" style="none">
                     <div class="column-chikle">
 
-                        <img class="logo1" src="http://chiklee-park.com/assets/img/2022-01-04/A2.png" alt="">
+                        <img class="logo1" src="{{ asset('logo/logo.png')}}" alt="">
                         <p style="font-size:12px; padding-top:-73px; margin-bottom:20px; margin-left:4px;">CLIENT COPY</p>
                     </div>
                     <div class="column3">

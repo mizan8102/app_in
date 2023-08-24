@@ -121,7 +121,9 @@ class EvenDueController extends Controller
                       ]);
                 }
                 $issue_id = $issue->id;
-                OrderMaster::where('id',$request->order_id)->update(['issue_master_id' => $issue->id]);
+                OrderMaster::where('id',$request->order_id)->update(['issue_master_id' => $issue->id,'order_type_id' => 1]);
+
+            
             }
             $pay_master_id=PaymentMaster::create([
                 "issue_master_id"   => $issue_id,

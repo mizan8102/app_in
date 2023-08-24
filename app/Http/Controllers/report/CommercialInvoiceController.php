@@ -115,6 +115,80 @@ class CommercialInvoiceController extends Controller
 
             return $pdf->stream('program_management.pdf');
         }
+        public function quotations(Request $request)
+        {
+            $orderIds=DB::select('CALL GetOrderId');
+            $programs = DB::select('CALL Report_A_07_CommercialInvoiceForProgramEvent("'.$request->orderID.'")');
+            // dd($programs);
+
+            $collection = collect($programs);
+            //   dd($collection);
+             // program menu
+
+
+            $menuitem = $collection->where('ItemTypeId', 3);
+            $menuprograms = [];
+            $m = 0;
+            foreach ($menuitem as $item => $key) {
+                $menuprograms[$m]['ItemId'] = $key->ItemId;
+                $menuprograms[$m]['ItemName'] = $key->ItemName;
+                $menuprograms[$m]['UomCode'] = $key->UomCode;
+                $menuprograms[$m]['OrderQty'] = $key->OrderQty;
+                $menuprograms[$m]['ItemRate'] = $key->ItemRate;
+                $menuprograms[$m]['Amount'] = $key->Amount;
+                $menuprograms[$m]['Discount'] = $key->Discount;
+                $menuprograms[$m]['VatAmount'] = $key->VatAmount;
+                $menuprograms[$m]['TotalAmountWithVat'] = $key->TotalAmountWithVat;
+                $menuprograms[$m]['TotalAmount'] = $key->TotalAmount;
+                $m++;
+            }
+             // ride
+            $ride = $collection->where('MasterGroupId', 15);
+            $ridePrograms = [];
+            $k = 0;
+            foreach ($ride as $item => $key) {
+                // $ridePrograms[$k]['id'] = $key->id;
+                $ridePrograms[$k]['ItemId'] = $key->ItemId;
+                $ridePrograms[$k]['ItemName'] = $key->ItemName;
+                $ridePrograms[$k]['UomCode'] = $key->UomCode;
+                $ridePrograms[$k]['OrderQty'] = $key->OrderQty;
+                $ridePrograms[$k]['ItemRate'] = $key->ItemRate;
+                $ridePrograms[$k]['Amount'] = $key->Amount;
+                $ridePrograms[$k]['Discount'] = $key->Discount;
+                $ridePrograms[$k]['VatAmount'] = $key->VatAmount;
+                $ridePrograms[$k]['TotalAmountWithVat'] = $key->TotalAmountWithVat;
+                $ridePrograms[$k]['TotalAmount'] = $key->TotalAmount;
+                $k++;
+            }
+
+            // services
+            $service = $collection->where('MasterGroupId', 213);
+            $servicePrograms = [];
+            $kk = 0;
+            foreach ($service as $item => $key) {
+                $servicePrograms[$kk]['ItemId'] = $key->ItemId;
+                $servicePrograms[$kk]['ItemName'] = $key->ItemName;
+                $servicePrograms[$kk]['UomCode'] = $key->UomCode;
+                $servicePrograms[$kk]['OrderQty'] = $key->OrderQty;
+                $servicePrograms[$kk]['ItemRate'] = $key->ItemRate;
+                $servicePrograms[$kk]['Amount'] = $key->Amount;
+                $servicePrograms[$kk]['Discount'] = $key->Discount;
+                $servicePrograms[$kk]['VatAmount'] = $key->VatAmount;
+                $servicePrograms[$kk]['TotalAmountWithVat'] = $key->TotalAmountWithVat;
+                $servicePrograms[$kk]['TotalAmount'] = $key->TotalAmount;
+                $kk++;
+            }
+            $result=[
+                'parent'=>$programs,
+                'menu'=>$menuprograms,
+                'ride'=>$ridePrograms,
+                'service'=>$servicePrograms
+            ];
+            // dd($result);
+            $pdf = PDF::loadView('report.quotations', compact('result', 'orderIds'));
+
+            return $pdf->stream('program_quotations.pdf');
+        }
 
         public function program(Request $request)
         {

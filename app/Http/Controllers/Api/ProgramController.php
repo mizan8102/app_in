@@ -4,27 +4,18 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\IdgenerateHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ProgramUpdateRequest;
-use App\Http\Resources\ProgramResource;
-use App\Models\Floor;
-use App\Models\ItemStoreMapping;
 use App\Models\OrderChild;
 use App\Models\OrderMaster;
-use App\Models\PaymentMaster;
+use App\Models\OrderStatus;
 use App\Models\PProgramCard as ModelsPProgramCard;
 use App\Models\PProgramMaster;
 use App\Models\PProgramMenu as ModelsPProgramMenu;
-use App\Models\ProgramPayDetail;
 use App\Models\ProgramSession;
 use App\Models\RCard;
-use App\Models\VarItemInfo;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -148,35 +139,35 @@ class ProgramController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'store_id' => 'nullable|exists:cs_company_store_location,id',
-            'floor_id' => 'required',
-            'customer_id' => 'required|exists:cs_customer_details,id',
-            'program_type_id' => 'required|exists:5z2_program_type,id',
-            'program_name' => 'required|max:255',
-            'program_name_bn' => 'required|max:255',
+            'store_id'          => 'nullable|exists:cs_company_store_location,id',
+            'floor_id'          => 'required',
+            'customer_id'       => 'required|exists:cs_customer_details,id',
+            'program_type_id'   => 'required|exists:5z2_program_type,id',
+            'program_name'      => 'required|max:255',
+            'program_name_bn'   => 'required|max:255',
             'hall_room_charge_vat_per' => 'required|numeric',
-            'prog_date' => 'required|date|after_or_equal:today',
-            'ride_charge' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
-            'service_charge' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
-            'discount' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
-            'program_session_id' => 'required|exists:var_program_sessions,id',
-            'new_guest' => 'nullable|boolean',
-            'vat_on_food' => 'required|numeric',
-            'remarks' => 'nullable|max:255',
-            'prog_start_time' => 'nullable|date',
-            'prog_end_time' => 'nullable|date',
-            'number_of_guest' => 'required|integer|min:1',
+            'prog_date'         => 'required|date|after_or_equal:today',
+            'ride_charge'       => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'service_charge'    => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'discount'          => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'program_session_id'=> 'required|exists:var_program_sessions,id',
+            'new_guest'         => 'nullable|boolean',
+            'vat_on_food'       => 'required|numeric',
+            'remarks'           => 'nullable|max:255',
+            'prog_start_time'   => 'nullable|date',
+            'prog_end_time'     => 'nullable|date',
+            'number_of_guest'   => 'required|integer|min:1',
         
-            'food_charge' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
-            'total_amount' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'food_charge'       => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'total_amount'      => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
           
             'total_amount_with_vat' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
-            'grandTotal' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'grandTotal'        => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
          
-            'is_active' => 'nullable|boolean',
-            'is_print' => 'nullable|boolean',
-            'paid_amount' => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
-            'childs' => 'nullable|array',
+            'is_active'         => 'nullable|boolean',
+            'is_print'          => 'nullable|boolean',
+            'paid_amount'       => 'required|numeric|regex:/^\d+(\.\d{1,2})?$/',
+            'childs'            => 'nullable|array',
             // 'childs.*.menu_id' => 'required|integer|exists:var_item_info,id',
             // 'childs.*.uom' => 'required',
             // 'childs.*.prod_type_id' => 'required|integer|exists:5f_sv_product_type,id',
@@ -217,6 +208,7 @@ class ProgramController extends Controller
             $data['total_vat_amount'] = $vat_amount;
             $data['status'] = 0;
             $data['payable'] = $request->total_amount;
+            $data['order_type_id'] = $request->order_Status;
 
             // $data['food_vat_per'] = $request->food_vat_per;
             // $data['hall_room_charge'] = $request->hall_room_charge;
@@ -321,7 +313,10 @@ class ProgramController extends Controller
      */
     public function show($id)
     {
-        $data= OrderMaster::select('trns00g_order_master.*','cs_company_store_location.sl_name as floor_name'
+        $data= OrderMaster::with(['paymentmaster'=>function($query){
+            $query->select('trns50a_payment_master.id as pay_id','trns50a_payment_master.*','5x4_paymode_type.*')->leftJoin('5x4_paymode_type','5x4_paymode_type.id','trns50a_payment_master.paymode_id')->orderByDesc('5x4_paymode_type.id');
+        }])
+        ->select('trns00g_order_master.*','cs_company_store_location.sl_name as floor_name'
         ,'var_program_sessions.session_name','var_program_sessions.start_time','var_program_sessions.end_time','program_type_name','contact_person','customer_name')
         ->leftJoin('cs_company_store_location','cs_company_store_location.id','trns00g_order_master.floor_id')
         ->leftJoin('var_program_sessions','var_program_sessions.id','trns00g_order_master.program_session_id')
@@ -350,7 +345,7 @@ class ProgramController extends Controller
         $data["total_dicount"]=$child->sum('discount');
 
         $data["total_amount"]=floatval($data["food_charge"])+floatval($data["ride_charge"])+floatval($data["service_charge"]);
-
+        $data["order_statues"] = OrderStatus::all();
         return $data;
 
     }
@@ -373,8 +368,9 @@ class ProgramController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+
+     public function  oldversionUpdate($request,$id){
+
         $validated = Validator::make($request->all(), [
             'store_id' => 'nullable|exists:cs_company_store_location,id',
             'floor_id' => 'required|exists:r_floor,id',
@@ -498,6 +494,13 @@ class ProgramController extends Controller
                 "error" => "Oops!This program indent already comple"
             ]);
         }
+     }
+    public function update(Request $request, $id)
+    {
+        $dataprog['order_type_id'] = $request->order_type_id;
+        $dataprog['number_of_guest'] = $request->number_of_guest;
+        $information = OrderMaster::where('id', $id)->update($dataprog);
+        return sendJson('Program updated successfully', $information, 200);
     }
 
 

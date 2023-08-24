@@ -37,7 +37,7 @@ class IndentController extends Controller
             ->select('trns00a_indent_master.*','cs_company_store_location.sl_name',
             'var_item_master_group.itm_mstr_grp_name','DemandStore.sl_name as demand_store')
             ->where('product_req',0)
-                ->where('close_status',0)
+                // ->where('close_status',0)
             ->where('indent_number', 'like', "%{$search}%")
             ->orderBy('id','DESC')
                 ->where('trns00a_indent_master.demand_store_id',Auth::user()->store_id)

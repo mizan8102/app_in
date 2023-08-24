@@ -220,4 +220,75 @@ class DailySellsSummaryController extends Controller
                 return view('daily_mismatch_store_preview',compact('mismatches'));
             }
         }
+        public function pdf(Request $request)
+        {
+            $masters=DB::select('CALL ReportC_01C_CostionConsumption("'.$request->groupId.'")');
+            $groups = collect($masters)->groupBy('groupId');
+                 $pdf = PDF::loadView('report.costingPdf', ['masters' => $masters, 'groups' => $groups],
+                 [
+                     'mode'                 => '',
+                     'format'               => 'A4-L',
+                     'default_font_size'    => '12',
+                     'default_font'         => 'sans-serif',
+                     'margin_left'          => 5,
+                     'margin_right'         => 5,
+                     'margin_top'           => 25,
+                     'margin_bottom'        => 15,
+                     'margin_header'        => 0,
+                     'margin_footer'        => 0,
+                     'orientation'          => 'L',
+                     'title'                => 'Laravel mPDF',
+                     'author'               => '',
+                     'watermark'            => '',
+                     'show_watermark'       => true,
+                     'watermark_font'       => 'sans-serif',
+                     'display_mode'         => 'fullpage',
+                     'watermark_text_alpha' => 0.1,
+                     'custom_font_dir'      => '',
+                     'custom_font_data' 	   => [],
+                     'auto_language_detection'  => false,
+                     'temp_dir'               => rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR),
+                     'pdfa' 			=> false,
+                     'pdfaauto' 		=> false,
+                 ]
+             );
+                 return $pdf->stream('report.costingPdf.pdf');
+
+        }
+        public function consumptionPdf(Request $request){
+            $storeID=request('storeId',Null);
+            $masterId=request('masterGroupId',Null);
+          
+                 $stores = DB::select('CALL Report_C_01C_ListofFoodItemwithoutConsumption("'.$request->storeId.'","'.$request->masterGroupId.'")');
+                 $groups = collect($stores)->groupBy('groupId');
+                 $pdf = PDF::loadView( 'report.consumption_item',  ['stores' => $stores, 'groups' => $groups],
+                 [
+                     'mode'                 => '',
+                     'format'               => 'A4-L',
+                     'default_font_size'    => '12',
+                     'default_font'         => 'sans-serif',
+                     'margin_left'          => 5,
+                     'margin_right'         => 5,
+                     'margin_top'           => 25,
+                     'margin_bottom'        => 15,
+                     'margin_header'        => 0,
+                     'margin_footer'        => 0,
+                     'orientation'          => 'L',
+                     'title'                => 'Laravel mPDF',
+                     'author'               => '',
+                     'watermark'            => '',
+                     'show_watermark'       => true,
+                     'watermark_font'       => 'sans-serif',
+                     'display_mode'         => 'fullpage',
+                     'watermark_text_alpha' => 0.1,
+                     'custom_font_dir'      => '',
+                     'custom_font_data' 	   => [],
+                     'auto_language_detection'  => false,
+                     'temp_dir'               => rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR),
+                     'pdfa' 			=> false,
+                     'pdfaauto' 		=> false,
+                 ]
+             );
+                 return $pdf->stream('store_wise_item_list.pdf');
+        }
 }

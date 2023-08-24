@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\ItemChildModel;
+use App\Models\ItemMasterGroup;
 use App\Models\ItemMasterModel;
 use App\Models\PProgramMaster;
 use App\Models\PurchaseReqChild;
@@ -128,13 +129,45 @@ class IndentRequisitionController extends Controller
         $search = request('search', '');
         $perPage = request('perPage', 10);
         
-        $item=ItemMasterModel::select('trns00a_indent_master.*','var_item_master_group.itm_mstr_grp_name','5f_sv_product_type.prod_cat_id',
-        'var_item_master_group.prod_type_id'
-        )
-        ->leftJoin('var_item_master_group','var_item_master_group.id','master_group_id')
+
+        $pending_requsition= ItemMasterGroup::select('var_item_master_group.*','5f_sv_product_type.prod_cat_id')
+        ->with(['indent' =>function($query){
+            $query->select('*','trns00a_indent_master.id as indent_mas_id','DemandStore.sl_name as demand_store','cs_company_store_location.sl_name as to_store_name',
+            DB::raw("DATE_FORMAT(indent_date, '%d-%m-%Y') AS indent_date"))
+            ->leftJoin('cs_company_store_location','cs_company_store_location.id','trns00a_indent_master.to_store_id')
+            ->leftJoin('cs_company_store_location as DemandStore','DemandStore.id','trns00a_indent_master.demand_store_id')
+            ->where('trns00a_indent_master.product_req',1)->where('pro_req_close',0);
+        }])
         ->leftJoin('5f_sv_product_type','5f_sv_product_type.id','var_item_master_group.prod_type_id')
-        ->where('trns00a_indent_master.product_req',1)->where('pro_req_close',0)
-        ->orderBy('master_group_id','ASC')->get();
+        ->where('5f_sv_product_type.id',2)
+        // ->leftJoin('5h_sv_product_category','5h_sv_product_category.id','5f_sv_product_type.prod_cat_id')
+        ->get();
+        $result=[];
+        $i=0;
+        foreach($pending_requsition as $pi){
+            $result[$i]['master_group']= $pi->itm_mstr_grp_name;
+            $result[$i]['master_group_id']= $pi->id;
+            $result[$i]['prod_type_id']= $pi->prod_type_id;
+            $result[$i]['prod_cat_id']= $pi->prod_cat_id;
+            if($pi['indent']){
+                $result[$i]['data'] = collect($pi['indent'])->pluck('indent_mas_id');
+                $result[$i]['count'] = collect($pi['indent'])->count();
+                $result[$i]['indent_numbers'] = $pi['indent'];
+            }else{
+                $result[$i]['data'] = [];
+                $result[$i]['count'] = 0;
+                $result[$i]['indent_numbers'] =[];
+            }
+            $i++;
+        }
+
+        // $item=ItemMasterModel::select('trns00a_indent_master.*','var_item_master_group.itm_mstr_grp_name','5f_sv_product_type.prod_cat_id',
+        // 'var_item_master_group.prod_type_id'
+        // )
+        // ->leftJoin('var_item_master_group','var_item_master_group.id','master_group_id')
+        // ->leftJoin('5f_sv_product_type','5f_sv_product_type.id','var_item_master_group.prod_type_id')
+        // ->where('trns00a_indent_master.product_req',1)->where('pro_req_close',0)
+        // ->orderBy('master_group_id','ASC')->get();
 
         
         $data=PurchaseReqMaster::leftJoin('users','users.id','submitted_by')
@@ -147,7 +180,7 @@ class IndentRequisitionController extends Controller
 
         return response()->json([
             'data'  =>  $data,
-            'item'  =>  Helper::master_group_wise_item_count($item)
+            'item'  =>  $result
         ]);
        
     }
@@ -209,6 +242,7 @@ class IndentRequisitionController extends Controller
                 'trns00b_indent_child.required_date'
             )
             ->whereIn('indent_master_id', $request->indentNumber)
+            ->orderBy('trns00b_indent_child.required_date','ASC')
             ->get();
             $dd=collect($identChild);
             $ddt=$dd->groupBy('item_info_id');
@@ -262,7 +296,7 @@ class IndentRequisitionController extends Controller
                 $result[$i]['uom_short_code'] = $value[0]->uom_short_code;
                 $result[$i]['indent_quantity'] = $indent_quantity;
 
-                $result[$i]['required_date'] = date('d-m-Y');
+                $result[$i]['required_date'] = date('d-m-Y', strtotime($value[0]->required_date));
                 $result[$i]['remarks'] = "";
                 $result[$i]['rate'] =$value[0]->pu_rate ;
                 $result[$i]['Remarks']='';
