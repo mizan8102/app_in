@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Report\ReportStoreWiseItemListController;
 use App\Http\Controllers\report\DailySellsSummaryController;
+use App\Http\Controllers\report\ProgramIndentController;
 use App\Models\report\DailySalesSummery;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\report\MRController;
@@ -41,6 +42,9 @@ Route::prefix('report')->group(function () {
     Route::get('receive-report', [ReceiveReportController::class, 'receiveReport']);
     Route::get('issue-retun-for-program', [IssueReturnProgramController::class, 'issueReturnProgram']);
 
+
+    // 
+    Route::get('programIndentReport',[ProgramIndentController::class,'indentReportTwoPdf']);
 
     // sumon
 
