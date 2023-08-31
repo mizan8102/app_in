@@ -4,7 +4,7 @@
 
 <head>
 
-    <title>Chiklee</title>
+    <title>A_01 Item Wise Daily sell</title>
 
 </head>
 
@@ -13,13 +13,13 @@
     @page {
             header: page-header;
             footer: page-footer;
+            margin-bottom: 30mm;
 
         }
 
     body{
 
         font-family: "Nikosh";
-        font-family: "Times New Roman";
 
     }
 
@@ -292,18 +292,32 @@
         {
             text-align: center;
         }
-        .columnzit
+        /* .columnzit
         {
             float: left;
             width: 30%;
             height: 2rem;
             padding-bottom:50px;
-        }
-        .columnmid
+        } */
+        
+        /* .columnmid
         {
             float: left;
             width: 40%;
             padding-top: -12.5px;
+        } */
+        .columnmid
+        {
+            float: left;
+            width: 20%;
+            padding-top: -23px;
+        }
+        .columnzit
+        {
+            float: right;
+            width: 15%;
+            height: 2rem;
+            padding-bottom:40px;
         }
         .column1
         {
@@ -312,13 +326,20 @@
             height: 2rem;
             padding-top: 10px;
         }
+        .col-md-6
+        {
+            padding-bottom:70px;
+        }
+        .col-md-5
+        {
+            padding-bottom: -50px;
+        }
 </style>
 
-<body>
+    <body>
         <div class="row" style="none">
             <div class="column1">
-                <!-- <img class="logo" src="https://www.pinclipart.com/picdir/middle/187-1872894_bangladesh-govt-logo-png-clipart.png" alt=""> -->
-                <img class="logo" src="http://chiklee-park.com/assets/img/2022-01-04/A2.png" alt="">
+                <img class="logo" src="{{ asset('logo/logo.png')}}" alt="">
             </div>
             <div class="column3">
                 <div class="head_middle">
@@ -327,81 +348,71 @@
                             <strong>Chiklee Water Park</strong>
                         </p>
                     </div>
-                    <div style="text-align: center; padding-top:-40px;">
+                    <div style="text-align: center; padding-top:-45px; font-size: 12pt;">
                         <p>Item Wise Daily Sell Report<br>
                         </p>
                     </div>
                 </div>
             </div>
             <div class="column1">
-                <p style="text-align: right; font-size:12px;">Chiklee#C_A-01</p>
+                <p style="text-align: right; font-size:12px;">Chiklee#A_01</p>
             </div>
         </div>
-        <div style="margin-left:3px; margin-top:20px;">
-            <p style="text-align: left; font-size: 12px">
-            Date: 
-                    @php 
-                        $mytime = Carbon\Carbon::now()->format ('d-m-Y');
-                        echo $mytime;
-                    @endphp
-            </p>
-            <div class="columne" style="text-align:right; float:right; margin-right:10px; font-size: 12px;">
-          
-                <p style="padding-top:20px;"><strong>Print: </strong>
-                    @php 
-                        $mytime = Carbon\Carbon::now()->format ('d-m-Y h:i A');
-                        echo $mytime;
-                    @endphp
-                </p>
+            <div style="margin-left:5px; margin-top:20px; display:block;">
+
+                <div class="report_params_areas" style="float:left;height:20px;width:50%">
+                    <span style="text-align: right; font-size:12px"><b> From Date: </b>{{ date('d-m-Y',strtotime($from)) }}</span>
+                </div>
+                <div class="report_params_areas" style="float:right;height:20px;width:45%;text-align:right;margin-right:5px;">
+                    <span style="text-align: right; font-size:12px"><strong>Print: </strong>{{ Date('d-m-Y h:i:s A')}}</span>
+                </div>
+                <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                    <span style="text-align: right; font-size:12px"><b> To Date: </b>{{ date('d-m-Y',strtotime($to)) }}</span>
+                    <br>
+                </div>
             </div>
-        </div>
-            <table width="100%" style="margin-top:60px;">
+        <div style="display:block; margin-top:10px;">
+            <table width="100%">
                 <thead>
                     <tr style="background-color: rgb(3,73,91);">
-                    <th style="text-align: center; color: rgb(255,255,255);">SL</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Item Name</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">UOM</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Qty</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Price (BDT)</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Amount(BDT)</th>
+                        <th style="text-align: center; color: rgb(255,255,255);">SL</th>
+                        <th style="text-align: center; color: rgb(255,255,255);">Item Name</th>
+                        <th style="text-align: center; color: rgb(255,255,255);" width="20%">Item Name Bn</th>
+                        <th style="text-align: center; color: rgb(255,255,255);">UOM</th>
+                        <th style="text-align: center; color: rgb(255,255,255);">Qty</th>
+                        <th style="text-align: center; color: rgb(255,255,255);">Price(BDT)</th>
+                        <th style="text-align: center; color: rgb(255,255,255);">Amount(BDT)</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($items as $key=> $item)
                     <tr>
-                        <td style="text-align: center;">01</td>
-                        <td style="text-align: left;">Polaw</td>
-                        <td style="text-align: center;">2:1</td>
-                        <td style="text-align: center;">5</td>
-                        <td style="text-align: right;">40.00</td>
-                        <td style="text-align: right;">985.00</td>
+                        <td style="text-align: center;">{{$key+1}}</td>
+                        <td style="text-align: left;">{{$item->itemName}}</td>
+                        <td style="text-align: left; font-size:14px;">{{$item->itemNameBn}}</td>
+                        <td style="text-align: center;">{{$item->uom}}</td>
+                        <td style="text-align: center;">{{$item->qty}}</td>
+                        <td style="text-align: right;">{{number_format($item->rate, 2, '.', ',')}}</td>
+                        <td style="text-align: right;">{{number_format($item->amount, 2, '.', ',')}}</td>
                     </tr>
+                    @endforeach
                     <tr style="border-bottom: 1px solid black;">
-                        <td style="text-align: right;"colspan ="3"><strong>Sub Total: </strong></td>
-                        <td style="text-align: center;"><strong>10</strong></td>
+                        <td style="text-align: right;"colspan ="4"><strong>Sub Total: </strong></td>
+                        <td style="text-align: center;"><strong>{{number_format(collect($items)->sum('qty'))}}</strong></td>
                         <td></td>
-                        <td style="text-align: right;"><strong>{{number_format(3000, 2, '.', ',')}}</strong></td>
+                        <td style="text-align: right;"><strong>{{number_format(collect($items)->sum('amount'),2, '.', ',')}}</strong></td>
                     </tr>
                 </tbody>
             </table>
-            <htmlpagefooter name="page-footer">
-                <div class="row" style="none">
-                    <div class="columnzit">
-                        <!-- <img class="logo" src="https://www.pinclipart.com/picdir/middle/187-1872894_bangladesh-govt-logo-png-clipart.png" alt=""> -->
-                        <p><span style="font-size: 18px; text-align:center;"><strong>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Chiklee </strong></span> 
-                            <br>
-                            A product By<span style="font-size:18px;"><strong> ZIT</strong></span> 
-                        </p>
-                    </div>
-                    <div class="columnmid">
-                        <div class="head_middle">
-                            <div  style="text-align: center;">
-                            <p style="text-align: center;">{PAGENO} of {nbpg} pages </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column1">
-                    </div>
-                </div>
-            </htmlpagefooter>
-        </html>
+        </div>
+        <htmlpagefooter name="page-footer">
+            <div class="col-md-5">
+                <p style="text-align: left;font-size: 12px;">{PAGENO} of {nbpg} pages</p>
+            </div>
+            <div class="col-md-6">
+                <p style="text-align: right; font-size: 14px;"><strong>Chiklee </strong><br>
+                    <span style="font-size: 12px;">A product of</span><span style="font-size:14px;"><strong> Z IT</strong></span>
+                </p>
+            </div>
+        </htmlpagefooter>
+    </html>

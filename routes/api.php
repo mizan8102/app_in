@@ -71,6 +71,7 @@ use App\Http\Controllers\OpeningStock\OpeningStockController;
 use App\Http\Controllers\ProductResourceControllerToGet;
 use App\Http\Controllers\ProgramQrController;
 use App\Http\Controllers\ReceivedRawMaterialController;
+use App\Http\Controllers\report\ReportInitDataController;
 use App\Http\Controllers\Requisition\RequisitionDashboardController;
 use App\Http\Controllers\Supplier\SupplierMapping;
 use App\Http\Controllers\ticketApi\DesktopApp2Controller;
@@ -104,7 +105,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     require __DIR__.'/event/index.php';
     // cottage
     require __DIR__.'/cottage/index.php';
-
     // khajna 
     require __DIR__.'/khajna/index.php';
 
@@ -132,7 +132,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // generate indent create and management
     Route::resource('/generale-indent', GeneralIndentController::class);
 
-    // -- indent Dashboard
+    // indent Dashboard
     Route::resource('/indentdashboard', IndentDashboard::class);
     Route::get('/cardDashboardIndent', [IndentDashboard::class, 'CardData']);
     Route::get('/indexCompleteProgram', [IndentDashboard::class, 'indexCompleteProgram']);
@@ -161,6 +161,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/pendOrderServer', [PurchaseOrderDashboard::class, 'pendOrderServer']);
     Route::get('/approvedOrder', [PurchaseOrderDashboard::class, 'approvedOrder']);
     // Route::resource('products', ProductController::class);
+
     //inventory
     Route::get('/initprocatagory', [\App\Http\Controllers\Inventory\IndentController::class, 'initializeData']);
     Route::get('/initprotype/{id}', [\App\Http\Controllers\Inventory\IndentController::class, 'initprotype']);
@@ -214,7 +215,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::resource('/uoms', UOMController::class);
     Route::get('/getuoms', [UOMController::class, 'getUoms']);
 
-
     // VAT Registration Types
     Route::resource('/vat_reg_types', VATRegistrationTypesController::class);
     // Floors
@@ -231,7 +231,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/get_all_var_items_param', [VarItemInfoController::class, 'getAllVarItemsParam']);
     Route::get('/var_items/change_status/{id}', [VarItemInfoController::class, 'changeStatus']);
     Route::get('get_item_sub_groups', [VarItemInfoController::class, 'getItemSubGroups']);
-
 
     // Var Item Info
     Route::post('/check_program', [ProgramController::class, 'checkProgram']);
@@ -363,13 +362,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         Route::resource('uom', HouseKeepingUOMController::class);
 
-        
     });
+
+    //init for report 
+    Route::prefix('report')->group(function () {
+     Route::get('/store',[ReportInitDataController::class,'Store']);
+    });
+
 });
 
 Route::post('/login', [AuthController::class, 'login']);
 
-
+ require __DIR__.'/report/report_api.php';
 Route::prefix('ticket_api')->group(function () {
     //// desktop app
     Route::post('/login', [DesktopAppController::class, 'DesktopAppLogin']);
@@ -392,6 +396,30 @@ Route::prefix('ticket_api')->group(function () {
     Route::post('/item-isssue-create-one-take-order-payment', [DesktopApp2Controller::class, 'ItemIssueCreateOneTakeOrderPayment']);
     Route::get('/get-runnnig-order-list', [DesktopApp2Controller::class, 'GetRunningOrderList']);
     Route::post('/get-trans-files', [DesktopApp2Controller::class, 'getTransFile']);
+});
+
+Route::prefix('ticket_api_v2')->group(function () {
+    //// desktop app
+    Route::post('/login', [TickingSystemApiV2Controller::class, 'DesktopAppLogin']);
+    Route::get('/get-pos-item-list', [TickingSystemApiV2Controller::class, 'getPOSItemList']);
+    Route::get('/get-pos-item-customer-list', [TickingSystemApiV2Controller::class, 'getPOSItemCustomerList']);
+    Route::post('/store-pos-sales-transaction', [TickingSystemApiV2Controller::class, 'StorePOSItemTransaction']);
+    Route::post('/item-isssue-create-one', [TickingSystemApiV2Controller::class, 'ItemIssueCreateOne']);
+    Route::get('/get-daily-sales', [TickingSystemApiV2Controller::class, 'GetDailySales']);
+    Route::get('/get-daily-sales-detail', [TickingSystemApiV2Controller::class, 'GetDailyStoreWiseSalesReport']);
+    Route::get('/get-entrance-daily-sales', [TickingSystemApiV2Controller::class, 'EntranceGateSellQty']);
+    Route::get('/get-item-master-groups-list/{userId}', [TickingSystemApiV2Controller::class, 'GetItemMasterGroupsList']);
+    Route::post('/user-sales-summery-slip-printing', [TickingSystemApiV2Controller::class, 'UserSalesSummeryPrinting']);
+    Route::get('/get-restaurent-room-wise-table-list/{userId}', [TickingSystemApiV2Controller::class, 'GetRestaurentRoomWiseTableList']);
+    Route::get('/check-customer-by-phone-number', [TickingSystemApiV2Controller::class, 'CheckCustomerByPhoneNumber']);
+    Route::post('/add-customer-by-phone-number', [TickingSystemApiV2Controller::class, 'StoreCustomerByPhoneNumber']);
+    Route::post('/add-customer-by-temp-data', [TickingSystemApiV2Controller::class, 'StoreAllTempCustomer']);
+    Route::post('/store-pos-take-order-transaction', [TickingSystemApiV2Controller::class, 'StoreOrderItemTransaction']);
+    Route::post('/item-isssue-create-one-take-order', [TickingSystemApiV2Controller::class, 'ItemIssueCreateOneTakeOrder']);
+    Route::post('/store-pos-take-order-payment-transaction', [TickingSystemApiV2Controller::class, 'StoreOrderPaymentTransaction']);
+    Route::post('/item-isssue-create-one-take-order-payment', [TickingSystemApiV2Controller::class, 'ItemIssueCreateOneTakeOrderPayment']);
+    Route::get('/get-runnnig-order-list', [TickingSystemApiV2Controller::class, 'GetRunningOrderList']);
+    Route::post('/get-trans-files', [TickingSystemApiV2Controller::class, 'getTransFile']);
 });
 
 Route::prefix('report')->group(function () {

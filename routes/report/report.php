@@ -86,6 +86,18 @@ Route::prefix('report')->group(function () {
 
 
     Route::get('/C_01D',[DailySellsSummaryController::class,'consumptionPdf']);
+    Route::get('/Report_C_B_01A2', [CommercialInvoiceController::class, 'eventManagement']);
+    Route::get('/A_01', [ItemWiseDailySellController::class, 'itemWiseDailySell']);
+    Route::get('/A_02', [OrderWiseDailySellController::class, 'orderWiseDailySell']);
+    Route::get('/9C_B_01A-pdf', [IndentController::class, 'indentReportTwoPdf']);
+    Route::get('/C_B_01A-pdf', [IndentController::class, 'indentReportPdf']);
+
+
+    /**
+     * auntu
+     */
+
+    
 });
 
 //// New Report by Lokman Hossain //////////////////////////////////////////////////////////////////

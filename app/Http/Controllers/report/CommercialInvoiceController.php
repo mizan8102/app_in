@@ -304,4 +304,45 @@ class CommercialInvoiceController extends Controller
 
             return $pdf->stream('program_management_pdf.pdf',compact('invoice'));
         }
+
+        public function eventManagement(Request $request)
+        {
+            $orderIds=DB::select('CALL GetOrderId');
+            //dd($orderIds);
+            $programs = DB::select('CALL Report_C_B_01A2_EventManagement("'.$request->orderID.'")');
+
+            $events = DB::select('CALL Report_C_B_01A2_IndentMaster("'.$request->orderID.'")');
+            //dd($programs);
+
+            $collection = collect($programs);
+             //dd($collection);
+             // program menu
+
+
+            $menuitem = $collection->where('ItemTypeId', 3);
+            $menuprograms = [];
+            $m = 0;
+            foreach ($menuitem as $item => $key) {
+                $menuprograms[$m]['ItemId'] = $key->ItemId;
+                $menuprograms[$m]['ItemName'] = $key->ItemName;
+                $menuprograms[$m]['UomCode'] = $key->UomCode;
+                $menuprograms[$m]['OrderQty'] = $key->OrderQty;
+                $menuprograms[$m]['ItemRate'] = $key->ItemRate;
+                $menuprograms[$m]['Amount'] = $key->Amount;
+                $menuprograms[$m]['Discount'] = $key->Discount;
+                $menuprograms[$m]['VatAmount'] = $key->VatAmount;
+                $menuprograms[$m]['TotalAmountWithVat'] = $key->TotalAmountWithVat;
+                $menuprograms[$m]['TotalAmount'] = $key->TotalAmount;
+                $m++;
+            }
+             
+            $result=[
+                'parent'=>$programs,
+                'menu'=>$menuprograms
+            ];
+            //dd($result);
+            $pdf = PDF::loadView('report.event_management', compact('result', 'orderIds', 'events'));
+
+            return $pdf->stream('report.event_management.pdf');
+        }
 }

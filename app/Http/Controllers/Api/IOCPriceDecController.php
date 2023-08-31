@@ -114,11 +114,11 @@ class IOCPriceDecController extends Controller
             "item_info_rows.*.wastage"=>"required",
             "item_info_rows.*.wastage_percent"=>"required",
             "item_info_rows.*.cost"=>"required",
-            "input_service_rows.*.input_service_id"=>"required|integer|exists:var_item_info,id",
-            "input_service_rows.*.input_service_amount"=>"required",
+            // "input_service_rows.*.input_service_id"=>"required|integer|exists:var_item_info,id",
+            // "input_service_rows.*.input_service_amount"=>"required",
 //            "input_service_rows.*.rebatable"=>"required",
-            "value_added_rows.*.value_adding_service_id"=>"required",
-            "value_added_rows.*.value_adding_service_amount"=>"required",
+            // "value_added_rows.*.value_adding_service_id"=>"required",
+            // "value_added_rows.*.value_adding_service_amount"=>"required",
         ]);
         if($validator->fails() ){
             return response()->json([
@@ -168,28 +168,34 @@ class IOCPriceDecController extends Controller
                         "ioc_amt" =>  $item['unit_cost'],
                         "created_by" => Auth::user()->id,
                     ]);
-                    VarItemInfo::where('id',$ioc_item->item_information_id)->update([
+                    VarItemInfo::where('id',$ioc_item->item_info_id)->update([
                         "ioc_rate" => $item["purchase_rate"]
                     ]);
                 }
-                foreach ($request['input_service_rows'] as $item) {
-                    $ioc_input = IOCInputService::create([
-                        "ioc_price_declaration_id" => $ioc_price_master->id,
-                        "input_service_id" => $item['input_service_id'],
-                        "input_service_amount" => $item['input_service_amount'],
-                        "ioc_amt" => $item['input_service_unit_amout'],
-                        "created_by" => Auth::user()->id,
-                    ]);
+                if(count($request['input_service_rows'])>0){
+                     foreach ($request['input_service_rows'] as $item) {
+                        $ioc_input = IOCInputService::create([
+                            "ioc_price_declaration_id" => $ioc_price_master->id,
+                            "input_service_id" => $item['input_service_id'],
+                            "input_service_amount" => $item['input_service_amount'],
+                            "ioc_amt" => $item['input_service_unit_amout'],
+                            "created_by" => Auth::user()->id,
+                        ]);
+                    }
                 }
-                foreach ($request['value_added_rows'] as $item) {
+               
+                if(count($request['value_added_rows']) > 1){
+                    foreach ($request['value_added_rows'] as $item) {
                     $ioc_value = IOCValueAddedService::create([
-                        "ioc_price_declaration_id" => $ioc_price_master->id,
-                        "value_adding_service_id" => $item['value_adding_service_id'],
-                        "vas_calculative_amt" => $item['value_adding_service_amount'],
-                        "vas_ioc_amt" => $item['ioc_unit_amount'],
-                        "created_by" => Auth::user()->id,
-                    ]);
+                            "ioc_price_declaration_id" => $ioc_price_master->id,
+                            "value_adding_service_id" => $item['value_adding_service_id'],
+                            "vas_calculative_amt" => $item['value_adding_service_amount'],
+                            "vas_ioc_amt" => $item['ioc_unit_amount'],
+                            "created_by" => Auth::user()->id,
+                        ]);
+                    }
                 }
+                
                 return $ioc_price_master;
             });
             DB::commit();
@@ -219,7 +225,7 @@ class IOCPriceDecController extends Controller
             "tran01a_ioc_price_declaration.item_info_id as item_information_id",
             "tran01a_ioc_price_declaration.grand_total_cost",
             "tran01a_ioc_price_declaration.remarks",
-"tran01a_ioc_price_declaration.grand_total_cost",
+            "tran01a_ioc_price_declaration.grand_total_cost",
             "tran01a_ioc_price_declaration.total_cost_rm",
             "tran01a_ioc_price_declaration.total_cost",
             "tran01a_ioc_price_declaration.total_overhead_cost",
