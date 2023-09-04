@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Issue Return</title>
+    <title>Report C_05A Issue Return</title>
 </head>
 <style type="text/css">
     @page {
             header: page-header;
             footer: page-footer;
+            margin-bottom: 30mm;
         }
     body{
-        font-family: 'Times New Roman', Times, serif;
+        font-family: 'Nikosh';
     }
     .m-0{
         margin: 0px;
@@ -202,7 +203,7 @@
         padding-top: 10px;
     }
     .footer{
-            margin-top: 300px;
+            margin-top: 200px;
     }
     .sig{
         display: flex;
@@ -218,33 +219,39 @@
         border: 1px solid #121212 ;
         padding: 5px;
     }
+    .col-md-6
+        {
+            padding-bottom:70px;
+        }
+        .col-md-5
+        {
+            padding-bottom: -50px;
+        }
 </style>
 <body>
-    <div class="row" style="none">
-        <div class="column1">
-            <!-- <img class="logo" src="https://www.pinclipart.com/picdir/middle/187-1872894_bangladesh-govt-logo-png-clipart.png" alt=""> -->
-            <img class="logo" src="http://chiklee-park.com/assets/img/2022-01-04/A2.png" alt="">
-        </div>
-        <div class="column3">
-            <div class="head_middle">
-                <div  style="text-align: center; padding-top:-15px;">
-                    <p style="font-size: 18pt;">
-                        <strong>Chiklee Water Park</strong>
-                    </p>
-                </div>
-                <div style="text-align: center; padding-top:-40px;">
-                    <p style="text-decoration:underline; font-size: 14pt;"><b>Issue Return</b><br>
-                    </p>
-                </div>
-            </div>
-        </div>
+<div class="row" style="none">
             <div class="column1">
-                <p style="text-align: right; font-size:12px;">
-                    Report # C_C_05A <br>
-                </p>
+                <!-- <img class="logo" src="https://www.pinclipart.com/picdir/middle/187-1872894_bangladesh-govt-logo-png-clipart.png" alt=""> -->
+                <img class="logo" src="{{ asset('/logo/logo.png')}}" alt="">
+            </div>
+            <div class="column3">
+                <div class="head_middle">
+                    <div  style="text-align: center; padding-top:-15px;">
+                        <p style="font-size: 18pt;">
+                            <strong>Chiklee Water Park</strong>
+                        </p>
+                    </div>
+                    <div style="text-align: center; padding-top:-45px; font-size: 12pt;">
+                        <p>Issue Return<br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="column1">
+                <p style="text-align: right; font-size:12px;">Chiklee # C_C_05A</p>
             </div>
         </div>
-        <div style="margin-left:3px; margin-top:20px;">
+        <!-- <div style="margin-left:3px; margin-top:20px;">
             <p style="text-align: left; font-size: 12px">
                 <b>Returning Store:</b> <br>
                 <b>Receiving Store:</b><br>
@@ -262,79 +269,79 @@
                     @endphp
                 </p>
             </div>
+        </div> -->
+        <div style="margin-left:5px; margin-top:20px; display:block;">
+            <div class="report_params_areas" style="float:left;height:20px;width:50%">
+                <span style="text-align: right; font-size:12px"><b> Returning Store: </b>{{$issueReturns[0]->returningStore ?? ''}} </span>
+            </div>
+            <div class="report_params_areas" style="float:right;height:20px;width:45%;text-align:right;margin-right:5px;">
+                <span style="text-align: right; font-size:12px"><strong>Print: </strong>{{ Date('d-m-Y h:i:s A')}}</span>
+            </div>
+         
+            <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                <span style="text-align: right; font-size:12px"><b> Receiving Store: </b>{{$issueReturns[0]->receivingStore ?? ''}} </span>
+            <br>
+            </div>
+            <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                <span style="text-align: right; font-size:12px"><b> Issue No: </b>{{$issueReturns[0]->issueNo ?? ''}} </span>
+            <br>
+            </div>
+            <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                <span style="text-align: right; font-size:12px"><b> Issue Date: </b>{{Date('d-m-Y',strtotime($issueReturns[0]->issueDate?? ''))}}</span>
+            <br>
+            </div>
+            <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                <span style="text-align: right; font-size:12px"><b> Program Name: </b>{{$issueReturns[0]->programName ?? ''}} </span>
+            <br>
+            </div>
+            <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                <span style="text-align: right; font-size:12px"><b> Program Date: </b>{{Date('d-m-Y',strtotime($issueReturns[0]->progDate?? ''))}}</span>
+            <br>
+            </div>
         </div>
-        <table width="100%" style="margin-top:30px;">
-            <thead>
-                <tr style="background-color: rgb(3,73,91);">
-                    <th style="text-align: center; color: rgb(255,255,255);">SL</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Item Name</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">UOM</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Price(BDT)</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Issue Qty</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Return Qty</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Issue Amount(BDT)</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Return Amount(BDT)</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Remarks</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="text-align: center;">01</td>
-                    <td style="text-align: left;" >Rice</td>
-                    <td style="text-align: center;">1:1</td>
-                    <td style="text-align: right;">{{number_format(100, 2, '.', ',')}}</td>
-                    <td style="text-align: center;">2</td>
-                    <td style="text-align: center;">2</td>
-                    <td style="text-align: right;">{{number_format(200, 2, '.', ',')}}</td>
-                    <td style="text-align: right;">{{number_format(150, 2, '.', ',')}}</td>
-                    <td style="text-align: left;">Remarks should be floated left. </td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">02</td>
-                    <td style="text-align: left;" ></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: left;"></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">03</td>
-                    <td style="text-align: left;" ></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: left;"></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">04</td>
-                    <td style="text-align: left;" ></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: left;"></td>
-                </tr>
-                <tr style="border-bottom: 1px solid black;">
-                    <td style="text-align: right;"colspan ="4"><strong>Total: </strong></td>
-                    <td style="text-align: center;"><b>5</b></td>
-                    <td style="text-align: center;"><b>5</b></td>
-                    <td style="text-align: right;"colspan =""><strong>{{number_format(3000, 2, '.', ',')}}</strong></td>
-                    <td style="text-align: right;"><strong>{{number_format(150, 2, '.', ',')}}</strong></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-        <p style="margin-left: 5px;">
-            <b>In Words:</b> Three Thousand Taka Only
-        </p>
+        <div style="display:block; margin-top:10px;">
+            <table width="100%">
+                <thead>
+                    <tr style="background-color: rgb(3,73,91);">
+                        <th style="text-align: center; color: rgb(255,255,255);">SL</th>
+                        <th style="text-align: center; color: rgb(255,255,255);">Item Name</th>
+                        <th style="text-align: center; color: rgb(255,255,255);">Item Name Bn</th>
+                        <th style="text-align: center; color: rgb(255,255,255);">UOM</th>
+                        <th style="text-align: center; color: rgb(255,255,255);">Price(BDT)</th>
+                        <th style="text-align: center; color: rgb(255,255,255);">Issue Qty</th>
+                        <th style="text-align: center; color: rgb(255,255,255);">Return Qty</th>
+                        <th style="text-align: center; color: rgb(255,255,255);">Issue Amount(BDT)</th>
+                        <th style="text-align: center; color: rgb(255,255,255);">Return Amount(BDT)</th>
+                        <th style="text-align: center; color: rgb(255,255,255);">Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($issueReturns as $key=>$data)
+                    <tr>
+                        <td style="text-align: center;">{{$key+1}}</td>
+                        <td style="text-align: left;" >{{$data->itemName}}</td>
+                        <td style="text-align: left;" >{{$data->itemNameBn}}</td>
+                        <td style="text-align: center;">{{$data->uom}}</td>
+                        <td style="text-align: right;">{{number_format($data->rate, 2, '.', ',')}}</td>
+                        <td style="text-align: center;">{{$data->issueQty}}</td>
+                        <td style="text-align: center;">{{$data->returnQty}}</td>
+                        <td style="text-align: right;">{{number_format($data->issueAmount, 2, '.', ',')}}</td>
+                        <td style="text-align: right;">{{number_format($data->returnAmount, 2, '.', ',')}}</td>
+                        <td style="text-align: left;">{{$data->remarks}}</td>
+                    </tr>
+                    @endforeach
+                    <tr style="border-bottom: 1px solid black;">
+                        <td style="text-align: right;"colspan ="5"><strong>Total: </strong></td>
+                        <td style="text-align: center;"><b>{{number_format(collect($issueReturns)->sum('issueQty'))}}</b></td>
+                        <td style="text-align: center;"><b>{{number_format(collect($issueReturns)->sum('returnQty'))}}</b></td>
+                        <td style="text-align: right;"colspan =""><strong>{{number_format(collect($issueReturns)->sum('issueAmount'), 2, '.', ',')}}</strong></td>
+                        <td style="text-align: right;"><strong>{{number_format(collect($issueReturns)->sum('returnAmount'), 2, '.', ',')}}</strong></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+       
         <div class="footer" style="margin-left: 20px; font-size: x-small;">
             <div class="sig">
                 <p>____________________________<br> Submitted By</p>
@@ -347,28 +354,13 @@
             </div>
         </div>
         <htmlpagefooter name="page-footer">
-            <div>
-                <p><span style="font-size:18px; font-weight:bold;">&nbsp;&nbsp;&nbsp;Chiklee</span>
-                <br> <span style="color:gray; font-size:12px;">A product by </span><strong>ZIT</strong>
-                <p style="text-align: center; font-size:12px; padding-bottom:50px;">Page no: {PAGENO} </p>
+            <div class="col-md-5">
+                <p style="text-align: left;font-size: 12px;">{PAGENO} of {nbpg} pages</p>
             </div>
-            <div class="row" style="none">
-                <div class="columnzit">
-                    <p><span style="font-size: 14px; text-align:center;">
-                        <strong>Chiklee </strong></span> <br> 
-                        <span style="font-size: 12px;">A product of</span><span style="font-size:10px;"><strong> ZIT</strong></span> 
-                    </p>
-                </div>
-                <div class="columnmid">
-                    <div class="head_middle">
-                        <div  style="text-align: center;">
-                            <p style="text-align: center; font-size: 12px;">{PAGENO} of {nbpg} pages </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="column1">
+            <div class="col-md-6">
+                <p style="text-align: right; font-size: 14px;"><strong>Chiklee </strong><br>
+                    <span style="font-size: 12px;">A product of</span><span style="font-size:14px;"><strong> Z IT</strong></span>
+                </p>
             </div>
         </htmlpagefooter>
-    </div>
 </html>

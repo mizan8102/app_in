@@ -168,15 +168,29 @@ class IndentRequisitionController extends Controller
         // ->leftJoin('5f_sv_product_type','5f_sv_product_type.id','var_item_master_group.prod_type_id')
         // ->where('trns00a_indent_master.product_req',1)->where('pro_req_close',0)
         // ->orderBy('master_group_id','ASC')->get();
-
+        $data=[];
+        $master_group = request('master_group_id',"");
+        if($master_group){
+            $data=PurchaseReqMaster::leftJoin('users','users.id','submitted_by')
+                    ->leftJoin('var_item_master_group','trns00c_purchase_req_master.master_group_id','var_item_master_group.id')
+                    ->select('trns00c_purchase_req_master.id','trns00c_purchase_req_master.requisition_number','trns00c_purchase_req_master.requisition_date',
+                    'itm_mstr_grp_name','remarks','users.name')
+                    // ->where('trns00c_purchase_req_master.is_active',1)
+                    ->where('trns00c_purchase_req_master.master_group_id',$master_group)
+                    ->orderBy('trns00c_purchase_req_master.id','DESC')
+                    ->paginate($perPage);
+        }else{
+            $data=PurchaseReqMaster::leftJoin('users','users.id','submitted_by')
+            ->leftJoin('var_item_master_group','trns00c_purchase_req_master.master_group_id','var_item_master_group.id')
+            ->select('trns00c_purchase_req_master.id','trns00c_purchase_req_master.requisition_number','trns00c_purchase_req_master.requisition_date',
+            'itm_mstr_grp_name','remarks','users.name')
+            // ->where('trns00c_purchase_req_master.is_active',1)
+            ->where('requisition_number', 'like', "%{$search}%")
+            ->orderBy('trns00c_purchase_req_master.id','DESC')
+            ->paginate($perPage);
+        }
         
-        $data=PurchaseReqMaster::leftJoin('users','users.id','submitted_by')
-        ->leftJoin('var_item_master_group','trns00c_purchase_req_master.master_group_id','var_item_master_group.id')
-        ->select('trns00c_purchase_req_master.id','trns00c_purchase_req_master.requisition_number','trns00c_purchase_req_master.requisition_date',
-        'itm_mstr_grp_name','remarks','users.name')
-        ->where('trns00c_purchase_req_master.is_active',1)
-        ->where('requisition_number', 'like', "%{$search}%")->orderBy('trns00c_purchase_req_master.id','DESC')
-        ->paginate($perPage);
+        
 
         return response()->json([
             'data'  =>  $data,

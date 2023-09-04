@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api\Report;
 
+use App\Http\Controllers\Controller;
 use App\Models\PurchaseReqMaster;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use PDF;
 
 class ReportPurchaseRequisitionController extends Controller
@@ -74,7 +74,7 @@ class ReportPurchaseRequisitionController extends Controller
         $to = date('Y-m-d', strtotime($request->to));
         $reqData['from_date'] = date('d-m-Y', strtotime($request->from));
         $reqData['to_date'] = date('d-m-Y', strtotime($request->to));
-        $pReqSum = DB::select('CALL Report_B_03B_PurchaseRequisitionSummary("' . $from . '","' . $to . '")');
+        $pReqSum = DB::select('CALL Report_B_03B_PurchaseRequisitionSummary("' . $request->masterId . '")');
 
         $pdf = PDF::loadView(
             'report.purchaseRequisitionSummery',

@@ -46,6 +46,7 @@ class CommercialInvoiceController extends Controller
             $orderIds=DB::select('CALL GetOrderId');
             $programs = DB::select('CALL Report_A_07_CommercialInvoiceForProgramEvent("'.$request->orderID.'")');
             // dd($programs);
+            $data = Db::select('CALL GetPaymentHistory("'.$request->orderID.'")');
 
             $collection = collect($programs);
             //   dd($collection);
@@ -108,12 +109,13 @@ class CommercialInvoiceController extends Controller
                 'parent'=>$programs,
                 'menu'=>$menuprograms,
                 'ride'=>$ridePrograms,
-                'service'=>$servicePrograms
+                'service'=>$servicePrograms,
+                'child'=>$data
             ];
             // dd($result);
             $pdf = PDF::loadView('report.commercial_invoice', compact('result', 'orderIds'));
 
-            return $pdf->stream('program_management.pdf');
+            return $pdf->stream('report.commercial_invoice.pdf');
         }
         public function quotations(Request $request)
         {
@@ -182,7 +184,8 @@ class CommercialInvoiceController extends Controller
                 'parent'=>$programs,
                 'menu'=>$menuprograms,
                 'ride'=>$ridePrograms,
-                'service'=>$servicePrograms
+                'service'=>$servicePrograms,
+                
             ];
             // dd($result);
             $pdf = PDF::loadView('report.quotations', compact('result', 'orderIds'));

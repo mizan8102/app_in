@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\ticketApi;
+namespace App\Http\Controllers\ticketApi\v5;
 
 use App\Helpers\Helper;
 use App\Http\Resources\UserResource;
@@ -35,6 +35,13 @@ use Hash;
 class DesktopAppController extends Controller
 {
     public function DesktopAppLogin(Request $request){
+        date_default_timezone_set('Asia/Dhaka');
+
+       if($request->dvcDate !=  Date('Y-m-d')){
+            $data['status'] = false;
+            $data['message'] = 'Your device date is not up-to-date';
+            return $data;
+       }
         if($request->cardNo != ''){
                 $userData = DB::table('users')
                     ->join('cs_company_store_location','users.store_id','=','cs_company_store_location.id')
@@ -94,6 +101,15 @@ class DesktopAppController extends Controller
                     $data['defPayMothod'] = $payMethodList[0];
                     $data['refundTitle'] = 'Get 30Tk Refund Over 300Tk Purchase in Restaurant.';
                     $data['table_list'] = [];
+                    $data['cur_date'] = Date('Y-m-d');
+
+                    DB::table('ticket_app_login_log')->insert([
+                        'user_id'=>$data['user_id'],
+                        'store_id'=>$data['store_id'],
+                        'sending_response'=>json_encode($data),
+                        'device_detail'=>$request->dvcInfo,
+                        'created_at'=>Date('Y-m-d H:i:s'),
+                    ]);
                 return $data;
 
         }
@@ -144,6 +160,7 @@ class DesktopAppController extends Controller
                 $data['ticket_cat_col_two'] = $userData->column_two;
                 $data['ticket_cat_col_three'] = $userData->column_three;
                 $data['ticket_cat_col_four'] = $userData->column_four;
+                
                 $data['refundTitle'] = 'Get 30Tk Refund Over 300Tk Purchase in Restaurant.';
             if($userData->sl_type == 'ride_ticket'){
                 $data['isSingleTicket'] = 1;
@@ -179,8 +196,15 @@ class DesktopAppController extends Controller
             }else{
                 $data['def_disc_ref'] = '';
             }
-
+            $data['cur_date'] = Date('Y-m-d');
             
+            DB::table('ticket_app_login_log')->insert([
+                'user_id'=>$data['user_id'],
+                'store_id'=>$data['store_id'],
+                'sending_response'=>json_encode($data),
+                'device_detail'=>$request->dvcInfo,
+                'created_at'=>Date('Y-m-d H:i:s'),
+            ]);
        
         if(!$user->email_verified_at) {
             Auth::logout();
@@ -234,6 +258,7 @@ class DesktopAppController extends Controller
         $id = $cartDataJson['id'];
         $transTime = $cartDataJson['trans_time'];
         $userId = $cartDataJson['user_id'];
+        $OrderUniqID = $cartDataJson['OrderUniqID'];
         $appVersion = $r->app_version;
         // if($r->app_version){
         //     $appVersion = $r->app_version;
@@ -282,6 +307,8 @@ class DesktopAppController extends Controller
         $printDataArr = [];
         for($k=0;count($itemIdArr) > $k;$k++){
             if($k == 0){
+                
+                $resultArr['OrderUniqID'] = $OrderUniqID;
                 $resultArr['company_id'] = $userData->company_id;
                 $resultArr['branch_id'] = $userData->branch_id;
                 $resultArr['store_id'] = $userStoreId;
@@ -367,12 +394,13 @@ class DesktopAppController extends Controller
             $i++;
         }
         
-        $isStore = Http::post("http://159.223.67.50/chiklee_api/public/api/ticket_api/item-isssue-create-one",$resultArr)->json();
+        $isStore = Http::post("http://159.223.67.50/chiklee_test_server/chiklee_api/public/api/ticket_api/item-isssue-create-one",$resultArr)->json();
         return [
             'status'=>$isStore['status'],
             'reason'=>$isStore['reason'],
             'issue_master_id'=>$isStore['issue_master_id'],
             'itemstock_master_id'=>$isStore['itemstock_master_id'],
+            'OrderUniqID'=>$isStore['OrderUniqID'],
             // 'print_data'=>$printDataArr,
         ];
     }
@@ -394,6 +422,7 @@ class DesktopAppController extends Controller
                 'reason'=>'Data Already Exist',
                 'issue_master_id'=>'',
                 'itemstock_master_id'=>'',
+                'OrderUniqID'=>$r->OrderUniqID,
             ];
             $isLog = true;
         }
@@ -699,7 +728,8 @@ class DesktopAppController extends Controller
                 'status'=>true,
                 'reason'=>'OK',
                 'issue_master_id'=>$issueMasterID,
-                'itemstock_master_id'=>$stockMasterID
+                'itemstock_master_id'=>$stockMasterID,
+                'OrderUniqID'=>$r->OrderUniqID,
             ]);
 
         }catch (\Exception $e) {

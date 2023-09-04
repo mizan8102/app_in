@@ -613,29 +613,32 @@
 
             </tbody>
         </table>
-        <h5 style="text-decoration: underline; margin-left:6px; text-align:center;">Total Charge Summary</h5>
+
+        @if(!empty($result['parent']))
+        <div style="margin-left:3px; margin-top:15px;">
+            <h5 style="text-decoration: underline; margin-left:3px; text-align:center;">Payment History</h5>
+           </div>
         <table width="100%" style="margin-top:0px;">
             <thead>
-                <tr style="background-color: rgb(75,189,207);">
-                    <th style="text-align: center; color: rgb(255,255,255);">SL</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Date</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Amount</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Status</th>
+                <tr style="background-color: rgb(207, 237, 241);">
+                <th style="text-align: center; color: rgb(15, 1, 1);">SL</th>
+                <th style="text-align: center; color: rgb(15, 1, 1);">Payment Date</th>
+                <th style="text-align: center; color: rgb(15, 1, 1);">Amount(BDT)</th>
+                <th style="text-align: center; color: rgb(15, 1, 1);">Payment Mode</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td style="text-align: center;">01</td>
-                    <td style="text-align: left;" width="40%">Parking Charge</td>
-                    <td style="text-align: right;" width="40%">2322.00</td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">02</td>
-                    <td style="text-align: left;" width="40%">Decoration Charge</td>
-                    <td style="text-align: right;" width="40%">70650.00</td>
-                </tr>
+            @foreach($result['child'] as $key => $test)
+                    <tr>
+                        <td style="text-align: center;">{{$key+1}}</td>
+                        <td style="text-align: center;" width="20%">{{Date('d-m-Y',strtotime($test->PayDate))}}</td>
+                        <td style="text-align: right;">{{ number_format($test->PaidAmount, 2, '.', ',') }}</td>
+                        <td style="text-align: left;" width="20%">{{$test->PaymodeName}}</td>
+                    </tr>
+            @endforeach
             </tbody>
         </table>
+        @endif
         <div class="footer">
             <p style="font-size:10px;">
                 *Terms and Condition

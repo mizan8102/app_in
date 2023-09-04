@@ -276,7 +276,7 @@
     <div class="row" style="none">
         <div class="column1">
             <!-- <img class="logo" src="https://www.pinclipart.com/picdir/middle/187-1872894_bangladesh-govt-logo-png-clipart.png" alt=""> -->
-            <img class="logo" src="http://chiklee-park.com/assets/img/2022-01-04/A2.png" alt="">
+            <img class="logo" src="{{ asset('logo/logo.png')}}" alt="">
         </div>
         <div class="column3">
             <div class="head_middle">
@@ -305,7 +305,7 @@
             <span>
                 Name: {{ $pos[0]->supplierName }}<br>
                 Address: {{ $pos[0]->supplierAddress }}<br>
-                Mobile No: {{ $pos[0]->supplierPhone }}<br>
+                Mobile No: +088097388o21<br>
             </span>
         </p>
         <div class="columne" style="text-align:left; float:left; margin-right:10px; font-size: 12px;">
@@ -340,8 +340,8 @@
                 <td style="text-align: left;">{{ $item->itemName }}</td>
                 <td style="text-align: center;">{{ $item->poQty }}</td>
                 <td style="text-align: center;">{{ $item->uom }}</td>
-                <td style="text-align: center;">{{number_format($item->poRate, 2, '.', ',')}}</td>
-                <td style="text-align: center;">{{number_format($item->poAmount, 2, '.', ',')}}</td>
+                <td style="text-align: right;">{{number_format($item->poRate, 2, '.', ',')}}</td>
+                <td style="text-align: right;">{{number_format($item->poAmount, 2, '.', ',')}}</td>
                 <td style="text-align: left;">{{ $item->remarks }} </td>
             </tr>
             @endforeach
@@ -362,10 +362,10 @@
         </tbody>
     </table>
     <p style="margin-left: 5px;">
-        <b>In Words:</b> Three Thousand Taka Only
+        <b>In Words:</b> {{ number_to_words_bdt($total) }} Taka Only
     </p>
 
-    <div>
+    <!-- <div>
         <p class="box">
             <span style="text-decoration: underline;">
                 <b>Terms and Conditions</b></span> <br>
@@ -373,7 +373,7 @@
             2. <br>
             3. <br>
         </p>
-    </div>
+    </div> -->
     <div class="footer" style="margin-left: 20px; font-size: x-small;">
         <div class="sig">
             <p>____________________________<br> Submitted By</p>
