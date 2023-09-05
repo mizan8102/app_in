@@ -2,19 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
-use Illuminate\Http\Request;
-use App\Models\PurchaseOrder;
-use App\Models\SupplierDetail;
-use App\Models\PurchaseOrderQty;
-use App\Models\PurchaseOrderChild;
-use App\Models\ReceiveRawMaterial;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use App\Models\CsCompanyStoreLocation;
-use App\Models\PurchaseReceiveMapping;
-use App\Models\ReceiveRawMaterialChild;
-use Illuminate\Support\Facades\Validator;
+use App\Models\PurchaseOrder;
+use App\Models\PurchaseOrderQty;
+use App\Models\ReceiveRawMaterial;
+use App\Models\SupplierDetail;
+use Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class ReceivedRawMaterialController extends Controller
 {
@@ -67,101 +63,127 @@ class ReceivedRawMaterialController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $r)
+    public function store(Request $request)
     {
-        $validated = Validator::make($r->all(), [
-            'purchase_order_id' => 'required|integer',
-            'purchase_req_master_id' => 'required|numeric|gte:0|exists:trns00c_purchase_req_master,id',
-            'purchase_order_date' => 'required|date',
-            'supplier_id' => 'required|numeric|gte:0|exists:cs_supplier_details,id',
-            'delivery_point_id' => 'required|numeric|gte:0',
-            'received_date' => 'required|date|after_or_equal:purchase_order_date',
-            'chalan_date' => 'required|date',
-            'totalAmount' => 'required|numeric|gte:0|regex:/^\d+(\.\d{1,2})?$/',
-            'remarks' => 'sometimes|max:255',
-            'item_row.*.purchase_order_child_id' => 'required|integer',
-            'item_row.*.item_information_id' => 'required|integer',
-            'item_row.*.uom_id' => 'required|integer',
-            'item_row.*.uom_short_code' => 'required|string',
-            'item_row.*.order_quantity' => 'required|integer',
-            'item_row.*.recv_quantity' => 'required|integer',
-            'item_row.*.rate' => 'required|numeric',
-            'item_row.*.total_amount_local_cr' => 'required|numeric',
-            'item_row.*.required_date' => 'required',
-            'item_row.*.order_list.*.id' => 'required|integer',
-            'item_row.*.order_list.*.purchase_order_child_id' => 'required|integer',
-            'item_row.*.order_list.*.purchase_req_master_id' => 'required|integer',
-            'item_row.*.order_list.*.item_information_id' => 'required|integer',
-            'item_row.*.order_list.*.order_quantity' => 'required|integer',
-        ]);
-        if ($validated->fails()) {
-            return sendJson('validation fails', $validated->errors(), 422);
+       
+        $tansSrcTypeId      = 1;  // form Table 5c_sv_tran_source_type  receive=1
+        $tranTypeID         = 1;
+        $vatRebTypeID       = 2;
+        $comID              = Auth::user()->company_id;
+        $branchID           = Auth::user()->branch_id;
+        $storeID            = Auth::user()->store_id;
+        $currencyID         = 1;
+        $supplierID         = $request->supplier_id;
+        $auth               = Auth::user()->id;
+
+
+        $newItemsArray = [];
+        foreach ($request->item_row as $key => $value) {
+            $total_amount_local_curr = $value->lineTotal;
+            $total_receive_amount += $total_amount_local_curr;
+            $item_info = DB::table('var_item_info_bb')->find($value['item_info_id']);
+            $newitem['item_info_id'] = $value['item_info_id'];
+            $newitem['gate_rcv_qty'] = $value['gate_recv_qty'];
+            $newitem['uom_id'] = 2;
+            $newitem['uom_code'] = 'Pcs';
+            $newitem['rel_factor'] = DB::table('5m_sv_uom')->find(2)->relative_factor;
+            $newitem['vat_payment_method_id'] = 1;
+            $newitem['item_cat_retail_id'] = 2;
+            $newitem['gate_rcv_qty'] = $value['gate_recv_qty'];
+            $newitem['rcv_qty'] = $value['recv_quantity'];
+            $newitem['rcv_adjt_qty'] = 0;
+            $newitem['rcv_rate'] = $value['po_rate'];
+            $newitem['rcv_ass_value_trans_curr'] = $value['po_rate'] * $value['recv_quantity'];
+            $newitem['rcv_value_wotax_trans_curr'] = $value['po_rate'] * $value['recv_quantity'];
+            $newitem['rcv_value_wotax_local_curr'] = $value['po_rate'] * $value['recv_quantity'];
+            $newitem['vat_rate_type_id'] = 1;
+            $newitem['is_fixed_rate'] = 1;
+            $newitem['fixed_rate'] = 1;
+            $newitem['is_fixed_uom_id'] = 1;
+            $newitem['cd_percent'] = 2;
+            $newitem['cd_amount'] = 1;
+            $newitem['rd_percent'] = 1;
+            $newitem['rd_amount'] = 1;
+            $newitem['sd_percent'] = 1;
+            $newitem['sd_amount'] = 1;
+            $newitem['vat_percent'] = 1;
+            $newitem['vat_amount'] = 1;
+            $newitem['at_percent'] = 1;
+            $newitem['at_amount'] = 1;
+            $newitem['ait_percent'] = 1;
+            $newitem['ait_amount'] = 1;
+            $newitem['total_amt_trans_curr'] = $value['po_rate'] * $value['recv_quantity'];
+            $newitem['total_amt_local_curr'] = $value['po_rate'] * $value['recv_quantity'];
+            $newitem['total_ass_value_local_curr'] = $value['po_rate'] * $value['recv_quantity'];
+            $newitem['gate_entry_at'] = now()->format('Y-m-d H:m:s');
+            $newitem['gate_entry_by'] = 1;
+            $newitem['opening_stock_remarks'] = $request->purchaseOrder['remarks'] ?: null;
+            $newItemsArray[] = $newitem;
         }
-        $comID = Auth::user()->company_id;
-        $data = DB::select('CALL getTableID("trns02a_recv_master","' . $comID . '")');
-        $GRN_Number = $data[0]->masterID;
-        $dataa = DB::select('CALL getTableID("receive_raw_material_chalan_number","' . $comID . '")');
-        $chalan_number = $dataa[0]->masterID;
+        $childArray = json_encode(['chileItem' => $newItemsArray]);
 
-        $rcvMasterData = [
-            'purchase_order_master_id' => $r->purchase_order_id,
-            'purchase_order_date' => date('Y-m-d', strtotime($r->purchase_order_date)),
-            'prod_type_id' => '3',
-            'company_id' => Auth::user()->company_id,
-            'branch_id' => Auth::user()->branch_id,
-            'store_id' => Auth::user()->store_id,
-            'currency_id' => 'CUR-21-001',
-            'excg_rate' => '1',
-            'supplier_id' => $r->supplier_id,
-            'grn_number' => $GRN_Number,
-            'grn_number_bn' => $GRN_Number,
-            'grn_date' => Date('Y-m-d', strtotime($r->received_date)),
-            'chalan_number' => $chalan_number,
-            'chalan_number_bn' => $chalan_number,
-            'chalan_date' => Date('Y-m-d', strtotime($r->chalan_date)),
-            'total_receive_amount' => $r->totalAmount,
-            'total_recv_amt_local_curr' => $r->totalAmount,
-            'remarks' => $r->remarks,
-            'remarks_bn' => $r->remarks,
-            'created_by' => Auth::id(),
-        ];
         try {
-            $data = ReceiveRawMaterial::create($rcvMasterData);
-            foreach ($r->item_row as $key => $item) {
-                $rcvChildData = [
-                    'receive_master_id' => $data->id,
-                    'item_information_id' => $item['item_information_id'],
-                    'uom_id' => $item['uom_id'],
-                    'uom_short_code' => $item['uom_short_code'],
-                    'po_quantity' => $item['order_quantity'],
-                    'po_rate' => $item['rate'],
-                    'recv_quantity' => $item['recv_quantity'],
-                    'itm_receive_rate' => $item['rate'],
-                    'total_amount_local_curr' => $r->totalAmount,
-                    'created_by' => Auth::id(),
-                ];
-                $receive_child = ReceiveRawMaterialChild::create($rcvChildData);
+            DB::beginTransaction();
+            $data = DB::select('CALL TRNS_RECEIVE_CREATEONE(:IssueMstrID,:tranSrcTypeID,:tranTypeID,:tranSubTypeID,:prodTypeId,:itemCatRetailID,:vatRebTypeID,:vatRateTypeID,:comID,:branchID,:storeID,:currencyID,:excgRate,:supplierID,:regStatus,:suppBinNum,:suppBinNumBn,:suppBankBranchID,:suppBankAcctType,:isRegBankTrans,:suppAcctNum,:fiscalYearID,:vatMonthID,:grnDate,:grnNo,:grnNoBn,:portDischargeID,:challanDate,:challanNum,:challanNumBn,:challanTypeID,:totalAssAmntTransCurr,:totalAssAmntLocalCurr,:totalAmntWOTaxTransCurr,:totalAmntWOTaxLocalCurr,:totalCDAmnt,:totalRDAmnt,:totalSDAmnt,:totalVATAmnt,:totalATAmnt,:totalAITAmnt,:totalAmntWithTaxTransCurr,:totalAmntWithTaxLocalCurr,:monthProcessStatus,:yearlyProcessStatus,:isVDSDone,:remarks,:remarksBn,:createdBy,:updatedBy,:chileItem)',
+            [
+                'IssueMstrID'               => "",
+                'tranSrcTypeID'             => $tansSrcTypeId,
+                'tranTypeID'                => $tranTypeID,
+                'tranSubTypeID'             => "",
+                'prodTypeId'                => "",
+                'itemCatRetailID'           => 1,
+                'vatRebTypeID'              => $vatRebTypeID,
+                'vatRateTypeID'             => 1,
+                'comID'                     => $comID,
+                'branchID'                  => $branchID,
+                'storeID'                   => $storeID,
+                'currencyID'                => $currencyID,
+                'excgRate'                  => $currencyID,
+                'supplierID'                => $supplierID,
+                'regStatus'                 => 1,
+                'suppBinNum'                => "",
+                'suppBinNumBn'              => "",
+                'suppBankBranchID'          => 1,
+                'suppBankAcctType'          => 1,
+                'isRegBankTrans'            => 1,
+                'suppAcctNum'               => "",
+                'fiscalYearID'              => 1,
+                'vatMonthID'                => 1,
+                'grnDate'                   => now()->format('Y-m-d'),
+                'grnNo'                     => "",
+                'grnNoBn'                   => "",
+                'portDischargeID'           => 1,
+                'challanDate'               => date('Y-m-d',strtotime($request->chalan_date)),
+                'challanNum'                => 1,
+                'challanNumBn'              => 1,
+                'challanTypeID'             => 1,
+                'totalAssAmntTransCurr'     => $request->totalAmount,
+                'totalAssAmntLocalCurr'     => $request->totalAmount,
+                'totalAmntWOTaxTransCurr'   => $request->totalAmount,
+                'totalAmntWOTaxLocalCurr'   => $request->totalAmount,
+                'totalCDAmnt'               => 1,
+                'totalRDAmnt'               => 1,
+                'totalSDAmnt'               => 1,
+                'totalVATAmnt'              => 1,
+                'totalATAmnt'               => 1,
+                'totalAITAmnt'              => 1,
+                'totalAmntWithTaxTransCurr' => $request->totalAmount,
+                'totalAmntWithTaxLocalCurr' => $request->totalAmount,
+                'monthProcessStatus'        => 1,
+                'yearlyProcessStatus'       => 1,
+                'isVDSDone'                 => 0,
+                'remarks'                   => $request->remarks,
+                'remarksBn'                 => $request->remarks,
+                'createdBy'                 => $auth,
+                'updatedBy'                 => $auth,
+                'chileItem'                 => $childArray,
+            ]
+        );
 
-                foreach ($item['order_list'] as $distriubute_item) {
-                    // dd($distriubute_item);
-                    $map_child = [
-                        'purchase_order_child_id' => $receive_child->id,
-                        'purchase_order_master_id' => $r->purchase_order_id,
-                        'item_information_id' => $item['item_information_id'],
-                        'receive_quantity' => $distriubute_item['order_quantity'],
-                    ];
-                    PurchaseOrderQty::create($map_child);
-                }
-            }
-
-            if ($r->statusOrder == true) {
-                PurchaseOrder::whereIn('purchase_order_master_id', $r->ids)->update(['status' => 1]);
-            }
             DB::commit();
-            return sendJson('Item has Been received', $data, 200);
-        } catch (Exception $e) {
-            DB::rollBack();
-            return sendJson('Item received failed', $e->getMessage(), 422);
+            return response()->json('Books has been collected from Publisher', 200);
+        } catch (Throwable $th) {
+            return response()->json($th->getMessage(), 500);
         }
     }
 
