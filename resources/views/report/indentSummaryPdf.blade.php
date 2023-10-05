@@ -7,6 +7,8 @@
     @page {
             header: page-header;
             footer: page-footer;
+            /* margin-top: 20mm;   */
+            margin-bottom: 30mm;
             /* size: landscape; */
         }
     body{
@@ -200,10 +202,16 @@
         float: left;
         width: 20%;
         height: 2rem;
-        padding-top: 10px;
+        background-size: cover; /* Adjust this based on your needs */
+        background-repeat: no-repeat;
+    }
+    .logo{
+        width:100px;
+        margin-top: 5px;
+        text-align:right;
     }
     .footer{
-            margin-top: 400px;
+            margin-top: 300px;
     }
     .sig{
         display: flex;
@@ -211,12 +219,21 @@
         width: 33%;
         text-align: center;
     }
+    .col-md-6
+        {
+            padding-bottom:70px;
+        }
+        .col-md-5
+        {
+            padding-bottom: -50px;
+        }
 </style>
 <body>
     <div class="row" style="none">
+    
+        <div class="" style="display:block;overflow">
         <div class="column1">
-            <!-- <img class="logo" src="https://www.pinclipart.com/picdir/middle/187-1872894_bangladesh-govt-logo-png-clipart.png" alt=""> -->
-            <img class="logo" src="http://chiklee-park.com/assets/img/2022-01-04/A2.png" alt="">
+            <img class="logo" src="{{ asset('logo/logo.png')}}" alt="no image">
         </div>
         <div class="column3">
             <div class="head_middle">
@@ -225,8 +242,8 @@
                         <strong>Chiklee Water Park</strong>
                     </p>
                 </div>
-                <div style="text-align: center; padding-top:-40px;">
-                    <p style="text-decoration:underline; font-size: 14pt;"><b> Indent Summery Report</b><br>
+                <div style="text-align: center; padding-top:-45px;">
+                    <p style="font-size: 12pt;"> Indent Summary Report<br>
                     </p>
                 </div>
             </div>
@@ -237,21 +254,22 @@
                 </p>
             </div>
         </div>
-        <div style="margin-left:3px; margin-top:20px;">
-            <p style="text-align: left; font-size: 12px">
-                <b> Period: 3/29/23 to 4/1/23 </b><br>
-            </p>
-            <div class="columne" style="text-align:right; float:right; margin-right:10px; font-size: 12px;">
-                <p style="padding-top:20px;">
-                    <strong>Print: </strong>
-                    @php 
-                        $mytime = Carbon\Carbon::now()->format ('d-m-Y h:i A');
-                        echo $mytime;
-                    @endphp
-                </p>
+            <div style="margin-left:5px; margin-top:20px; display:block;">
+
+                <div class="report_params_areas" style="float:left;height:20px;width:50%">
+                    <span style="text-align: right; font-size:12px"><b> From Date: </b>{{Date('d-m-Y',strtotime(request('from') ?? ''))}}</span>
+                </div>
+                <div class="report_params_areas" style="float:right;height:20px;width:45%;text-align:right;margin-right:5px;">
+                    <span style="text-align: right; font-size:12px"><strong>Print: </strong>{{ Date('d-m-Y h:i:s A')}}</span>
+                </div>
+                <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                    <span style="text-align: right; font-size:12px"><b> To Date: </b>{{Date('d-m-Y',strtotime(request('to'))  ?? '')}}</span>
+                    <br>
+                </div>
             </div>
         </div>
-        <table width="100%" style="margin-top:90px;">
+        <div style="display:block;">
+        <table width="100%" style="display:block; margin-top: 10px;">
             <thead>
                 <tr style="background-color: rgb(3,73,91);">
                     <th style="text-align: center; color: rgb(255,255,255);">SL</th>
@@ -259,6 +277,7 @@
                     <th style="text-align: center; color: rgb(255,255,255);">Date</th>
                     <th style="text-align: center; color: rgb(255,255,255);">Indenting Store</th>
                     <th style="text-align: center; color: rgb(255,255,255);">Program Name</th>
+                    <th style="text-align: center; color: rgb(255,255,255);">Program Name Bn</th>
                     <th style="text-align: center; color: rgb(255,255,255);">Program Date</th>
                     <th style="text-align: center; color: rgb(255,255,255);">Issue Status</th>
                     <th style="text-align: center; color: rgb(255,255,255);">Close Status</th>
@@ -266,74 +285,26 @@
                 </tr>
             </thead>
             <tbody>
+                @if ($indents)
+                @foreach($indents as $key=>$indent)
                 <tr>
-                    <td style="text-align: center;">01</td>
-                    <td style="text-align: center;">0001</td>
-                    <td style="text-align: center;">3/29/23</td>
-                    <td style="text-align: left;">Kitchen Store</td>
-                    <td style="text-align: left;">Weeding</td>
-                    <td style="text-align: center;">3/30/23</td>
-                    <td style="text-align: center;">1</td>
-                    <td style="text-align: center;">1</td>
-                    <td style="text-align: left;">Remarks should be floated left. </td>
+                    <td style="text-align: center;">{{$key+1  ?? ''}}</td>
+                    <td style="text-align: center;">{{$indent->indentNo  ?? ''}}</td>
+                    <td style="text-align: center;">{{isset($indent->indentDate) ? date('d-m-Y', strtotime($indent->indentDate)) : ''}}</td>
+                    <td style="text-align: left;">{{$indent->indentStoreName ?? ''	}}</td>
+                    <td style="text-align: left;">{{$indent->programName  ?? ''}}</td>
+                    <td style="text-align: left;">{{$indent->programNameBn  ?? ''}}</td>
+                    <td style="text-align: center;">{{$indent->programDate  ?? ''}}</td>
+                    <td style="text-align: center;">{{$indent->issueStatus==0 ? 'Open':'Issued'  ?? ''}}</td>
+                    <td style="text-align: center;">{{$indent->closeStatus==0 ? 'Open':'Issued'  ?? ''}}</td>
+                    <td style="text-align: left;">{{$indent->remarks  ?? ''}} </td>
                 </tr>
-                <tr>
-                    <td style="text-align: center;">02</td>
-                    <td style="text-align: center;">0002</td>
-                    <td style="text-align: center;">3/30/23</td>
-                    <td style="text-align: left;">Kitchen Store</td>
-                    <td style="text-align: left;">Birthday</td>
-                    <td style="text-align: center;">3/30/23</td>
-                    <td style="text-align: center;">1</td>
-                    <td style="text-align: center;">0</td>
-                    <td style="text-align: left;">Remarks should be floated left.And it can have more than a line. </td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">03</td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: left;"></td>
-                    <td style="text-align: left;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: left;"></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">04</td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: left;"></td>
-                    <td style="text-align: left;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: left;"></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">05</td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: left;"></td>
-                    <td style="text-align: left;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: left;"></td>
-                </tr>
-                <tr>
-                    <td style="text-align: center;">06</td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: left;"></td>
-                    <td style="text-align: left;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: center;"></td>
-                    <td style="text-align: left;"></td>
-                </tr>
+                @endforeach
+                @endif
             </tbody>
         </table>
+        </div>
+        
         <div class="footer" style="margin-left: 20px; font-size: x-small;">
             <div class="sig">
                 <p>____________________________<br> Submitted By</p>
@@ -346,27 +317,13 @@
             </div>
         </div>
         <htmlpagefooter name="page-footer">
-            <div>
-                <p><span style="font-size:18px; font-weight:bold;">&nbsp;&nbsp;&nbsp;Chiklee</span>
-                <br> <span style="color:gray; font-size:12px;">A product by </span><strong>ZIT</strong>
-                <p style="text-align: center; font-size:12px; padding-bottom:50px;">Page no: {PAGENO} </p>
+            <div class="col-md-5">
+                <p style="text-align: left;font-size: 12px;">{PAGENO} of {nbpg} pages</p>
             </div>
-            <div class="row" style="none">
-                <div class="columnzit">
-                    <p><span style="font-size: 14px; text-align:center;">
-                        <strong>Chiklee </strong></span> <br> 
-                        <span style="font-size: 12px;">A product of</span><span style="font-size:10px;"><strong> ZIT</strong></span> 
-                    </p>
-                </div>
-                <div class="columnmid">
-                    <div class="head_middle">
-                        <div  style="text-align: center;">
-                            <p style="text-align: center; font-size: 12px;">{PAGENO} of {nbpg} pages </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="column1">
+            <div class="col-md-6">
+                <p style="text-align: right; font-size: 14px;"><strong>Chiklee </strong><br>
+                    <span style="font-size: 12px;">A product of</span><span style="font-size:14px;"><strong> Z IT</strong></span>
+                </p>
             </div>
         </htmlpagefooter>
     </div>

@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Indent Report</title>
+    <title>Issue Details</title>
 </head>
 <style type="text/css">
     @page {
             header: page-header;
             footer: page-footer;
-            /* margin-top: 20mm;   */
             margin-bottom: 30mm;
         }
     body{
-        font-family: 'Times New Roman','nikosh', Times, serif;
+        font-family: 'Nikosh';
     }
     .m-0{
         margin: 0px;
@@ -32,13 +31,13 @@
         width: 100%;
     }
     .w-50{
-        width:50%;   
+        width:50%;
     }
     .w-85{
-        width:85%;   
+        width:85%;
     }
     .w-15{
-        width:15%;   
+        width:15%;
     }
     .logo2 img{
         width:75px;
@@ -64,9 +63,10 @@
     table tr,th,td{
         border: 1px solid black;
         border-collapse:collapse;
-        padding:7px 8px; 
+        padding:7px 8px;
     }
     table tr th{
+        /* background: #F4F4F4; */
         font-size:12px;
     }
     table tr td{
@@ -104,10 +104,13 @@
     }
     .logo{
         width: 275px;
+        /*margin-left: 365px;*/
         margin-top: 10px;
     }
     .logozit{
         width: 55px;
+        /*margin-left: 365px;*/
+        /* margin-top: 10px; */
     }
     .column1{
         float: right;
@@ -116,9 +119,9 @@
     }
     .columne{
         float: right;
-        width: 50%;
+        width: 40%;
         margin-top:-100px;
-        margin-left: 180px;
+        margin-left: 380px;
     }
     .column5{
         float: right;
@@ -151,8 +154,9 @@
     .columncodezit{
         float: left;
         width: 6%;
-        padding-bottom:-10px;    
+        padding-bottom:-10px;
     }
+/* Clear floats after the columns */
     .row:after {
         content: "";
         display: table;
@@ -169,6 +173,7 @@
     }
     .logo{
         width: 275px;
+        /*margin-left: 365px;*/
         margin-top: 5px;
         text-align:right;
     }
@@ -178,6 +183,7 @@
     }
     .head_middle{
         text-align: center;
+        /* font-size: 12px; */
     }
     .columnzit{
         float: right;
@@ -197,13 +203,21 @@
         padding-top: 10px;
     }
     .footer{
-            margin-top: 300px;
+            margin-top: 200px;
     }
     .sig{
         display: flex;
         float: left;
         width: 33%;
         text-align: center;
+    }
+    .box{
+        float: left;
+        margin-top: 40px;
+        width: 55%;
+        height: 100px;
+        border: 1px solid #121212 ;
+        padding: 5px;
     }
     .col-md-6
         {
@@ -217,48 +231,43 @@
 <body>
     <div class="row" style="none">
         <div class="column1">
-            <img class="logo" src="{{ asset('logo/logo.png')}}" alt="">
+            <!-- <img class="logo" src="https://www.pinclipart.com/picdir/middle/187-1872894_bangladesh-govt-logo-png-clipart.png" alt=""> -->
+            <img class="logo" src="{{ asset('/logo/logo.png')}}" alt="">
         </div>
         <div class="column3">
             <div class="head_middle">
                 <div  style="text-align: center; padding-top:-15px;">
                     <p style="font-size: 18pt;">
                         <strong>Chiklee Water Park</strong>
-                        
                     </p>
                 </div>
                 <div style="text-align: center; padding-top:-45px;">
-                    <p style="font-size: 12pt;"> Indent Report<br>
+                    <p style="font-size: 12pt;">Issue Details<br>
                     </p>
                 </div>
-                <div style="text-align: center; padding-top:-45px;margin-top:10px; font-size:9px;">
-                    <p style="font-size: 10pt;">  Demand Store : {{$indents[0]->demand_store_name}}<br>
-                    </p>
-                </div>
-               
             </div>
         </div>
             <div class="column1">
                 <p style="text-align: right; font-size:12px;">
-                    Report # C_B_01A <br>
+                    Report # C_C_04A <br>
                 </p>
             </div>
         </div>
         <div style="margin-left:5px; margin-top:20px; display:block;">
             <div class="report_params_areas" style="float:left;height:20px;width:50%">
-                <span style="text-align: right; font-size:12px"><b> Indent No: </b>{{$indents[0]->indentNo}}</span>
+                <span style="text-align: right; font-size:12px"><b> Issue Date: </b>{{Date('d-m-Y',strtotime($issues[0]->issueDate ?? ''))}}</span>
             </div>
             <div class="report_params_areas" style="float:right;height:20px;width:45%;text-align:right; margin-right:5px;">
-                <span style="text-align: right; font-size:12px"><strong>Print: </strong>{{ Date('d-m-Y h:i:s A')}}</span>
+                <span style="text-align: right; font-size:12px"><strong>Print: </strong>{{ Date('d-m-Y h:i:s A') ?? ''}}</span>
             </div>
             <div class="report_params_areas" style="float:left;height:20px;width:100%">
-                <span style="text-align: right; font-size:12px"><b> Indent To: </b>{{$indents[0]->toStoreName}}</span>
+                <span style="text-align: right; font-size:12px"><b> Indent/Product Requisition No : </b>{{$issues[0]->indentNumber ?? ''}}</span>
                 <br>
             </div>
-            <div class="report_params_areas" style="float:left;height:20px;width:100%">
-                <span style="text-align: right; font-size:12px"><b>Indent Date: </b>{{Date('d-m-Y',strtotime($indents[0]->indentDate))}}</span>
+            <!-- <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                <span style="text-align: right; font-size:12px"><b>Indent/Product Requisition No :</b>{{Date('d-m-Y',strtotime($issues[0]->indentDate ?? ''))}}</span>
                 <br>
-            </div>
+            </div> -->
         </div>
         <div style="display:block;">
         <table width="100%" style="display:block; margin-top: 10px;">
@@ -267,48 +276,45 @@
                     <th style="text-align: center; color: rgb(255,255,255);">SL</th>
                     <th style="text-align: center; color: rgb(255,255,255);">Item Name</th>
                     <th style="text-align: center; color: rgb(255,255,255);">Item Name Bn</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">UOM</th>
                     <th style="text-align: center; color: rgb(255,255,255);">Qty</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Price</th>
-                    <th style="text-align: center; color: rgb(255,255,255); font-size:9px;">Total Amount</th>
-                    <th style="text-align: center; color: rgb(255,255,255); font-size:8px;">Remarks</th>
+                    <th style="text-align: center; color: rgb(255,255,255);">UOM</th>
+                    <th style="text-align: center; color: rgb(255,255,255);">Price(BDT)</th>
+                    <th style="text-align: center; color: rgb(255,255,255);">Amount(BDT)</th>
+                    <th style="text-align: center; color: rgb(255,255,255);">Remarks</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($indents as $key=>$indent)
+                @foreach($issues as $key=>$data)
                 <tr>
-                    <td style="text-align: center;" width="8%">{{$key+1}}</td>
-                    <td style="text-align: left;" width="15%">{{$indent->itemName}}</td>
-                    <td style="text-align: left;font-size:12px;" width="15%">{{$indent->itemNameBn}}</td>
-                    <td style="text-align: center;" width="10%">{{$indent->uom}}</td>
-                    <td style="text-align: center;" width="10%">{{$indent->indentQty}}</td>
-                    <td style="text-align: center;" width="10%">{{$indent->current_rate}}</td>
-                    <td style="text-align: center;" width="10%">{{ number_format($indent->current_rate * $indent->indentQty,2) }}</td>
-                    <td style="text-align: left;" width="10%">{{$indent->remarks}}</td>
+                    <td style="text-align: center;">{{$key+1}}</td>
+                    <td style="text-align: left;" >{{$data->itemName}}</td>
+                    <td style="text-align: left;" >{{$data->itemNameBn ?? ''}}</td>
+                    <td style="text-align: center;">{{$data->qty}}</td>
+                    <td style="text-align: center;">{{$data->uom}}</td>
+                    <td style="text-align: right;">{{number_format($data->rate, 2, '.', ',')}}</td>
+                    <td style="text-align: right;">{{number_format($data->amount, 2, '.', ',')}}</td>
+                    <td style="text-align: left;">{{$data->remarks}}</td>
                 </tr>
                 @endforeach
                 <tr style="border-bottom: 1px solid black;">
-                    <td style="text-align: right;"colspan ="6"><strong>Total: </strong></td>
-                    <td style="text-align: center;"><strong>{{
-                        number_format(collect($indents)->sum(function($q){
-                            return $q->indentQty * $q->current_rate;
-                        })
-                        ,2)
-                    }}</strong></td>
+                    <td style="text-align: right;"colspan ="3"><strong>Total: </strong></td>
+                    <td style="text-align: center;"><b>{{number_format(collect($issues)->sum('qty'), 2, '.', ',')}}</b></td>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align: right;"><strong>{{number_format(collect($issues)->sum('amount'), 2, '.', ',')}}</strong></td>
                     <td></td>
                 </tr>
             </tbody>
         </table>
-        </div>
-        <div class="footer" style="font-size: x-small;">
+        <div class="footer" style="margin-left: 20px; font-size: x-small;">
             <div class="sig">
-               {{ $indents[0]->submitted_by}} <p> ____________________________<br> Submitted By</p>
+                <p>____________________________<br> Submitted By</p>
             </div>
             <div class="sig">
-                .<p>____________________________<br> Recommended By</p>
+                <p>____________________________<br> Recommended By</p>
             </div>
             <div class="sig">
-                .<p>____________________________<br> Approved By</p>
+                <p>____________________________<br> Approved By</p>
             </div>
         </div>
         <htmlpagefooter name="page-footer">

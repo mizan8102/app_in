@@ -79,29 +79,26 @@ class ReceivedRawMaterialController extends Controller
 
         $newItemsArray = [];
         foreach ($request->item_row as $key => $value) {
-            $total_amount_local_curr = $value->lineTotal;
-            $total_receive_amount += $total_amount_local_curr;
-            $item_info = DB::table('var_item_info_bb')->find($value['item_info_id']);
-            $newitem['item_info_id'] = $value['item_info_id'];
-            $newitem['gate_rcv_qty'] = $value['gate_recv_qty'];
-            $newitem['uom_id'] = 2;
-            $newitem['uom_code'] = 'Pcs';
-            $newitem['rel_factor'] = DB::table('5m_sv_uom')->find(2)->relative_factor;
-            $newitem['vat_payment_method_id'] = 1;
-            $newitem['item_cat_retail_id'] = 2;
-            $newitem['gate_rcv_qty'] = $value['gate_recv_qty'];
-            $newitem['rcv_qty'] = $value['recv_quantity'];
-            $newitem['rcv_adjt_qty'] = 0;
-            $newitem['rcv_rate'] = $value['po_rate'];
-            $newitem['rcv_ass_value_trans_curr'] = $value['po_rate'] * $value['recv_quantity'];
-            $newitem['rcv_value_wotax_trans_curr'] = $value['po_rate'] * $value['recv_quantity'];
-            $newitem['rcv_value_wotax_local_curr'] = $value['po_rate'] * $value['recv_quantity'];
-            $newitem['vat_rate_type_id'] = 1;
-            $newitem['is_fixed_rate'] = 1;
-            $newitem['fixed_rate'] = 1;
-            $newitem['is_fixed_uom_id'] = 1;
-            $newitem['cd_percent'] = 2;
-            $newitem['cd_amount'] = 1;
+            $newitem['item_info_id']            = $value['itemId'];
+            $newitem['gate_rcv_qty']            = $value['recv_qty'];
+            $newitem['uom_id']                  = $value['uom_id'];
+            $newitem['uom_code']                = $value['uom_short_code'];
+            $newitem['rel_factor']              = $value['relative_factor'];
+            $newitem['vat_payment_method_id']   = 1;
+            $newitem['item_cat_retail_id']      = 2;
+            $newitem['gate_rcv_qty']            = $value['recv_qty'];
+            $newitem['rcv_qty']                 = "";
+            $newitem['rcv_adjt_qty']            = 0;
+            $newitem['rcv_rate']                = $value['orderRate'];
+            $newitem['rcv_ass_value_trans_curr']    = $value['lineTotal'];
+            $newitem['rcv_value_wotax_trans_curr']  = $value['lineTotal'];
+            $newitem['rcv_value_wotax_local_curr']  = $value['lineTotal'];
+            $newitem['vat_rate_type_id']        = 1;
+            $newitem['is_fixed_rate']           = 1;
+            $newitem['fixed_rate']              = 1;
+            $newitem['is_fixed_uom_id']         = 1;
+            $newitem['cd_percent']              = 2;
+            $newitem['cd_amount']               = 1;
             $newitem['rd_percent'] = 1;
             $newitem['rd_amount'] = 1;
             $newitem['sd_percent'] = 1;
@@ -112,13 +109,13 @@ class ReceivedRawMaterialController extends Controller
             $newitem['at_amount'] = 1;
             $newitem['ait_percent'] = 1;
             $newitem['ait_amount'] = 1;
-            $newitem['total_amt_trans_curr'] = $value['po_rate'] * $value['recv_quantity'];
-            $newitem['total_amt_local_curr'] = $value['po_rate'] * $value['recv_quantity'];
-            $newitem['total_ass_value_local_curr'] = $value['po_rate'] * $value['recv_quantity'];
+            $newitem['total_amt_trans_curr'] = $value['lineTotal'];
+            $newitem['total_amt_local_curr'] = $value['lineTotal'];
+            $newitem['total_ass_value_local_curr'] = $value['lineTotal'];
             $newitem['gate_entry_at'] = now()->format('Y-m-d H:m:s');
             $newitem['gate_entry_by'] = 1;
-            $newitem['opening_stock_remarks'] = $request->purchaseOrder['remarks'] ?: null;
-            $newItemsArray[] = $newitem;
+            // $newitem['opening_stock_remarks'] = $value['remarks'] ?: null;
+            $newItemsArray[] = $newitem;itm_mstr_grp_name
         }
         $childArray = json_encode(['chileItem' => $newItemsArray]);
 
@@ -130,7 +127,7 @@ class ReceivedRawMaterialController extends Controller
                 'tranSrcTypeID'             => $tansSrcTypeId,
                 'tranTypeID'                => $tranTypeID,
                 'tranSubTypeID'             => "",
-                'prodTypeId'                => "",
+                'prodTypeId'                => 2,
                 'itemCatRetailID'           => 1,
                 'vatRebTypeID'              => $vatRebTypeID,
                 'vatRateTypeID'             => 1,
@@ -150,8 +147,8 @@ class ReceivedRawMaterialController extends Controller
                 'fiscalYearID'              => 1,
                 'vatMonthID'                => 1,
                 'grnDate'                   => now()->format('Y-m-d'),
-                'grnNo'                     => "",
-                'grnNoBn'                   => "",
+                'grnNo'                     => "0",
+                'grnNoBn'                   => "0",
                 'portDischargeID'           => 1,
                 'challanDate'               => date('Y-m-d',strtotime($request->chalan_date)),
                 'challanNum'                => 1,
@@ -181,7 +178,7 @@ class ReceivedRawMaterialController extends Controller
         );
 
             DB::commit();
-            return response()->json('Books has been collected from Publisher', 200);
+            return response()->json('receive create successful', 200);
         } catch (Throwable $th) {
             return response()->json($th->getMessage(), 500);
         }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Inventory;
 
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InventoryIndentRequest;
 use App\Models\CsCompanyStoreLocation;

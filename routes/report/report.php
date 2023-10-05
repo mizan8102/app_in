@@ -30,7 +30,7 @@ Route::prefix('report')->group(function () {
 
     //antu
     Route::get('item-wise-daily-sell', [ItemWiseDailySellController::class, 'itemWiseDailySell']);
-    Route::get('order-wise-daily-sell', [OrderWiseDailySellController::class, 'orderWiseDailySell']);
+    Route::get('/order-wise-daily-sell', [OrderWiseDailySellController::class, 'orderWiseDailySell']);
     Route::get('waiter-wise-sell', [WaiterWiseSellController::class, 'waiterWiseSell']);
     Route::get('waiter-wise-daily-sell', [WaiterWiseDailySellController::class, 'waiterWisedailySell']);
     Route::get('kitchen-wise-sell', [KitchenWiseSellController::class, 'kitchenWiseSell']);
@@ -52,7 +52,7 @@ Route::prefix('report')->group(function () {
     Route::get('/money-receipt', [MRController::class, 'mReceipt']);
     // Indent
     Route::get('/indent-report', [IndentController::class, 'indentReport']);
-    Route::get('/indent-summery', [IndentController::class, 'indentSummery']);
+    Route::get('/indent-summery', [IndentController::class, 'indentSummeryPdf']);
     // product requisition
     Route::get('/product-requisition', [ProductController::class, 'productRequisition']);
     Route::get('/requisition-summery', [ProductController::class, 'requisitionSummery']);
@@ -62,11 +62,11 @@ Route::prefix('report')->group(function () {
     Route::get('/purchase-order', [PurchaseController::class, 'purchaseOrder']);
     Route::get('/purchase-order-summery', [PurchaseController::class, 'purchaseOrderSummery']);
     //issue
-    Route::get('/issue-details', [IssueController::class, 'issueDetails']);
-    Route::get('/issue-summery', [IssueController::class, 'issueSummery']);
+    Route::get('/issue-details', [IssueController::class, 'issueDetailsPdf']);
+    Route::get('/issue-summery', [IssueController::class, 'issueSummeryPdf']);
     Route::get('/issue-return', [IssueController::class, 'issueReturn']);
     //Receive
-    Route::get('/receive-summery', [ReceiveController::class, 'receiveSummery']);
+    Route::get('/receive-summary', [ReceiveController::class, 'receiveSummaryPdf']);
     //item
     Route::get('/item-stock-summery', [ItemController::class, 'itemStockSummery']);
     Route::get('/Report_C_02A_01_opening_balance_info', [OpeningStockSummaryController::class, 'openingBalanceReceive']);
@@ -88,7 +88,6 @@ Route::prefix('report')->group(function () {
     Route::get('/C_01D',[DailySellsSummaryController::class,'consumptionPdf']);
     Route::get('/Report_C_B_01A2', [CommercialInvoiceController::class, 'eventManagement']);
     Route::get('/A_01', [ItemWiseDailySellController::class, 'itemWiseDailySell']);
-    Route::get('/A_02', [OrderWiseDailySellController::class, 'orderWiseDailySell']);
     Route::get('/9C_B_01A-pdf', [IndentController::class, 'indentReportTwoPdf']);
     Route::get('/C_B_01A-pdf', [IndentController::class, 'indentReportPdf']);
 

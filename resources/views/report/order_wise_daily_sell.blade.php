@@ -347,13 +347,13 @@
             <div style="margin-left:5px; margin-top:20px; display:block;">
 
                 <div class="report_params_areas" style="float:left;height:20px;width:50%">
-                    <span style="text-align: right; font-size:12px"><b> From Date: </b>{{Date('d-m-Y',strtotime(request('fromDate')))}}</span>
+                    <span style="text-align: right; font-size:12px"><b> From Date: </b>{{Date('d-m-Y',strtotime(request('from')))}}</span>
                 </div>
                 <div class="report_params_areas" style="float:right;height:20px;width:45%;text-align:right;margin-right:5px;">
                     <span style="text-align: right; font-size:12px"><strong>Print: </strong>{{ Date('d-m-Y h:i:s A')}}</span>
                 </div>
                 <div class="report_params_areas" style="float:left;height:20px;width:100%">
-                    <span style="text-align: right; font-size:12px"><b> To Date: </b>{{Date('d-m-Y',strtotime(request('toDate')))}}</span>
+                    <span style="text-align: right; font-size:12px"><b> To Date: </b>{{Date('d-m-Y',strtotime(request('to')))}}</span>
                     <br>
                 </div>
                 <div class="report_params_areas" style="float:left;height:20px;width:100%">

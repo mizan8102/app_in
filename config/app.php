@@ -198,6 +198,11 @@ return [
         Mccarlosen\LaravelMpdf\LaravelMpdfServiceProvider::class,
         Milon\Barcode\BarcodeServiceProvider::class,
 
+
+        // Receive provider 
+        App\Providers\ReceiveServiceProvider::class,
+
+
     ],
 
     /*

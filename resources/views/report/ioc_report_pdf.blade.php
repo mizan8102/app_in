@@ -11,7 +11,7 @@
             margin-bottom: 30mm;
         }
     body{
-        font-family: 'Times New Roman','nikosh', Times, serif;
+        font-family: 'Nikosh';
     }
     .m-0{
         margin: 0px;
@@ -241,7 +241,7 @@
         </div>
             <div class="column1">
                 <p style="text-align: right; font-size:12px;">
-                    Report # C_B_01A <br>
+                    Report # C_01A <br>
                 </p>
             </div>
         </div>
@@ -256,7 +256,7 @@
                 <span style="text-align: right; font-size:12px">Print: {{ Date('d-m-Y h:i:s A')}}</span>
             </div>
             <div class="report_params_areas" style="float:left;height:20px;width:100%">
-                <span style="text-align: right; font-size:12px">Effective Date: {{ $data['iocMaster']->effectiveDate }}</span>
+                <span style="text-align: right; font-size:12px">Effective Date:  {{Date('d-m-Y',strtotime($data['iocMaster']->effectiveDate))}}</span>
                 <br>
             </div>
             <div class="report_params_areas" style="float:left;height:20px;width:100%">
@@ -284,9 +284,10 @@
                             <th style="text-align: center; color: rgb(255,255,255);">Item Name</th>
                             <th style="text-align: center; color: rgb(255,255,255);">UOM</th>
                             <th style="text-align: center; color: rgb(255,255,255);">Qty</th>
-                            <th style="text-align: center; color: rgb(255,255,255);">SU Qty</th>
+                            <th style="text-align: center; color: rgb(255,255,255);">IOC Qty</th>
+                            <th style="text-align: center; color: rgb(255,255,255);">IOC Rate</th>
                             <th style="text-align: center; color: rgb(255,255,255);">IOC Cost</th>
-                            <th style="text-align: center; color: rgb(255,255,255);">Total Cost</th>
+                            <th style="text-align: center; color: rgb(255,255,255);">Calculation Cost</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -311,6 +312,7 @@
                                 <td style="text-align: center;" >{{ $detail->consumption }} </td>
                                 <td style="text-align: center;" >{{ $detail->consumption_single_unit }} </td>
                                 <td style="text-align: right;" >{{ $detail->iocAmount  }} </td>
+                                <td style="text-align: right;" >{{ $detail->iocAmount  }} </td>
                                 <td style="text-align: right;" >{{ $detail->totalAmount }} </td>
                             </tr>
                             @php
@@ -324,14 +326,14 @@
                         @endforeach
                             <tr>
                                 <td style="text-align: center;" colspan="3">Total</td>
-                                <td style="text-align: center;" >{{ number_format($totalConmpQty) }} </td>
-                                <td style="text-align: center;" >{{ number_format($totalConmSingleUnit) }} </td>
+                                <td style="text-align: center;" ></td>
+                                <td style="text-align: center;" ></td>
                                 <td style="text-align: right;" >{{ number_format($totalcost,2) }} </td>
                                 <td style="text-align: right;" >{{ number_format($grnadTotalcost,2) }} </td>
                             </tr>
                     </tbody>
                 </table>
-                <p style="font-size:15px;text-align:center;margin:0px">Input Service</p>
+                <!-- <p style="font-size:15px;text-align:center;margin:0px">Input Service</p>
                 <table width="100%" style="display:block; margin-top: 0px;">
                     <thead>
                         <tr style="background-color: rgb(3,73,91);">
@@ -400,7 +402,7 @@
                                 
                             </tr>
                     </tbody>
-                </table>
+                </table> -->
             </div>
 
             <div class="abc">

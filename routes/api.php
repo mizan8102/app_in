@@ -104,16 +104,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // house keeping
     require __DIR__ . '/house_keeping/index.php';
     // new event/program part
-    require __DIR__.'/event/index.php';
+    require __DIR__ . '/event/index.php';
     // cottage
-    require __DIR__.'/cottage/index.php';
+    require __DIR__ . '/cottage/index.php';
     // khajna 
-    require __DIR__.'/khajna/index.php';
+    require __DIR__ . '/khajna/index.php';
 
-    Route::get('/contact_info_get_by_number/{id}',[CottageController::class,'contact_info_get']);
+    // receive gate 
+    require __DIR__ . '/Receive/ReceiveGate.php';
+
+    Route::get('/contact_info_get_by_number/{id}', [CottageController::class, 'contact_info_get']);
     //old _ program part
     Route::get('/programinit', [ProgramController::class, 'initialize']);
-    Route::get('/storeWiseItem', [ProgramController::class,'storeWiseItem']);
+    Route::get('/storeWiseItem', [ProgramController::class, 'storeWiseItem']);
     Route::get('/programMenuget', [ProgramController::class, 'programMenuget']);
     Route::get('/currentprogram', [ProgramController::class, 'currentprogram']);
     Route::resource('/customer', CustomerController::class);
@@ -331,7 +334,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::resource('/entrance', EntranceTicketController::class);
     });
     Route::prefix('housekeeping')->group(function () {
-        Route::get('init_store_item_mapping',[ReportStoreWiseItemListController::class,'init_store_item_mapping']);
+        Route::get('init_store_item_mapping', [ReportStoreWiseItemListController::class, 'init_store_item_mapping']);
         Route::resource('category', ProductCategoryController::class);
         Route::resource('type', ProductTypeController::class);
         Route::resource('mastergroup', ProductMasterGroupController::class);
@@ -355,7 +358,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
         Route::resource('user-store-mapping', UserStoreMapppingController::class);
         Route::resource('item-store-mapping', StoreItemMappingController::class);
-        Route::get('item-store-mapping/indexNew',[StoreItemMappingController::class,'indexNew']);
+        Route::get('item-store-mapping/indexNew', [StoreItemMappingController::class, 'indexNew']);
         Route::resource('store-location', StoreLocationController::class);
         Route::resource('user-roles', UserRolesController::class);
         Route::resource('rooms', RoomController::class);
@@ -363,21 +366,22 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::resource('table', TableController::class);
 
         Route::resource('uom', HouseKeepingUOMController::class);
-
     });
 
     //init for report 
     Route::prefix('report')->group(function () {
-        Route::get('/initProcedure/{procedureName}',[InitProcedureController::class,'callStoredProcedures']);
-     Route::get('/store',[ReportInitDataController::class,'Store']);
+        Route::get('/initProcedure/{procedureName}', [InitProcedureController::class, 'callStoredProcedures']);
+        Route::get('/store', [ReportInitDataController::class, 'Store']);
+        Route::get('/c_03b_api_fetch_data', [App\Http\Controllers\report\ReceiveSummary::class, 'c0bReceive']);
+        Route::get('/indent', [App\Http\Controllers\report\IndentController::class, 'indents']);
+        Route::get('/purchase', [App\Http\Controllers\report\PurchaseController::class, 'purchases']);
     });
-
 });
 
 Route::post('/login', [AuthController::class, 'login']);
 
- require __DIR__.'/report/report_api.php';
- Route::prefix('ticket_api')->group(function () {
+require __DIR__ . '/report/report_api.php';
+Route::prefix('ticket_api')->group(function () {
     //// desktop app
     Route::post('/login', [DesktopAppController::class, 'DesktopAppLogin']);
     Route::get('/get-pos-item-list', [DesktopAppController::class, 'getPOSItemList']);
@@ -469,9 +473,9 @@ Route::prefix('report')->group(function () {
         Route::get('getSummary', [ReportIssueReturnController::class, 'getSummary']);
         Route::get('getSummaryPDF', [ReportIssueReturnController::class, 'getSummaryPDF']);
     });
-    Route::prefix('storeWiseItem')->group(function(){
-        Route::get('/index',[ReportStoreWiseItemListController::class,'index']);
-        Route::get('/getById',[ReportStoreWiseItemListController::class,'getById']);
-        Route::get('/getByIdPDF',[ReportStoreWiseItemListController::class,'getByIdPDF']);
+    Route::prefix('storeWiseItem')->group(function () {
+        Route::get('/index', [ReportStoreWiseItemListController::class, 'index']);
+        Route::get('/getById', [ReportStoreWiseItemListController::class, 'getById']);
+        Route::get('/getByIdPDF', [ReportStoreWiseItemListController::class, 'getByIdPDF']);
     });
 });

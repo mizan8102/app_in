@@ -58,14 +58,6 @@ class PurchaseOrderController extends Controller
             $i++;
         }
 
-        // $item=PurchaseReqMaster::select('trns00c_purchase_req_master.*','var_item_master_group.itm_mstr_grp_name','5f_sv_product_type.prod_cat_id',
-        // 'var_item_master_group.prod_type_id'
-        // )
-        // ->leftJoin('var_item_master_group','var_item_master_group.id','trns00c_purchase_req_master.master_group_id')
-        // ->leftJoin('5f_sv_product_type','5f_sv_product_type.id','var_item_master_group.prod_type_id')
-        // ->where('trns00c_purchase_req_master.approved_status',0)
-        // ->orderBy('var_item_master_group.id','ASC')->get();
-
         $po= PurchaseOrder::leftJoin('cs_supplier_details','cs_supplier_details.id','supplier_id')
         ->select('trns00e_purchase_order_master.*','cs_supplier_details.supplier_name')
         ->where('purchase_order_number','like', "%{$search}%")

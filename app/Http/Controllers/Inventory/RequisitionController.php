@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Inventory;
 
+
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Models\CsCompanyStoreLocation;

@@ -328,6 +328,7 @@ class CommercialInvoiceController extends Controller
             foreach ($menuitem as $item => $key) {
                 $menuprograms[$m]['ItemId'] = $key->ItemId;
                 $menuprograms[$m]['ItemName'] = $key->ItemName;
+                $menuprograms[$m]['ItemNameBn'] = $key->ItemNameBn;
                 $menuprograms[$m]['UomCode'] = $key->UomCode;
                 $menuprograms[$m]['OrderQty'] = $key->OrderQty;
                 $menuprograms[$m]['ItemRate'] = $key->ItemRate;

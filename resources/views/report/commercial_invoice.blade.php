@@ -639,6 +639,10 @@
             </tbody>
         </table>
         @endif
+        <p style="text-align: center; font-size:16px; padding: 5px 5px 5px 5px; border: 2px solid black;
+            width:15%;
+            float:right;
+            margin-right:5px;"><span><strong>{{ $result['parent'][0]->OrderStatusType}}</strong></p>
         <div class="footer">
             <p style="font-size:10px;">
                 *Terms and Condition
@@ -647,8 +651,7 @@
                     <li>Program/Party can not be changed after booking.</li>
                     <li>You can not reduce the guest quantity after booking a program or party.</li>
                     <li>Chiklee authorities can change/cancel the party with acknowledgement.</li>
-                    <li>Without card (contain QR code) validation no huests will not enter into the park.</li>
-                </0l>
+                </ol>
             </p>
             <p style="font-size:10px; margin-left:150px;">**This commercial invoice is elctronically generated! Signature is not required.</p>
         </div>

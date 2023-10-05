@@ -393,8 +393,8 @@
         <div class="rowhead" style="none">
             <div class="invoice">
                 <img class="logo" src="{{ asset('logo/logo.png')}}" alt="no image"><P style="margin-left:20px; font-size:12px;"><strong><br></p>
-                <p style="font-size:12px; margin-left:18px;">
-                    <!-- <span style="font-weight:bold;"> {{ $result['parent'][0]->CustomerName }}<br></span> -->
+                <p style="font-size:12px; margin-left:18px;">Customer Name: 
+                    <span> {{ $result['parent'][0]->CustomerName }}<br></span> 
                     Contact Person Name: {{ $result['parent'][0]->ContactPersonName }}<br>
                     Phone: {{ $result['parent'][0]->CustomerPhone }}<br>
                     Program Name:{{ $result['parent'][0]->ProgramName }}<br>
@@ -405,14 +405,14 @@
                 <div class="head_middle">
                     <p style="font-size: 10pt;">
                         <strong>Chiklee Water Park</strong>
-                        <br>Event Management Report
+                        <br>Indent Against Event Report
                     </p>
                 </div>
             </div>
             <div class="invoice">
                 <img class="qrcode" src="https://cdn-icons-png.flaticon.com/512/241/241521.png" alt="">
                 <p style="text-align: right; font-size:12px;">Program Type: {{ $result['parent'][0]->ProgramTypeName }} <br>
-                    Program Date:{{ $result['parent'][0]->ProgramDate }} <br>
+                    Program Date:{{Date('d-m-Y',strtotime($result['parent'][0]->ProgramDate))}}<br>
                     Program Time: {{ $result['parent'][0]->ProgramSessionName }}
                     ({{ $result['parent'][0]->ProgramStartTime }}
                     {{ $result['parent'][0]->ProgramEndTime }})
@@ -431,16 +431,17 @@
                 <tr style="background-color: rgb(3,73,91);">
                 <th style="text-align: center; color: rgb(255,255,255);">SL</th>
                 <th style="text-align: center; color: rgb(255,255,255);">Item Name</th>
+                <th style="text-align: center; color: rgb(255,255,255);">Item Name Bn</th>
                 <th style="text-align: center; color: rgb(255,255,255);">UOM</th>
-                <t
-                h style="text-align: center; color: rgb(255,255,255);">Qty</th>
+                <th style="text-align: center; color: rgb(255,255,255);">Qty</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($result['menu'] as $key => $data)
                     <tr>
-                        <td style="text-align: center;">{{$key+1}}</td>
-                        <td style="text-align: left; font-size:14px;" width="20%">{{$data['ItemName']}}</td>
+                        <td style="text-align: center;" width="5%">{{$key+1}}</td>
+                        <td style="text-align: left;" width="35%">{{$data['ItemName']}}</td>
+                        <td style="text-align: left; font-size:14px;" width="35%">{{$data['ItemNameBn']}}</td>
                         <td style="text-align: center;">{{$data['UomCode']}}</td>
                         <td style="text-align: center;">{{$data['OrderQty']}}</td>
                     </tr>
@@ -456,7 +457,7 @@
             <th style="text-align: center; color: rgb(255,255,255);">Item Name Bn</th>
             <th style="text-align: center; color: rgb(255,255,255);">UOM</th>
             <th style="text-align: center; color: rgb(255,255,255);">Qty</th>
-            <th style="text-align: center; color: rgb(255,255,255);">Price</th>
+            <th style="text-align: center; color: rgb(255,255,255);">Price(BDT)</th>
             <th style="text-align: center; color: rgb(255,255,255);">Total Amount(BDT)</th>
             <th style="text-align: center; color: rgb(255,255,255);">Remarks</th>
         </tr>
@@ -468,7 +469,7 @@
         @foreach($events as $key => $indent)
             @if($previousMasterGroup != $indent->MasterGroupName)
                 <tr style="background-color: rgb(200,200,200);">
-                    <td colspan="9"><strong>Master Group: {{$indent->MasterGroupName}}</strong></td>
+                    <td colspan="8"><strong>Master Group: {{$indent->MasterGroupName}}</strong></td>
                 </tr>
                 @php
                     $previousMasterGroup = $indent->MasterGroupName;
@@ -481,32 +482,17 @@
                 <td style="text-align: center;">{{$indent->Uom ?? ''}}</td>
                 <td style="text-align: center;">{{$indent->Quantity ?? ''}}</td>
                 <td style="text-align: center;">{{$indent->Rate ?? ''}}</td>
-                <td style="text-align: center;">{{$indent->Amount ?? ''}}</td>
+                <td style="text-align: center;">{{$indent->Amount , 2, '.', ','}}</td>
                 <td style="text-align: left;">{{$indent->remarks ?? ''}}</td>
             </tr>
         @endforeach
         <tr style="border-bottom: 1px solid black;">
             <td style="text-align: right;" colspan="6"><strong>Total: </strong></td>
-            <td style="text-align: center;"><strong>{{number_format(collect($events)->sum('Amount')) ?? ''}}</strong></td>
+            <td style="text-align: center;"><strong>{{number_format(collect($events)->sum('Amount'), 2, '.', ',') ?? ''}}</strong></td>
             <td></td>
         </tr>
     </tbody>
 </table>
-
-
-        <div class="footer">
-            <p style="font-size:10px;">
-                *Terms and Condition
-                <br>
-                <ol style="font-size:11px;">
-                    <li>Program/Party can not be changed after booking.</li>
-                    <li>You can not reduce the guest quantity after booking a program or party.</li>
-                    <li>Chiklee authorities can change/cancel the party with acknowledgement.</li>
-                    <li>Without card (contain QR code) validation no huests will not enter into the park.</li>
-                </0l>
-            </p>
-            <p style="font-size:10px; margin-left:150px;">**This commercial invoice is elctronically generated! Signature is not required.</p>
-        </div>
         <htmlpagefooter name="page-footer">
             <div class="rowfooter" style="none">
                 <div class="columnfooter">

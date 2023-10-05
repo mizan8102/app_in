@@ -11,7 +11,7 @@
     }
 
     body {
-        font-family: 'Times New Roman', Times, serif;
+        font-family: 'Nikosh';
     }
 
     .m-0 {
@@ -300,19 +300,18 @@
     <div style="margin-left:3px; margin-top:20px;">
         <p style="text-align: left; font-size: 12px">
             <b>Purchase Order No:</b> {{ request()->input('no') }}<br>
-            <b>PO Date:</b> {{ $pos[0]->poDate }}<br>
-            <b>To: {{ $pos[0]->supplierName }}</b> <br>
+            <b>PO Date:</b> {{Date('d-m-Y',strtotime($pos[0]->poDate ?? ''))}}<br>
+            <b>To: </b>{{ $pos[0]->supplierName }} <br>
             <span>
-                Name: {{ $pos[0]->supplierName }}<br>
-                Address: {{ $pos[0]->supplierAddress }}<br>
-                Mobile No: +088097388o21<br>
+                <b>Address: </b>{{ $pos[0]->supplierAddress }}<br>
+                <b>Mobile No: </b>{{ $pos[0]->phone }}<br>
             </span>
         </p>
-        <div class="columne" style="text-align:left; float:left; margin-right:10px; font-size: 12px;">
+        <div class="columne" style="text-align:right; float:left; margin-right:10px; font-size: 12px;">
             <p style="padding-top: -25px;">
-                <strong>Delivery Point: {{ $pos[0]->deliveryPoint }}</strong><br>
-                <strong>Delivery Date: {{ $pos[0]->deliveryDate }}</strong><br>
-                <span><strong>Pay Tarm: </strong>{{ $pos[0]->payTerm }}</span><br>
+                <strong>Delivery Point: {{ $pos[0]->delivary_store }}</strong><br>
+                <strong>Delivery Date: </strong>{{Date('d-m-Y',strtotime($pos[0]->deliveryDate ?? ''))}}<br>
+                <span><strong>Pay Tarm: </strong>{{ $pos[0]->paymode_name }}</span><br>
                 <strong>Print: </strong>
                 @php
                 $mytime = Carbon\Carbon::now()->format ('d-m-Y h:i A');
@@ -321,11 +320,19 @@
             </p>
         </div>
     </div>
-    <table width="100%" style="margin-top:90px;">
+        <div style="font-size:x-medium">
+                <p style="margin-left: 4px; margin-top: 40px;">
+                    <b> Master Group: {{ $pos[0]->masterGroup }}</b><br>
+                </p>
+        </div>
+   
+   
+    <table width="100%" style="margin-top:0px;">
         <thead>
             <tr style="background-color: rgb(3,73,91);">
                 <th style="text-align: center; color: rgb(255,255,255);">SL</th>
                 <th style="text-align: center; color: rgb(255,255,255);">Item Name</th>
+                <th style="text-align: center; color: rgb(255,255,255);">Item Name Bn</th>
                 <th style="text-align: center; color: rgb(255,255,255);">Qty</th>
                 <th style="text-align: center; color: rgb(255,255,255);">UOM</th>
                 <th style="text-align: center; color: rgb(255,255,255);">Price(BDT)</th>
@@ -338,6 +345,7 @@
             <tr>
                 <td style="text-align: center;">{{ $key+1 }}</td>
                 <td style="text-align: left;">{{ $item->itemName }}</td>
+                <td style="text-align: left; font-size:14px;">{{ $item->itemNameBn }}</td>
                 <td style="text-align: center;">{{ $item->poQty }}</td>
                 <td style="text-align: center;">{{ $item->uom }}</td>
                 <td style="text-align: right;">{{number_format($item->poRate, 2, '.', ',')}}</td>
@@ -346,15 +354,14 @@
             </tr>
             @endforeach
             <tr style="border-bottom: 1px solid black;">
-                <td style="text-align: right;" colspan="2"><strong>Total: </strong></td>
-                <td style="text-align: center;"><b>5</b></td>
+                <td style="text-align: right;" colspan="6"><strong>Total: </strong></td>
                 @php
                 $total = 0;
                 foreach ($pos as $item) {
                 $total += $item->poAmount;
                 }
                 @endphp
-                <td style="text-align: right;" colspan="3"><strong>
+                <td style="text-align: right;" colspan="0"><strong>
                         {{number_format($total, 2, '.', ',')}}</strong>
                 </td>
                 <td></td>
@@ -376,8 +383,10 @@
     </div> -->
     <div class="footer" style="margin-left: 20px; font-size: x-small;">
         <div class="sig">
+        {{ $pos[0]->name }}
             <p>____________________________<br> Submitted By</p>
         </div>
+        
         <div class="sig">
             <p>____________________________<br> Recommended By</p>
         </div>

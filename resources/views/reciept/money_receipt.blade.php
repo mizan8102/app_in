@@ -222,7 +222,7 @@
 
             background: url('{{ asset('logo/logo.png') }}');
             /* background: url('/bg.jpg'); */
-            background-size: 60% 55%;
+            background-size: 50% 58%;
             background-repeat: no-repeat;
             background-position: center center;
             background-image-opacity: 0.2;
@@ -311,7 +311,7 @@
                                 <p style="font-size: 8pt; margin-left:30px;">Chiriyakhana Road, Islampur. Honuman Tola, Rangpur, Bangladesh.<br>
                                     Phone: 01762-620404, Email: service@nature-aquatics.com
                                 </p>
-                                <p class="mr"><strong>Money ReceiptWater</strong></p>
+                                <p class="mr"><strong>Money Receipt</strong></p>
                             </div>
                         </div>
                     </div>

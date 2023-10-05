@@ -4,10 +4,10 @@ namespace App\Models;
 
 use App\Models\RecvChild;
 use App\Models\TransactionSourceType;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class RecvMaster extends Model
@@ -56,4 +56,11 @@ class RecvMaster extends Model
     {
         return $this->belongsTo(SupplierDetail::class, 'supplier_id', 'id');
     }
+
+    public function masterGroup(): HasOne
+    {
+        return $this->hasOne(ItemMasterGroup::class,'id','master_group_id');
+    }
+
+
 }
