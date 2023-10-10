@@ -62,5 +62,9 @@ class RecvMaster extends Model
         return $this->hasOne(ItemMasterGroup::class,'id','master_group_id');
     }
 
+    public function purchaseOrder():HasOne{
+        return $this->hasOne(PurchaseOrder::class,'id','purchase_order_master_id');
+    }
+
 
 }

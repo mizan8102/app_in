@@ -115,7 +115,7 @@ class ReceivedRawMaterialController extends Controller
             $newitem['gate_entry_at'] = now()->format('Y-m-d H:m:s');
             $newitem['gate_entry_by'] = 1;
             // $newitem['opening_stock_remarks'] = $value['remarks'] ?: null;
-            $newItemsArray[] = $newitem;itm_mstr_grp_name
+            $newItemsArray[] = $newitem;
         }
         $childArray = json_encode(['chileItem' => $newItemsArray]);
 

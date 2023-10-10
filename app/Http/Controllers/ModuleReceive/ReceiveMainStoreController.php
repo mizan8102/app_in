@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\ModuleReceive;
 
-use App\Enums\HttpStatusCodeEnum;
 use App\Http\Api\ApiResponseTrait;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Receive\ReceiveGateRequest;
 use App\Interfaces\ReceiveGate;
 use Illuminate\Http\Request;
 
-class ReceiveGateController extends Controller
+class ReceiveMainStoreController extends Controller
 {
+
     private $receiveGate;
 
     use ApiResponseTrait;
@@ -20,26 +20,15 @@ class ReceiveGateController extends Controller
         $this->receiveGate = $receiveGate;
     }
 
-
-
-    public function index(Request $request)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
-        $data = [
-            "search" => $request->input('search', ''),
-            "perPage"  => $request->input('perPage', 10),
-            "supplier_id" => $request->input('supplier_id', ''),
-            "ms" => $request->input('ms', false)
-        ];
-
-        $response = $this->receiveGate->index($data);
-        if ($response) {
-            return $this->successResponse($response, 'Data retrieved successfully');
-        } else {
-            return $this->errorResponse('Failed to retrieve data', HttpStatusCodeEnum::BAD_REQUEST);
-        }
+        //
     }
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -60,7 +49,7 @@ class ReceiveGateController extends Controller
     public function store(ReceiveGateRequest $receiveGateRequest)
     {
         $data  = $receiveGateRequest->validated();
-        $res = $this->receiveGate->store($data, $data['item_row']);
+        $res = $this->receiveGate->ms_store($data, $data['item_row']);
         if ($res) {
             return $this->successResponse($res, "Data retrive successfull");
         } else {
@@ -77,13 +66,7 @@ class ReceiveGateController extends Controller
      */
     public function show($id)
     {
-       
-        $res = $this->receiveGate->show($id);
-        if ($res) {
-            return $this->successResponse($res, "Data retrive successfull");
-        } else {
-            return $this->errorResponse('Failed to retrieve data', HttpStatusCodeEnum::BAD_REQUEST);
-        }
+        //
     }
 
     /**

@@ -6,7 +6,7 @@ use App\Enums\HttpStatusCodeEnum;
 trait ApiResponseTrait
 {
 
-    public function successResponse($data, $message = '', $statusCode = HttpStatusCodeEnum::OK)
+    public function successResponse($data, string $message = '', $statusCode = HttpStatusCodeEnum::OK)
     {
         return response()->json([
             'status' => ApiResponseEnum::SUCCESS,
