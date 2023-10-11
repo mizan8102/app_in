@@ -25,10 +25,10 @@ class ReceiveGateController extends Controller
     public function index(Request $request)
     {
         $data = [
-            "search" => $request->input('search', ''),
-            "perPage"  => $request->input('perPage', 10),
+            "search"    => $request->input('search', ''),
+            "perPage"   => $request->input('perPage', 10),
             "supplier_id" => $request->input('supplier_id', ''),
-            "ms" => $request->input('ms', false)
+            "ms"          => $request->input('ms', false)
         ];
 
         $response = $this->receiveGate->index($data);
@@ -59,8 +59,8 @@ class ReceiveGateController extends Controller
      */
     public function store(ReceiveGateRequest $receiveGateRequest)
     {
-        $data  = $receiveGateRequest->validated();
-        $res = $this->receiveGate->store($data, $data['item_row']);
+        $data   = $receiveGateRequest->validated();
+        $res    = $this->receiveGate->store($data, $data['item_row']);
         if ($res) {
             return $this->successResponse($res, "Data retrive successfull");
         } else {
