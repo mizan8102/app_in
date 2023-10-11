@@ -65,6 +65,7 @@ use App\Http\Controllers\Api\VATRegistrationTypesController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Cottage\CottageController;
 use App\Http\Controllers\FiscalYearMonth\FiscalyearMonthController;
+use App\Http\Controllers\InitProcedureController;
 use App\Http\Controllers\Inventory\RequisitionController;
 use App\Http\Controllers\OpeningStock\ExcelController;
 use App\Http\Controllers\OpeningStock\OpeningStockController;
@@ -76,6 +77,7 @@ use App\Http\Controllers\Requisition\RequisitionDashboardController;
 use App\Http\Controllers\Supplier\SupplierMapping;
 use App\Http\Controllers\ticketApi\DesktopApp2Controller;
 use App\Http\Controllers\ticketApi\DesktopAppController;
+use App\Http\Controllers\ticketApi\TickingSystemApiV2Controller;
 use App\Http\Controllers\Transfer\TransferOutController;
 use App\Http\Controllers\UserAccess\UserRoleController;
 use Illuminate\Support\Facades\Route;
@@ -366,6 +368,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //init for report 
     Route::prefix('report')->group(function () {
+        Route::get('/initProcedure/{procedureName}',[InitProcedureController::class,'callStoredProcedures']);
      Route::get('/store',[ReportInitDataController::class,'Store']);
     });
 
@@ -374,7 +377,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::post('/login', [AuthController::class, 'login']);
 
  require __DIR__.'/report/report_api.php';
-Route::prefix('ticket_api')->group(function () {
+ Route::prefix('ticket_api')->group(function () {
     //// desktop app
     Route::post('/login', [DesktopAppController::class, 'DesktopAppLogin']);
     Route::get('/get-pos-item-list', [DesktopAppController::class, 'getPOSItemList']);
@@ -395,7 +398,6 @@ Route::prefix('ticket_api')->group(function () {
     Route::post('/store-pos-take-order-payment-transaction', [DesktopApp2Controller::class, 'StoreOrderPaymentTransaction']);
     Route::post('/item-isssue-create-one-take-order-payment', [DesktopApp2Controller::class, 'ItemIssueCreateOneTakeOrderPayment']);
     Route::get('/get-runnnig-order-list', [DesktopApp2Controller::class, 'GetRunningOrderList']);
-    Route::post('/get-trans-files', [DesktopApp2Controller::class, 'getTransFile']);
 });
 
 Route::prefix('ticket_api_v2')->group(function () {

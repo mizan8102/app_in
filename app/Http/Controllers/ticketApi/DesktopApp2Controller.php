@@ -452,7 +452,7 @@ class DesktopApp2Controller extends Controller
             $i++;
         }
         // return $resultArr;
-        $isStore = Http::post("http://159.223.67.50/chiklee_test_server/chiklee_api/public/api/ticket_api/item-isssue-create-one-take-order",$resultArr)->json();
+        $isStore = Http::post("http://159.223.67.50/chiklee_api/public/api/ticket_api/item-isssue-create-one-take-order",$resultArr)->json();
         return [
             'status'=>$isStore['status'],
             'reason'=>$isStore['reason'],
@@ -1207,7 +1207,7 @@ class DesktopApp2Controller extends Controller
             $i++;
         }
         // return $resultArr;
-        $isStore = Http::post("http://159.223.67.50/chiklee_test_server/chiklee_api/public/api/ticket_api/item-isssue-create-one-take-order-payment",$resultArr)->json();
+        $isStore = Http::post("http://159.223.67.50/chiklee_api/public/api/ticket_api/item-isssue-create-one-take-order-payment",$resultArr)->json();
         return [
             'status'=>$isStore['status'],
             'reason'=>$isStore['reason'],
@@ -2148,8 +2148,6 @@ class DesktopApp2Controller extends Controller
 
 
     }
-
-
 
 
 }

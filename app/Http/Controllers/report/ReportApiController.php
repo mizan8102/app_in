@@ -3,11 +3,19 @@
 namespace App\Http\Controllers\report;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\StoredProcedureRepositoryInterface;
 use DB;
 use Illuminate\Http\Request;
 
 class ReportApiController extends Controller
 {
+   protected $storedProcedureRepository;
+
+   public function __construct(StoredProcedureRepositoryInterface $storedProcedureRepository)
+   {
+       $this->storedProcedureRepository = $storedProcedureRepository;
+   }
+   
     public function itemWise(Request $request)
     {
         // return $request;
@@ -33,6 +41,16 @@ class ReportApiController extends Controller
            return response()->json(['data' =>[]]) ;
         }
     }
+
+
+    // indent 
+
+    public function initProcedure($procedureName)
+    {
+        return $this->storedProcedureRepository->callStoredProcedure($procedureName);
+    }
+
+
 
 
 }

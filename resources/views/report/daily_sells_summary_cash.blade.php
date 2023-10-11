@@ -393,14 +393,7 @@
                 <div class="report_params_areas" style="float:right;height:10px;width:45%;text-align:right;margin-right:5px;">
                     <span style="text-align: right; font-size:12px"><strong>Print: </strong>{{ Date('d-m-Y h:i:s A')}}</span>
                 </div>
-                <!-- <div class="report_params_areas" style="float:left;height:20px;width:100%">
-                    <span style="text-align: right; font-size:12px"><b> Entry Ticket - Day: </b></span>
-                    <br>
-                </div>
-                <div class="report_params_areas" style="float:left;height:20px;width:100%">
-                    <span style="text-align: right; font-size:12px"><b> Entry Ticket - Evening: </b></span>
-                    <br>
-                </div> -->
+               
             </div>
         <div>
         <div style="display:block;">
@@ -416,11 +409,12 @@
                         <th style="text-align: center; color: rgb(255,255,255);font-size:8px;">Paid by Customer</th>
                         <th style="text-align: center; color: rgb(255,255,255);">Due to Customer</th>
                         
+                        <th style="text-align: center; color: rgb(255,255,255);">Hand To Cash</th>
                         <th style="text-align: center; color: rgb(255,255,255);">Bank Pmt</th>
                         <th style="text-align: center; color: rgb(255,255,255);">Card Pmt</th>
                         <th style="text-align: center; color: rgb(255,255,255);">MFS</th>
-                        <th style="text-align: center; color: rgb(255,255,255);" width="8%">Grand Total</th>
-                        <th style="text-align: center; color: rgb(255,255,255);">Cash Received</th>
+                        <!-- <th style="text-align: center; color: rgb(255,255,255);" width="8%">Grand Total</th> -->
+                        <th style="text-align: center; color: rgb(255,255,255);">Account Received</th>
                         <th style="text-align: center; color: rgb(255,255,255);font-size:8px">Due to sales point</th>
                         <th style="text-align: center; color: rgb(255,255,255);">Remarks</th>
                     </tr>
@@ -435,12 +429,16 @@
                         <td style="text-align: right;">{{$total=number_format($dd->total_issue_amount_with_vat, 2)}}</td>
                         <td style="text-align: right;">{{ number_format($dd->total_discount)}}</td>
                         <td style="text-align: right;">{{$vat=number_format($dd->total_vat_amnt,2) }}</td>
-                        <td style="text-align: right;">{{ $rec=number_format($dd->total_issue_amount_with_vat-$dd->total_vat_amnt-$dd->total_discount,2) }}</td>
+                        <td style="text-align: right;">{{ $rec=number_format($dd->total_issue_amount_with_vat + $dd->total_vat_amnt - $dd->total_discount,2) }}</td>
                         <td style="text-align: right;">{{ number_format($dd->paid_amount,2) }}</td>
-                        <td style="text-align: right;">{{$due_customer=number_format(($dd->total_issue_amount_with_vat-$dd->total_vat_amnt)-$dd->paid_amount,2)}}</td>
+
+                        <td style="text-align: right;">{{$due_customer=number_format(($dd->total_issue_amount_with_vat + $dd->total_vat_amnt - $dd->total_discount)-$dd->paid_amount,2)}}</td>
                       
                         <td style="text-align: right;">
                             {{ number_format($dd->cash_diposit,2)}}
+                        </td>
+                        <td style="text-align: right;">
+                            {{ number_format($dd->bank_diposit,2)}}
                         </td>
                         <td style="text-align: right;">
                         {{ number_format($dd->card_diposit,2)}}
@@ -449,18 +447,18 @@
                         <td style="text-align: right;">
                         {{ number_format($dd->mfs_diposit,2)}}
                         </td>
-                        <td style="text-align: right;">
+                        <!-- <td style="text-align: right;">
                         {{ $grand_total=number_format(($dd->paid_amount+$dd->cash_diposit+$dd->card_diposit+$dd->mfs_diposit),2)}}
-                        </td>
+                        </td> -->
                         <td style="text-align: right;">{{number_format($dd->total_deposit,2)}}</td>
-                        <td style="text-align: right;">{{ $due=number_format(doubleval(($dd->paid_amount+$dd->cash_diposit+$dd->card_diposit+$dd->mfs_diposit)) - doubleval($dd->total_deposit) ,2)}}</td>
+                        <td style="text-align: right;">{{ $due=number_format(doubleval(($dd->paid_amount)) - doubleval($dd->total_deposit) ,2)}}</td>
                         <td style="text-align: right;"></td>
                         @php
                             $due_amt += doubleval($dd->total_issue_amount_with_vat) - doubleval($dd->paid_amount);
                             $receive +=doubleval($dd->total_issue_amount_with_vat-$dd->total_vat_amnt-$dd->total_discount);
-                            $due_to_cus +=($dd->total_issue_amount_with_vat-$dd->total_vat_amnt)-$dd->paid_amount;
+                            $due_to_cus +=($dd->total_issue_amount_with_vat + $dd->total_vat_amnt - $dd->total_discount)-$dd->paid_amount;
                             $grand_total_amt +=doubleval($dd->paid_amount+$dd->cash_diposit+$dd->card_diposit+$dd->mfs_diposit);
-                            $totalDue +=doubleval(($dd->paid_amount+$dd->cash_diposit+$dd->card_diposit+$dd->mfs_diposit)) - doubleval($dd->total_deposit);
+                            $totalDue +=doubleval(($dd->paid_amount)) - doubleval($dd->total_deposit);
                         @endphp
                     </tr> @endforeach
 
@@ -478,12 +476,15 @@
                         {{number_format(collect($data)->sum('cash_diposit'),2)}}
                         </strong></td>
                         <td style="text-align: right;"><strong>
+                        {{number_format(collect($data)->sum('bank_diposit'),2)}}
+                        </strong></td>
+                        <td style="text-align: right;"><strong>
                         {{number_format(collect($data)->sum('card_diposit'),2)}}
                         </strong></td>
                         <td style="text-align: right;"><strong>
                         {{number_format(collect($data)->sum('mfs_diposit'),2)}}
                         </strong></td>
-                        <td style="text-align: right;"><strong>{{ number_format($grand_total_amt,2)}}</strong></td>
+                        <!-- <td style="text-align: right;"><strong>{{ number_format($grand_total_amt,2)}}</strong></td> -->
                         <td style="text-align: right;"><strong>{{number_format(collect($data)->sum('total_deposit'),2)}} </strong></td>
                         <td style="text-align: right;"><strong>{{ number_format($totalDue,2) }}</strong></td>
                         <td></td>
