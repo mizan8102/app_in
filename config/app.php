@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\TransactionProvider;
 use Illuminate\Support\Facades\Facade;
 
 return [
@@ -201,6 +202,8 @@ return [
 
         // Receive provider 
         App\Providers\ReceiveServiceProvider::class,
+        // trasaction provider 
+        TransactionProvider::class
 
 
     ],

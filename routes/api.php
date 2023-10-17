@@ -111,7 +111,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     require __DIR__ . '/khajna/index.php';
 
     // receive gate 
-    require __DIR__ . '/Receive/ReceiveGate.php';
+    require __DIR__ . '/Transaction/ReceiveGate.php';
+    // transfer out 
+    require __DIR__. '/Transaction/Transfer.php';
 
     Route::get('/contact_info_get_by_number/{id}', [CottageController::class, 'contact_info_get']);
     //old _ program part
