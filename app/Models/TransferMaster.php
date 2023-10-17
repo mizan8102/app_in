@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TransferMaster extends Model
 {
@@ -20,5 +20,9 @@ class TransferMaster extends Model
     public function toutChild(): HasMany
     {
         return $this->hasMany(ToutProductReqQuantity::class, 'issue_master_id', 'local_key');
+    }
+
+    public function productreq(){
+        return $this->hasOne(ItemMasterModel::class,'id','indent_master_id');
     }
 }

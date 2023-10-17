@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Interfaces\ReceiveGate;
-use App\Services\ReceiveGateService;
+use App\Interfaces\TransferOut;
+use App\Services\TransferOutService;
 use Illuminate\Support\ServiceProvider;
 
-class ReceiveServiceProvider extends ServiceProvider
+class TransactionProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -15,9 +15,8 @@ class ReceiveServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(ReceiveGate::class, ReceiveGateService::class);
-
-        
+        // transfer out inject
+        $this->app->bind(TransferOut::class, TransferOutService::class);
     }
 
     /**
