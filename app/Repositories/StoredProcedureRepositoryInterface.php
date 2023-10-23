@@ -1,7 +1,6 @@
 <?php 
 namespace App\Repositories;
 
-interface StoredProcedureRepositoryInterface
-{
+interface StoredProcedureRepositoryInterface{
     public function callStoredProcedure(string $procedureName,  $parameters);
 }

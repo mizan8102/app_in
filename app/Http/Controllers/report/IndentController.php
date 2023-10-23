@@ -39,8 +39,17 @@ class IndentController extends Controller
             ]
         );
 
-        return $pdf->stream('indentRepor.pdf'); 
+        return $pdf->stream('report.indentRepor.pdf'); 
     }
+
+
+
+
+
+
+
+
+
     public function indentSummery(){
         $pdf = PDF::loadView('report.indentSummery');
         return $pdf->stream('indentSummery.pdf'); 

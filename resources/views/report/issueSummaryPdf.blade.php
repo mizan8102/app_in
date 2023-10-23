@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Receive Summary</title>
+    <title>Issue Summery</title>
 </head>
 <style type="text/css">
     @page {
             header: page-header;
             footer: page-footer;
             margin-bottom: 30mm;
+            /* size: landscape; */
         }
     body{
         font-family: 'Times New Roman', Times, serif;
@@ -200,16 +201,10 @@
         float: left;
         width: 20%;
         height: 2rem;
-        background-size: cover; /* Adjust this based on your needs */
-        background-repeat: no-repeat;
-    }
-    .logo{
-        width:100px;
-        margin-top: 5px;
-        text-align:right;
+        padding-top: 10px;
     }
     .footer{
-            margin-top: 300px;
+            margin-top: 400px;
     }
     .sig{
         display: flex;
@@ -229,8 +224,7 @@
 <body>
     <div class="row" style="none">
         <div class="column1">
-            <img class="logo" src="{{ asset('/logo/logo.png')}}" alt="no image">
-            <!-- <img class="logo" src="{{ asset('/logo/logo.png')}}" alt=""> -->
+            <img class="logo" src="{{ asset('/logo/logo.png')}}" alt="">
         </div>
         <div class="column3">
             <div class="head_middle">
@@ -240,71 +234,68 @@
                     </p>
                 </div>
                 <div style="text-align: center; padding-top:-45px;">
-                    <p style="font-size: 12pt;">Receive Summary<br>
+                    <p style="font-size: 12pt;">Issue Summary<br>
                     </p>
                 </div>
             </div>
         </div>
             <div class="column1">
                 <p style="text-align: right; font-size:12px;">
-                    Report # C_C_03B <br>
+                    Report # C_C_04B <br>
                 </p>
             </div>
         </div>
         <div style="margin-left:5px; margin-top:20px; display:block;">
             <div class="report_params_areas" style="float:left;height:20px;width:50%">
-                <span style="text-align: right; font-size:12px"><b> From Date: </b>{{Date('d-m-Y',strtotime(request('from') ?? ''))}}</span>
+                <span style="text-align: right; font-size:12px"><b> Product master Group: </b></span>
             </div>
-            <div class="report_params_areas" style="float:right;height:20px;width:45%;text-align:right;margin-right:5px;">
-                <span style="text-align: right; font-size:12px"><strong>Print: </strong>{{ Date('d-m-Y h:i:s A')}}</span>
+            <div class="report_params_areas" style="float:right;height:20px;width:45%;text-align:right; margin-right:5px;">
+                <span style="text-align: right; font-size:12px"><strong>Print: </strong>{{ Date('d-m-Y h:i:s A') ?? ''}}</span>
             </div>
             <div class="report_params_areas" style="float:left;height:20px;width:100%">
-                <span style="text-align: right; font-size:12px"><b> To Date: </b>{{Date('d-m-Y',strtotime(request('to')))}}</span>
+                <span style="text-align: right; font-size:12px"><b> From Date: </b>{{Date('d-m-Y',strtotime(request('fromDate') ?? ''))}}</span>
+                <br>
+            </div>
+            <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                <span style="text-align: right; font-size:12px"><b>To Date: </b>{{Date('d-m-Y',strtotime(request('toDate') ?? ''))}}</span>
                 <br>
             </div>
         </div>
         <div style="display:block;">
-        <table width="100%" style="display:block; margin-top:10px;">
+        <table width="100%" style="display:block; margin-top: 10px;">
             <thead>
                 <tr style="background-color: rgb(3,73,91);">
                     <th style="text-align: center; color: rgb(255,255,255);">SL</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">No</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Receive Date</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Supplier</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Supplier Bn</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Product Master Group</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Product Master Group Bn</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">PO Amount(BDT)</th>
-                    <th style="text-align: center; color: rgb(255,255,255);">Receive Amount(BDT)</th>
+                    <th style="text-align: center; color: rgb(255,255,255);">#No</th>
+                    <th style="text-align: center; color: rgb(255,255,255);">Issue Date</th>
+                    <th style="text-align: center; color: rgb(255,255,255);">Issue Store</th>
+                    <th style="text-align: center; color: rgb(255,255,255);">Receive Store</th>
+                    <th style="text-align: center; color: rgb(255,255,255);">Amount(BDT)</th>
                     <th style="text-align: center; color: rgb(255,255,255);">Remarks</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($receives as $key=>$data)
+                @if ($issues)
+                @foreach($issues as $key=>$data)
                 <tr>
                     <td style="text-align: center;">{{$key+1 ?? ''}}</td>
-                    <td style="text-align: center;">{{$data->grnNo ?? ''}}</td>
-                    <td style="text-align: center;">{{$data->receiveDate ?? ''}}</td>
-                    <td style="text-align: left;">{{$data->supplierName ?? ''}}</td>
-                    <td style="text-align: left;">{{$data->supplierNameBN ?? ''}}</td>
-                    <td style="text-align: left;">{{$data->prodTypeName ?? ''}}</td>
-                    <td style="text-align: left;">{{$data->prodTypeNameBn ?? ''}}</td>
-                    <td style="text-align: right;"></td>
-                    <td style="text-align: right;">{{number_format($data->totalReceiveAmount ?? '', 2, '.', ',')}}</td>
+                    <td style="text-align: center;">{{$data->issueNo ?? ''}}</td>
+                    <td style="text-align: center;">{{$data->issueDate ?? ''}}</td>
+                    <td style="text-align: left;">{{$data->issueStoreName ?? ''}}</td>
+                    <td style="text-align: left;">{{$data->receiveStoreName ?? ''}}</td>
+                    <td style="text-align: right;">{{number_format($data->amount, 2, '.', ',' ?? '')}}</td>
                     <td style="text-align: left;">{{$data->remarks ?? ''}}</td>
                 </tr>
                 @endforeach
                 <tr style="border-bottom: 1px solid black;">
-                    <td style="text-align: right;"colspan ="7"><strong>Total: </strong></td>
-                    <td style="text-align: right;"><b></b></td>
-                    <td style="text-align: right;"><strong>{{number_format(collect($receives ?? '')->sum('totalReceiveAmount'), 2, '.', ',')}}</strong></td>
+                    <td style="text-align: right;"colspan ="5"><strong>Total: </strong></td>
+                    <td style="text-align: right;"colspan ="1"><strong>{{number_format(collect($issues  ?? '')->sum('amount'), 2, '.', ',')}}</strong></td>
                     <td></td>
-                </tr>
-            </tbody>                      
+                </tr>                    
+                @endif
+            </tbody>
         </table>
-        </div>
-      
-        <div class="footer" style="margin-left: 20px; font-size: x-small;">
+        <div class="footer" style=" font-size: x-small;">
             <div class="sig">
                 <p>____________________________<br> Submitted By</p>
             </div>

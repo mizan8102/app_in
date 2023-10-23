@@ -54,17 +54,26 @@ Route::prefix('report')->group(function () {
     Route::get('/indent-report', [IndentController::class, 'indentReport']);
     Route::get('/indent-summery', [IndentController::class, 'indentSummeryPdf']);
     // product requisition
-    Route::get('/product-requisition', [ProductController::class, 'productRequisition']);
-    Route::get('/requisition-summery', [ProductController::class, 'requisitionSummery']);
+    // Product requisition summary PDF
+    Route::get('/C_B_02B-pdf', [ProductController::class, 'productRequisitionSummaryPdf']);
+
+    
     //purchase Requisition
     Route::get('/purchase-requisition', [PurchaseController::class, 'purchaseRequisition']);
     Route::get('/purchase-requisition-summery', [PurchaseController::class, 'purchaseRequisitionSummery']);
-    Route::get('/purchase-order', [PurchaseController::class, 'purchaseOrder']);
-    Route::get('/purchase-order-summery', [PurchaseController::class, 'purchaseOrderSummery']);
+
+    
+  
+    Route::get('/purchase-order-summery', [PurchaseController::class, 'purchaseOrderSummaryPdf']);
+    
+
     //issue
     Route::get('/issue-details', [IssueController::class, 'issueDetailsPdf']);
     Route::get('/issue-summery', [IssueController::class, 'issueSummeryPdf']);
+
+    // C05A
     Route::get('/issue-return', [IssueController::class, 'issueReturn']);
+    
     //Receive
     Route::get('/receive-summary', [ReceiveController::class, 'receiveSummaryPdf']);
     //item
@@ -91,10 +100,10 @@ Route::prefix('report')->group(function () {
     Route::get('/9C_B_01A-pdf', [IndentController::class, 'indentReportTwoPdf']);
     Route::get('/C_B_01A-pdf', [IndentController::class, 'indentReportPdf']);
 
+    // Issue Return 
+    Route::get('/C_05C-pdf',[IssueController::class,'issueReturnSummaryPdf']);
 
-    /**
-     * auntu
-     */
+
 
     
 });

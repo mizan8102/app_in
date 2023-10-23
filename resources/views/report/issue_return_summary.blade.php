@@ -195,14 +195,14 @@
     .logo
         {
             width: 275px;
-            /*margin-left: 365px;*/
+            /margin-left: 365px;/
             margin-top: 10px;
         }
 
         .logozit
         {
             width: 55px;
-            /*margin-left: 365px;*/
+            /margin-left: 365px;/
             /* margin-top: 10px; */
         }
     .column1
@@ -279,7 +279,7 @@
         .logo
         {
             width: 275px;
-            /*margin-left: 365px;*/
+            /margin-left: 365px;/
             margin-top: 5px;
             text-align:right;
         }
@@ -351,7 +351,7 @@
                 </div>
             </div>
             <div class="column1">
-                <p style="text-align: right; font-size:12px;">Chiklee#C_A-01</p>
+                <p style="text-align: right; font-size:12px;">Chiklee#C_05C</p>
             </div>
         </div>
         <div style="margin-left:5px; margin-top:20px; display:block;">
@@ -373,7 +373,6 @@
                 <thead>
                     <tr style="background-color: rgb(3,73,91);">
                         <th style="text-align: center; color: rgb(255,255,255);">SL</th>
-                        <th style="text-align: center; color: rgb(255,255,255);">#No</th>
                         <th style="text-align: center; color: rgb(255,255,255);">Issue No</th>
                         <th style="text-align: center; color: rgb(255,255,255);">Issue Date</th>
                         <th style="text-align: center; color: rgb(255,255,255);">Returning Store</th>
@@ -387,10 +386,9 @@
                     @foreach($returns as $key => $return)
                         <tr>
                             <td style="text-align: center;">{{$key+1}}</td>
-                            <td style="text-align: center;">{{$return->sl}}</td>
                             <td style="text-align: center;">{{$return->issueNo}}</td>
-                            <td style="text-align: center;">{{$return->issueDate}}</td>
-                            <td style="text-align: center;">{{$return->returingStoreName}}</td>
+                            <td style="text-align: center;">{{$return->issuedate}}</td>
+                            <td style="text-align: center;">{{$return->returnStoreName}}</td>
                             <td style="text-align: center;">{{$return->receiveStoreName}}</td>
                             <td style="text-align: right;">{{number_format($return->issueAmount, 2, '.', ',')}}</td>
                             <td style="text-align: right;">{{number_format($return->returnAmount, 2, '.', ',')}}</td>
@@ -398,7 +396,7 @@
                         </tr>
                     @endforeach
                     <tr style="border-bottom: 1px solid black;">
-                        <td style="text-align: right;"colspan ="6"><strong>Sub Total: </strong></td>
+                        <td style="text-align: right;"colspan ="5"><strong>Sub Total: </strong></td>
                         <td style="text-align: right;"><strong>{{number_format(collect($returns)->sum('issueAmount'),2, '.', ',')}}</strong></td>
                         <td style="text-align: right;"><strong>{{number_format(collect($returns)->sum('returnAmount'),2, '.', ',')}}</strong></td>
                         <td></td>
