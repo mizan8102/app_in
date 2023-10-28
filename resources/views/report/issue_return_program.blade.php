@@ -4,7 +4,7 @@
 
 <head>
 
-    <title>Chiklee</title>
+    <title>Report C_05B Issue Return by Program</title>
 
 </head>
 
@@ -13,13 +13,12 @@
     @page {
             header: page-header;
             footer: page-footer;
-
+            margin-bottom: 30mm;
         }
 
     body{
 
         font-family: "Nikosh";
-        font-family: 'Times New Roman', Times, serif;
 
     }
 
@@ -195,14 +194,14 @@
     .logo
         {
             width: 275px;
-            /*margin-left: 365px;*/
+            /margin-left: 365px;/
             margin-top: 10px;
         }
 
         .logozit
         {
             width: 55px;
-            /*margin-left: 365px;*/
+            /margin-left: 365px;/
             /* margin-top: 10px; */
         }
     .column1
@@ -279,7 +278,7 @@
         .logo
         {
             width: 275px;
-            /*margin-left: 365px;*/
+            /margin-left: 365px;/
             margin-top: 5px;
             text-align:right;
         }
@@ -313,13 +312,21 @@
             padding-top: 10px;
         }
         .footer{
-        margin-top: 450px;
+             margin-top: 200px;
         }
         .sig{
             display: flex;
             float: left;
             width: 33%;
             text-align: center;
+        }
+        .col-md-6
+        {
+            padding-bottom:70px;
+        }
+        .col-md-5
+        {
+            padding-bottom: -50px;
         }
 </style>
 
@@ -343,34 +350,45 @@
                 </div>
             </div>
             <div class="column1">
-                <p style="text-align: right; font-size:12px;">Chiklee#C_A-01</p>
+                <p style="text-align: right; font-size:12px;">Chiklee#C_05B</p>
             </div>
         </div>
-        <div style="margin-left:3px; margin-top:20px;">
-            <p style="text-align: left; font-size: 12px">
-            Returning Store: <br><br><br><br>
-            Receive Store: <br>
-            </p>
-            <div class="columne" style="text-align:right; float:right; margin-right:10px; font-size: 12px;">
-          
-                <p style="padding-top:-15px;"><strong>Print: </strong>
-                    @php 
-                        $mytime = Carbon\Carbon::now()->format ('d-m-Y h:i A');
-                        echo $mytime;
-                    @endphp
-                    <br>
-                    Issue No: <br>
-                    Issue Date:<br>
-                    Program Name: <br>
-                    Program Date:
-                </p>
+        <div style="margin-left:5px; margin-top:20px; display:block;">
+            <div class="report_params_areas" style="float:left;height:20px;width:50%">
+                <span style="text-align: right; font-size:12px"><b> Returning Store: </b>{{$issues[0]->returningStore ?? ''}} </span>
+            </div>
+            <div class="report_params_areas" style="float:right;height:20px;width:45%;text-align:right;margin-right:5px;">
+                <span style="text-align: right; font-size:12px"><strong>Print: </strong>{{ Date('d-m-Y h:i:s A')}}</span>
+            </div>
+         
+            <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                <span style="text-align: right; font-size:12px"><b> Receiving Store: </b>{{$issues[0]->receivingStore ?? ''}} </span>
+            <br>
+            </div>
+            <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                <span style="text-align: right; font-size:12px"><b> Issue No: </b>{{$issues[0]->issueNo ?? ''}} </span>
+            <br>
+            </div>
+            <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                <span style="text-align: right; font-size:12px"><b> Issue Date: </b>{{Date('d-m-Y',strtotime($issues[0]->issueDate?? ''))}}</span>
+            <br>
+            </div>
+            <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                <span style="text-align: right; font-size:12px"><b> Program Name: </b>{{$issues[0]->programName ?? ''}} </span>
+            <br>
+            </div>
+            <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                <span style="text-align: right; font-size:12px"><b> Program Date: </b>{{Date('d-m-Y',strtotime($issues[0]->progDate?? ''))}}</span>
+            <br>
             </div>
         </div>
-            <table width="100%" style="margin-top:50px;">
+        <div style="display:block; margin-top:10px;">
+            <table width="100%">
                 <thead>
                     <tr style="background-color: rgb(3,73,91);">
                         <th style="text-align: center; color: rgb(255,255,255);">SL</th>
                         <th style="text-align: center; color: rgb(255,255,255);">Item Name</th>
+                        <th style="text-align: center; color: rgb(255,255,255);">Item Name Bn</th>
                         <th style="text-align: center; color: rgb(255,255,255);">UOM</th>
                         <th style="text-align: center; color: rgb(255,255,255);">Indent Qty</th>
                         <th style="text-align: center; color: rgb(255,255,255);">Issue Qty</th>
@@ -379,64 +397,48 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td style="text-align: center;">01</td>
-                        <td style="text-align: left;">Rice</td>
-                        <td style="text-align: center;">66</td>
-                        <td style="text-align: center;">34</td>
-                        <td style="text-align: center;">86</td>
-                        <td style="text-align: center;">34</td>
-                        <td style="text-align: left;">Weeding Ceremony</td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: center;">02</td>
-                        <td style="text-align: left;">Mutton</td>
-                        <td style="text-align: center;">32</td>
-                        <td style="text-align: center;">45</td>
-                        <td style="text-align: center;">54</td>
-                        <td style="text-align: center;">90</td>
-                        <td style="text-align: left;">For the program.</td>
-                    </tr>
+                    @foreach($issues as $key => $issue)
+                        <tr>
+                            <td style="text-align: center;">{{$key+1}}</td>
+                            <td style="text-align: left;">{{$issue->itemName}}</td>
+                            <td style="text-align: left; font-size: 14px;">{{$issue->itemNameBn}}</td>
+                            <td style="text-align: center;">{{$issue->uom}}</td>
+                            <td style="text-align: center;">{{$issue->indentQty}}</td>
+                            <td style="text-align: center;">{{$issue->issueQty}}</td>
+                            <td style="text-align: center;">{{$issue->returnQty}}</td>
+                            <td style="text-align: left;">{{$issue->remarks}}</td>
+                        </tr>
+                    @endforeach
                     <tr style="border-bottom: 1px solid black;">
-                        <td style="text-align: right;"colspan ="3"><strong>Sub Total: </strong></td>
-                        <td style="text-align: center;"><strong>{{number_format(3000, 2, '.', ',')}}</strong></td>
-                        <td style="text-align: center;"><strong>{{number_format(3654, 2, '.', ',')}}</strong></td>
-                        <td style="text-align: center;"><strong>{{number_format(3654, 2, '.', ',')}}</strong></td>
+                        <td style="text-align: right;"colspan ="4"><strong>Sub Total: </strong></td>
+                        <td style="text-align: center;"><strong>{{number_format(collect($issues)->sum('indentQty'))}}</strong></td>
+                        <td style="text-align: center;"><strong>{{number_format(collect($issues)->sum('issueQty'))}}</strong></td>
+                        <td style="text-align: center;"><strong>{{number_format(collect($issues)->sum('returnQty'))}}</strong></td>
                         <td></td>
                     </tr>
                 </tbody>
             </table>
-            <P>**Show full Indent Qty, then Issued qty and then return qty</p>
+        </div>
+            {{-- <P style="font-size:12px;">**Show full Indent Qty, then Issued qty and then return qty</p> --}}
             <div class="footer" style="margin-left: 20px;">
             <div class="sig">
-                <p>_______________________________<br> Submitted By</p>
+                <p>________<br> Submitted By</p>
             </div>
             <div class="sig">
-                <p>_______________________________<br> Recommended By</p>
+                <p>________<br> Recommended By</p>
             </div>
             <div class="sig">
-                <p>_______________________________<br> Approved By</p>
+                <p>________<br> Approved By</p>
             </div>
         </div>
         <htmlpagefooter name="page-footer">
-            <div class="row" style="none">
-                <div class="columnzit">
-                    <!-- <img class="logo" src="https://www.pinclipart.com/picdir/middle/187-1872894_bangladesh-govt-logo-png-clipart.png" alt=""> -->
-                    <p><span style="font-size: 18px; text-align:center;"><strong>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Chiklee </strong></span> 
-                        <br>
-                        A product By<span style="font-size:18px;"><strong> ZIT</strong></span> 
-                    </p>
-                </div>
-                <div class="columnmid">
-                    <div class="head_middle">
-                        <div  style="text-align: center;">
-                        <p style="text-align: center;">{PAGENO} of {nbpg} pages </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="column1">
-                </div>
+            <div class="col-md-5">
+                <p style="text-align: left;font-size: 12px;">{PAGENO} of {nbpg} pages</p>
+            </div>
+            <div class="col-md-6">
+                <p style="text-align: right; font-size: 14px;"><strong>Chiklee </strong><br>
+                    <span style="font-size: 12px;">A product of</span><span style="font-size:14px;"><strong> Z IT</strong></span>
+                </p>
             </div>
         </htmlpagefooter>
     </html>

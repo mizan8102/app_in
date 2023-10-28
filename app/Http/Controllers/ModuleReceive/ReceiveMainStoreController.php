@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ModuleReceive;
 
+use App\Enums\HttpStatusCodeEnum;
 use App\Http\Api\ApiResponseTrait;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Receive\ReceiveGateRequest;

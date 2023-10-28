@@ -8,14 +8,13 @@ use DB;
 
 class ReceiveController extends Controller
 {
-    public function receiveSummery(){
-        $pdf = PDF::loadView('report.receiveSummery');
-        return $pdf->stream('receiveSummery.pdf'); 
-    }
 
     public function receiveSummaryPdf(Request $request){
-        $receives=DB::select('CALL C03B_RecvSummaryGetReceiveDataByDateRange("'.date('Y-m-d',strtotime($request->from)).'","'.date('Y-m-d',strtotime($request->to)).'")');
-        //dd($receives);
+
+        $from =  Date('Y-m-d',strtotime($request->from));
+        $to =  Date('Y-m-d',strtotime($request->to));
+
+        $receives=DB::select('CALL Report_C_03B_ReceiveSummary("'.$from.'","'.$to.'")');
         $pdf = PDF::loadView('report.receiveSummaryPdf',['receives'=>$receives, 'from' =>$request->from, 'to' => $request->to],
         [
             'mode'                 => '',

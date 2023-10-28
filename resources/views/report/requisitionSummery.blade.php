@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Product Requisition Summary</title>
+    <title>Product Requisition Summery</title>
 </head>
 <style type="text/css">
     @page {
             header: page-header;
             footer: page-footer;
-            /* size: landscape; */
+            margin-bottom: 30mm;
         }
     body{
         font-family: 'Times New Roman', Times, serif;
@@ -66,7 +66,6 @@
         padding:7px 8px; 
     }
     table tr th{
-        /* background: #F4F4F4; */
         font-size:12px;
     }
     table tr td{
@@ -104,12 +103,12 @@
     }
     .logo{
         width: 275px;
-        /*margin-left: 365px;*/
+        /margin-left: 365px;/
         margin-top: 10px;
     }
     .logozit{
         width: 55px;
-        /*margin-left: 365px;*/
+        /margin-left: 365px;/
         /* margin-top: 10px; */
     }
     .column1{
@@ -173,7 +172,7 @@
     }
     .logo{
         width: 275px;
-        /*margin-left: 365px;*/
+        /margin-left: 365px;/
         margin-top: 5px;
         text-align:right;
     }
@@ -203,7 +202,7 @@
         padding-top: 10px;
     }
     .footer{
-            margin-top: 400px;
+            margin-top: 300px;
     }
     .sig{
         display: flex;
@@ -211,12 +210,20 @@
         width: 33%;
         text-align: center;
     }
+    .col-md-6
+        {
+            padding-bottom:70px;
+        }
+        .col-md-5
+        {
+            padding-bottom: -50px;
+        }
 </style>
 <body>
     <div class="row" style="none">
         <div class="column1">
             <!-- <img class="logo" src="https://www.pinclipart.com/picdir/middle/187-1872894_bangladesh-govt-logo-png-clipart.png" alt=""> -->
-            <img class="logo" src="{{ asset('/logo/logo.png')}}" alt="">
+            <img class="logo" src="http://chiklee-park.com/assets/img/2022-01-04/A2.png" alt="">
         </div>
         <div class="column3">
             <div class="head_middle">
@@ -225,8 +232,8 @@
                         <strong>Chiklee Water Park</strong>
                     </p>
                 </div>
-                <div style="text-align: center; padding-top:-40px;">
-                    <p style="text-decoration:underline; font-size: 14pt;"><b> Product Requisition Summery</b><br>
+                <div style="text-align: center; padding-top:-45px;">
+                    <p style="font-size: 12pt;"> Product Requisition Summary<br>
                     </p>
                 </div>
             </div>
@@ -237,23 +244,24 @@
                 </p>
             </div>
         </div>
-        <div style="margin-left:3px; margin-top:20px;">
-            <p style="text-align: left; font-size: 12px">
-                <b> Period: {{  date('Y-m-d',strtotime($form))}} - {{  date('Y-m-d',strtotime($to))}} </b><br>
-                <!-- <b>Requisition to:</b> <br>
-                <b>Product Master Group:</b> Dry Item <br> -->
-            </p>
-            <div class="columne" style="text-align:right; float:right; margin-right:10px; font-size: 12px;">
-                <p style="padding-top:-10px;">
-                    <strong>Print: </strong>
-                    @php 
-                        $mytime = Carbon\Carbon::now()->format ('d-m-Y h:i A');
-                        echo $mytime;
-                    @endphp
-                </p>
+        <div style="margin-left:5px; margin-top:20px; display:block;">
+            <div class="report_params_areas" style="float:left;height:20px;width:50%">
+                <span style="text-align: right; font-size:12px"><b> From Date: </b>{{Date('d-m-Y',strtotime(request('fromDate')) ?? '')}}</span>
+            </div>
+            <div class="report_params_areas" style="float:right;height:20px;width:45%;text-align:right;margin-right:5px;">
+                <span style="text-align: right; font-size:12px"><strong>Print: </strong>{{ Date('d-m-Y h:i:s A')}}</span>
+            </div>
+            <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                <span style="text-align: right; font-size:12px"><b> To Date: </b>{{Date('d-m-Y',strtotime(request('toDate') ?? ''))}}</span>
+                <br>
+            </div>
+            <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                <span style="text-align: right; font-size:12px"><b> Requisition To: </b>{{$pReqs[0]->toStoreName ?? ''}}</span>
+                <br>
             </div>
         </div>
-        <table width="100%" style="margin-top:90px;">
+        <div style="display:block;">
+        <table width="100%" style="display:block; margin-top:10px;">
             <thead>
                 <tr style="background-color: rgb(3,73,91);">
                     <th style="text-align: center; color: rgb(255,255,255);">SL</th>
@@ -261,6 +269,7 @@
                     <th style="text-align: center; color: rgb(255,255,255);">Date</th>
                     <th style="text-align: center; color: rgb(255,255,255);">By</th>
                     <th style="text-align: center; color: rgb(255,255,255);">Product Master Group</th>
+                    <th style="text-align: center; color: rgb(255,255,255);">Product Master Group Bn</th>
                     <th style="text-align: center; color: rgb(255,255,255);">Issue Status</th>
                     <th style="text-align: center; color: rgb(255,255,255);">Close Status</th>
                     <th style="text-align: center; color: rgb(255,255,255);">Approved By</th>
@@ -268,54 +277,44 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($indents as $key=>$indent)
+                @if ($pReqs)
+                @foreach($pReqs as $key=>$item)
                 <tr>
-                    <td style="text-align: center;">{{ $key+1 }}</td>
-                    <td style="text-align: center;">{{ $indent->prodReqNo}}</td>
-                    <td style="text-align: center;">{{ $indent->prodReqDate}}</td>
-                    <td style="text-align: left;">{{ $indent->reqByName}} </td>
-                    <td style="text-align: left;">{{ $indent->mstrGroupName }}</td>
-                    <td style="text-align: center;">{{ $indent->issueStatus ? "YES" : "NO" }}</td>
-                    <td style="text-align: center;">{{ $indent->closeStatus ? "YES" : "NO" }}</td>
-                    <td style="text-align: left;">{{ $indent->approvedName }}</td>
-                    <td style="text-align: left;">{{ $indent->remarks }}</td>
+                    <td style="text-align: center;">{{$key+1 ?? ''}}</td>
+                    <td style="text-align: center;">{{$item->prodReqNo ?? ''}}</td>
+                    <td style="text-align: center;">{{$item->prodReqDate ?? ''}}</td>
+                    <td style="text-align: left;">{{$item->reqByName ?? ''}}</td>
+                    <td style="text-align: left;">{{$item->mstrGroupName ?? ''}}</td>
+                    <td style="text-align: left;">{{$item->mstrGroupNameBn ?? ''}}</td>
+                    <td style="text-align: center;">{{$item->issueStatus ==0 ? 'Open':'Closed' ?? ''}}</td>
+                    <td style="text-align: center;">{{$item->closeStatus ==0 ? 'Open':'Closed' ?? ''}}</td>
+                    <td style="text-align: left;">{{$item->approvedName ?? ''}}</td>
+                    <td style="text-align: left;">{{$item->remarks ?? ''}}</td>
                 </tr>
                 @endforeach
+                @endif
             </tbody>
         </table>
-        <!-- <div class="footer" style="margin-left: 20px; font-size: x-small;">
+        </div>
+        <div class="footer" style="margin-left: 20px; font-size: x-small;">
             <div class="sig">
-                <p>____________________________<br> Submitted By</p>
+                <p>__________<br> Submitted By</p>
             </div>
             <div class="sig">
-                <p>____________________________<br> Recommended By</p>
+                <p>__________<br> Recommended By</p>
             </div>
             <div class="sig">
-                <p>____________________________<br> Approved By</p>
+                <p>__________<br> Approved By</p>
             </div>
-        </div> -->
+        </div>
         <htmlpagefooter name="page-footer">
-            <div>
-                <p><span style="font-size:18px; font-weight:bold;">&nbsp;&nbsp;&nbsp;Chiklee</span>
-                <br> <span style="color:gray; font-size:12px;">A product by </span><strong>ZIT</strong>
-                <p style="text-align: center; font-size:12px; padding-bottom:50px;">Page no: {PAGENO} </p>
+            <div class="col-md-5">
+                <p style="text-align: left;font-size: 12px;">{PAGENO} of {nbpg} pages</p>
             </div>
-            <div class="row" style="none">
-                <div class="columnzit">
-                    <p><span style="font-size: 14px; text-align:center;">
-                        <strong>Chiklee </strong></span> <br> 
-                        <span style="font-size: 12px;">A product of</span><span style="font-size:10px;"><strong> ZIT</strong></span> 
-                    </p>
-                </div>
-                <div class="columnmid">
-                    <div class="head_middle">
-                        <div  style="text-align: center;">
-                            <p style="text-align: center; font-size: 12px;">{PAGENO} of {nbpg} pages </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="column1">
+            <div class="col-md-6">
+                <p style="text-align: right; font-size: 14px;"><strong>Chiklee </strong><br>
+                    <span style="font-size: 12px;">A product of</span><span style="font-size:14px;"><strong> Z IT</strong></span>
+                </p>
             </div>
         </htmlpagefooter>
     </div>

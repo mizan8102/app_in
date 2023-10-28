@@ -10,8 +10,6 @@ interface TransferOut{
 
 
   public function store($request,$item_row);
-  public function ms_store($request,$item_row);
-
   public function show($id);
 
   public function edit($id);

@@ -372,11 +372,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //init for report 
     Route::prefix('report')->group(function () {
-        Route::get('/initProcedure/{procedureName}', [InitProcedureController::class, 'callStoredProcedures']);
+        Route::get('/initProcedure/{procedureName}', [InitProcedureController::class, 'callStoredProcedures']);  // return product data
         Route::get('/store', [ReportInitDataController::class, 'Store']);
         Route::get('/c_03b_api_fetch_data', [App\Http\Controllers\report\ReceiveSummary::class, 'c0bReceive']);
         Route::get('/indent', [App\Http\Controllers\report\IndentController::class, 'indents']);
         Route::get('/purchase', [App\Http\Controllers\report\PurchaseController::class, 'purchases']);
+        Route::get('/issueNo', [App\Http\Controllers\report\PurchaseController::class, 'purchases']);
     });
 });
 
