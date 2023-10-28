@@ -27,11 +27,11 @@ use App\Http\Controllers\report\CostingConsumptionSummaryController;
 use App\Http\Controllers\report\ProductTypeWiseItemReportController;
 
 Route::prefix('report')->group(function () {
-
     //antu
     Route::get('item-wise-daily-sell', [ItemWiseDailySellController::class, 'itemWiseDailySell']);
     Route::get('/order-wise-daily-sell', [OrderWiseDailySellController::class, 'orderWiseDailySell']);
     Route::get('waiter-wise-sell', [WaiterWiseSellController::class, 'waiterWiseSell']);
+    // 26-10-23 Report A03
     Route::get('waiter-wise-daily-sell', [WaiterWiseDailySellController::class, 'waiterWisedailySell']);
     Route::get('kitchen-wise-sell', [KitchenWiseSellController::class, 'kitchenWiseSell']);
     Route::get('commercial-invoice', [CommercialInvoiceController::class, 'programManagement']);
@@ -41,13 +41,9 @@ Route::prefix('report')->group(function () {
     Route::get('opening-stock-summary', [OpeningStockSummaryController::class, 'openingStockSummary']);
     Route::get('receive-report', [ReceiveReportController::class, 'receiveReport']);
     Route::get('issue-retun-for-program', [IssueReturnProgramController::class, 'issueReturnProgram']);
-
-
     // 
     Route::get('programIndentReport',[ProgramIndentController::class,'indentReportTwoPdf']);
-
     // sumon
-
     // Money Receipt
     Route::get('/money-receipt', [MRController::class, 'mReceipt']);
     // Indent
@@ -56,24 +52,16 @@ Route::prefix('report')->group(function () {
     // product requisition
     // Product requisition summary PDF
     Route::get('/C_B_02B-pdf', [ProductController::class, 'productRequisitionSummaryPdf']);
-
-    
     //purchase Requisition
     Route::get('/purchase-requisition', [PurchaseController::class, 'purchaseRequisition']);
+    // 26-10-23 
     Route::get('/purchase-requisition-summery', [PurchaseController::class, 'purchaseRequisitionSummery']);
-
-    
-  
     Route::get('/purchase-order-summery', [PurchaseController::class, 'purchaseOrderSummaryPdf']);
-    
-
     //issue
     Route::get('/issue-details', [IssueController::class, 'issueDetailsPdf']);
     Route::get('/issue-summery', [IssueController::class, 'issueSummeryPdf']);
-
     // C05A
     Route::get('/issue-return', [IssueController::class, 'issueReturn']);
-    
     //Receive
     Route::get('/receive-summary', [ReceiveController::class, 'receiveSummaryPdf']);
     //item
@@ -82,30 +70,22 @@ Route::prefix('report')->group(function () {
     Route::get('/C_02A_01', [OpeningStockSummaryController::class, 'openingStockSummary']);
     Route::get('/daily_sales_summery_cash_receive',[\App\Http\Controllers\report\CashReceiveReportController::class,'dailySellCashReceive']);
     Route::get('/daily_sales_summery_store_wise',[\App\Http\Controllers\report\CashReceiveReportController::class,'daily_sells_summary']);
-
     Route::get('/store_wise_item_list',[ReportStoreWiseItemListController::class,'store_wise_item_list']);
-
     Route::get('/Report_Z_01_store_wise_item_list', [DailySellsSummaryController::class, 'dailyMismatchSales']);
-
     // consting pdf IOC
     Route::get('/costingConsumptionPDF', [CostingConsumptionController::class, 'costingConsumptionPDF']);
-
+    // 26-10-23 C01B Costing consumption 
     Route::get('/C_01B-pdf', [CostingConsumptionSummaryController::class, 'costingConsumptionSummaryPdf']);
     Route::get('/C_01C', [DailySellsSummaryController::class, 'pdf']);
-
-
     Route::get('/C_01D',[DailySellsSummaryController::class,'consumptionPdf']);
     Route::get('/Report_C_B_01A2', [CommercialInvoiceController::class, 'eventManagement']);
     Route::get('/A_01', [ItemWiseDailySellController::class, 'itemWiseDailySell']);
     Route::get('/9C_B_01A-pdf', [IndentController::class, 'indentReportTwoPdf']);
     Route::get('/C_B_01A-pdf', [IndentController::class, 'indentReportPdf']);
-
     // Issue Return 
     Route::get('/C_05C-pdf',[IssueController::class,'issueReturnSummaryPdf']);
-
-
-
-    
+    // 26-10-23 C_05B Issue Return By Program 
+    Route::get('/C_05B-pdf',[IssueController::class,'issueReturnByprogramPdf']);
 });
 
 //// New Report by Lokman Hossain //////////////////////////////////////////////////////////////////

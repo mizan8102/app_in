@@ -184,4 +184,45 @@ class ReportApiController extends Controller
         }
     }
 
+    // 26-10-23 waiterWiseDailySellGrid
+    public function waiterWiseDailySellGrid(Request $request){
+        $from = Date('Y-m-d',strtotime($request->from));
+        $to = Date('Y-m-d',strtotime($request->to));
+
+        if(isset($from) && isset($to) && isset($request->no)){
+            return DB::select('CALL Report_A_03_WaiterWiseDailySell("'.$from.'","'.$to.'","'.$request->no.'")');   
+         }else{
+            return response()->json(['data'=>[]]) ;
+        }    
+    }
+
+    // 26-10-23 purchaseRequisionSummaryGrid
+    public function purchaseRequisionSummaryGrid(Request $request){
+        $from = Date('Y-m-d',strtotime($request->from));
+        if(isset($from)){
+            return DB::select('CALL Report_BB_B_03C_PurchaseRequisitionSummary("'.$from.'")');   
+         }else{
+            return response()->json(['data'=>[]]) ;
+        }   
+    }
+
+    // 26-10-23 costingConsumptionSummaryGrid
+
+    public function costingConsumptionSummaryGrid(Request $request){
+        if(isset($request->no)){
+            return DB::select('CALL Report_C_01B_CostingConsumptionSummary("'.$request->no.'")');   
+         }else{
+            return response()->json(['data'=>[]]) ;
+        }   
+    }
+
+    // 26-10-23 C_05B issueReturnByProgramGrid
+    public function issueReturnByProgramGrid(Request $request){
+        if(isset($request->no)){
+            return DB::select('CALL Report_C_05B_IssueReturnByProgram("'.$request->no.'")');   
+         }else{
+            return response()->json(['data'=>[]]) ;
+        }   
+    }
+
 }

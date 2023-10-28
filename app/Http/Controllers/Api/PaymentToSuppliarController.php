@@ -13,28 +13,30 @@ use Illuminate\Support\Facades\Validator;
 
 class PaymentToSuppliarController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
+    // public function index(){
+    //     $search = request('search', '');
+    //     $perPage = request('perPage', 10);
+    //     return PaymentToSupplierMaster::leftJoin('cs_supplier_details','cs_supplier_details.id','trns52a_pay_to_sup_master.supplier_id')
+    //     ->select('trns52a_pay_to_sup_master.*','cs_supplier_details.supplier_name')
+    //     ->where('trns52a_pay_to_sup_master.id', 'like', "%{$search}%")
+    //     ->paginate($perPage);
+    // }
+    public function index(){
         $search = request('search', '');
         $perPage = request('perPage', 10);
-        return PaymentToSupplierMaster::leftJoin('cs_supplier_details','cs_supplier_details.id','trns52a_pay_to_sup_master.supplier_id')
-        ->select('trns52a_pay_to_sup_master.*','cs_supplier_details.supplier_name')
-        ->where('trns52a_pay_to_sup_master.id', 'like', "%{$search}%")
-        ->paginate($perPage);
+    
+        $query = PaymentToSupplierMaster::leftJoin('cs_supplier_details', 'cs_supplier_details.id', 'trns52a_pay_to_sup_master.supplier_id')
+            ->select('trns52a_pay_to_sup_master.*', 'cs_supplier_details.supplier_name')
+            ->where('trns52a_pay_to_sup_master.id', 'like', "%{$search}%")
+            ->orderBy('trns52a_pay_to_sup_master.id', 'desc') // Sort by id column in descending order
+            ->paginate($perPage);
+    
+        return $query;
     }
+    
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
+
+    public function create(){
         $search = request('search', '');
         $perPage = request('perPage', 10);
         $supplier_id= request('supplier_id','');
@@ -53,14 +55,8 @@ class PaymentToSuppliarController extends Controller
         ->paginate($perPage);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
+
+    public function store(Request $request){
         $validated = Validator::make($request->all(), [
             'paid_amount' => 'required|numeric|gte:1',
             'supplier_id' => 'required',
@@ -82,7 +78,7 @@ class PaymentToSuppliarController extends Controller
                 'supplier_id' => $request->supplier_id,
                 'total_paid_amount' => $request->paid_amount,
                 'created_by' => auth()->user()->id,
-                'updated_by' => auth()->user()->id,
+                'updated_by' => Null,
             ]);
             $supplierChild = [];
 
@@ -91,8 +87,9 @@ class PaymentToSuppliarController extends Controller
                 $data['recv_master_id'] = $item['id'];
                 $data['recv_amount'] = $item['total_receive_amount'];
                 $data['paid_amount'] = $item['total_receive_amount'];
+                $data['created_at'] = now();
                 $data['created_by'] = auth()->user()->id;
-                $data['updated_by'] = auth()->user()->id;
+                $data['updated_by'] = Null;
                 array_push($supplierChild, $data);
             }
             PaymentToSupplierChild::insert($supplierChild);
@@ -104,12 +101,7 @@ class PaymentToSuppliarController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         $payment = PaymentToSupplierMaster::with(['item_row'=>function($fn){
@@ -118,39 +110,25 @@ class PaymentToSuppliarController extends Controller
         return sendJson('Payments to Supplier', $payment, 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy($id)
     {
         //
     }
+
+    
     public function merge()
     {
         $recvMasterIds = request()->input('recvMasterIds');

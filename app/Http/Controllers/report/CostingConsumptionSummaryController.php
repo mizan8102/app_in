@@ -14,13 +14,9 @@ class CostingConsumptionSummaryController extends Controller
         return $pdf->stream('costing_consumption_summary.pdf');
     }
 
-    public function costingConsumptionSummaryPdf(Request $request)
-    
-    {   
-        $resIds=DB::select('CALL GetRestuarentListIOC');
-        $orders = DB::select('CALL Report_C_01B_CostingConsumptionSummary(?)', [$request->restaurantId]);
-    
-        $pdf = PDF::loadView('report.costing_consumption_summary_pdf', ['orders' => $orders, 'resIds' => $resIds],
+    public function costingConsumptionSummaryPdf(Request $request){
+        $orders = DB::select('CALL Report_C_01B_CostingConsumptionSummary(?)', [$request->no]);
+        $pdf = PDF::loadView('report.costing_consumption_summary_pdf', ['orders' => $orders],
             [
                 'mode'                 => '',
                 'format'               => 'A4-L',
@@ -49,6 +45,6 @@ class CostingConsumptionSummaryController extends Controller
             ]
         );
 
-            return $pdf->stream('costing_consumption_summary_pdf.pdf');
+            return $pdf->stream('report.costing_consumption_summary_pdf.pdf');
         }
 }

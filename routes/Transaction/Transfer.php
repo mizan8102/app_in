@@ -1,5 +1,7 @@
 <?php
 use App\Http\Controllers\ModuleTransfer\TransferOutController;
+use Illuminate\Support\Facades\Route;
+
 
 
 Route::prefix('transfer')->group(function () {

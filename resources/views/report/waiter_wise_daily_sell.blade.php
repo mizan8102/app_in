@@ -4,7 +4,7 @@
 
 <head>
 
-    <title>Chiklee</title>
+    <title>Report A_03 Waiter Wise Daily sell</title>
 
 </head>
 
@@ -13,7 +13,7 @@
     @page {
             header: page-header;
             footer: page-footer;
-
+            margin-bottom: 30mm;
         }
 
     body{
@@ -150,7 +150,6 @@
         float:left;
         margin-right:5px;
         margin-left:5px;
-        margin-bottom:40px;
 
     }
 
@@ -195,14 +194,14 @@
     .logo
         {
             width: 275px;
-            /*margin-left: 365px;*/
+            /margin-left: 365px;/
             margin-top: 10px;
         }
 
         .logozit
         {
             width: 55px;
-            /*margin-left: 365px;*/
+            /margin-left: 365px;/
             /* margin-top: 10px; */
         }
     .column1
@@ -279,7 +278,7 @@
         .logo
         {
             width: 275px;
-            /*margin-left: 365px;*/
+            /margin-left: 365px;/
             margin-top: 5px;
             text-align:right;
         }
@@ -312,9 +311,17 @@
             height: 2rem;
             padding-top: 10px;
         }
+        .col-md-6
+        {
+            padding-bottom:70px;
+        }
+        .col-md-5
+        {
+            padding-bottom: -50px;
+        }
 </style>
 
-<body>
+    <body>
         <div class="row" style="none">
             <div class="column1">
                 <!-- <img class="logo" src="https://www.pinclipart.com/picdir/middle/187-1872894_bangladesh-govt-logo-png-clipart.png" alt=""> -->
@@ -334,29 +341,29 @@
                 </div>
             </div>
             <div class="column1">
-                <p style="text-align: right; font-size:12px;">Chiklee#C_A-01</p>
+                <p style="text-align: right; font-size:12px;">Chiklee#A_03</p>
             </div>
         </div>
-        <div style="margin-left:3px; margin-top:20px;">
-            <p style="text-align: left; font-size: 12px">
-            Restaurant Name: <br>
-            Date: 
-                    @php 
-                        $mytime = Carbon\Carbon::now()->format ('d-m-Y');
-                        echo $mytime;
-                    @endphp
-            </p>
-            <div class="columne" style="text-align:right; float:right; margin-right:10px; font-size: 12px;">
-          
-                <p style="padding-top: 20px;"><strong>Print: </strong>
-                    @php 
-                        $mytime = Carbon\Carbon::now()->format ('d-m-Y h:i A');
-                        echo $mytime;
-                    @endphp
-                </p>
+        <div style="margin-left:5px; margin-top:20px; display:block;">
+
+            <div class="report_params_areas" style="float:left;height:20px;width:50%">
+                <span style="text-align: right; font-size:12px"><b> From Date: </b>{{Date('d-m-Y',strtotime(request('fromDate')))}}</span>
+            </div>
+            <div class="report_params_areas" style="float:right;height:20px;width:45%;text-align:right;margin-right:5px;">
+                <span style="text-align: right; font-size:12px"><strong>Print: </strong>{{ Date('d-m-Y h:i:s A')}}</span>
+            </div>
+            <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                <span style="text-align: right; font-size:12px"><b> To Date: </b>{{Date('d-m-Y',strtotime(request('toDate')))}}</span>
+                <br>
+            </div>
+            <div class="report_params_areas" style="float:left;height:20px;width:100%">
+                <span style="text-align: right; font-size:12px"><b> Restuarent Name: </b> {{$waitersells[0]->storeName ?? ''}}
+             </span>
+                <br>
             </div>
         </div>
-            <table width="100%" style="margin-top:60px;">
+        <div style="display:block; margin-top:10px;">
+            <table width="100%" >
                 <thead>
                     <tr style="background-color: rgb(3,73,91);">
                         <th style="text-align: center; color: rgb(255,255,255);">SL</th>
@@ -366,43 +373,29 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach($waitersells as $key => $waitersell)
                     <tr>
-                        <td style="text-align: center;">01</td>
-                        <td style="text-align: left;">Md. Irfan</td>
-                        <td style="text-align: center;">03/29/2023, 8:27 PM</td>
-                        <td style="text-align: right;">985.00</td>
+                        <td style="text-align: center;">{{$key+1}}</td>
+                        <td style="text-align: left;">{{$waitersell->waiterName}}</td>
+                        <td style="text-align: center;">{{Date('d-m-Y, h:i A',strtotime($waitersell->issueDate))}}</td>
+                        <td style="text-align: right;">{{number_format($waitersell->totalIssueAmount, 2, '.', ',')}}</td>
                     </tr>
-                    <tr>
-                        <td style="text-align: center;">02</td>
-                        <td style="text-align: left;">Md. Irfan</td>
-                        <td style="text-align: center;">03/29/2023, 8:27 PM</td>
-                        <td style="text-align: right;">985.00</td>
-                    </tr>
+                    @endforeach
                     <tr style="border-bottom: 1px solid black;">
                         <td style="text-align: right;"colspan ="3"><strong>Sub Total: </strong></td>
-                        <td style="text-align: right;"><strong>{{number_format(3000, 2, '.', ',')}}</strong></td>
+                        <td style="text-align: right;"><strong>{{number_format(collect($waitersells)->sum('totalIssueAmount'),2, '.', ',')}}</strong></td>
                     </tr>
                 </tbody>
             </table>
-            <htmlpagefooter name="page-footer">
-                <div class="row" style="none">
-                    <div class="columnzit">
-                        <!-- <img class="logo" src="https://www.pinclipart.com/picdir/middle/187-1872894_bangladesh-govt-logo-png-clipart.png" alt=""> -->
-                        <p><span style="font-size: 18px; text-align:center;"><strong>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Chiklee </strong></span> 
-                            <br>
-                            A product By<span style="font-size:18px;"><strong> ZIT</strong></span> 
-                        </p>
-                    </div>
-                    <div class="columnmid">
-                        <div class="head_middle">
-                            <div  style="text-align: center;">
-                            <p style="text-align: center;">{PAGENO} of {nbpg} pages </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column1">
-                    </div>
-                </div>
-            </htmlpagefooter>
-        </html>
+        </div>
+        <htmlpagefooter name="page-footer">
+            <div class="col-md-5">
+                <p style="text-align: left;font-size: 12px;">{PAGENO} of {nbpg} pages</p>
+            </div>
+            <div class="col-md-6">
+                <p style="text-align: right; font-size: 14px;"><strong>Chiklee </strong><br>
+                    <span style="font-size: 12px;">A product of</span><span style="font-size:14px;"><strong> Z IT</strong></span>
+                </p>
+            </div>
+        </htmlpagefooter>
+    </html>

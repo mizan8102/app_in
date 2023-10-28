@@ -7,6 +7,7 @@ indent_size = 4
 indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
+blank_lines_around_top_level_function = 2
 
 [*.md]
 trim_trailing_whitespace = false

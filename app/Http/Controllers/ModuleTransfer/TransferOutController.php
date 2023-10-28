@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\ModuleTransfer;
 
+use App\Enums\HttpStatusCodeEnum;
 use App\Http\Api\ApiResponseTrait;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Transfer\TransferOutRequest;
 use App\Interfaces\TransferOut;
 use Illuminate\Http\Request;
 
@@ -50,9 +52,15 @@ class TransferOutController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TransferOutRequest $transferOutRequest)
     {
-        //
+        $data   = $transferOutRequest->validated();
+        $res    = $this->transferOut->store($data, $data['item_row']);
+        if ($res) {
+            return $this->successResponse($res, "Data saved successfull");
+        } else {
+            return $this->errorResponse('Failed to retrieve data', HttpStatusCodeEnum::BAD_REQUEST);
+        }
     }
 
     /**

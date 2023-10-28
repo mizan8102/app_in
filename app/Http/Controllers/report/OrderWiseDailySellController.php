@@ -9,11 +9,11 @@ class OrderWiseDailySellController extends Controller
 {
     public function orderWiseDailySell(Request $request)
     {
-        $resIds=DB::select('CALL GetRestuarentList');
-        //dd($resIds);
-        $orders = DB::select('CALL Report_A_02_OrderWiseDailySell("'.$request->from.'","'.$request->to.'","'.$request->no.'")');
+        $from = date('Y-m-d',strtotime($request->from));
+        $to = date('Y-m-d',strtotime($request->to));
+        $orders = DB::select('CALL Report_A_02_OrderWiseDailySell("'.$from.'","'.$to.'","'.$request->no.'")');
         //dd($orders);
-        $pdf = PDF::loadView('report.order_wise_daily_sell', ['orders' => $orders, 'resIds'=>$resIds, 'from' =>$request->from,'to' => $request->to, 'no' => $request->no ],
+        $pdf = PDF::loadView('report.order_wise_daily_sell', ['orders' => $orders],
         [
             'mode'                 => '',
             'format'               => 'A4-L',

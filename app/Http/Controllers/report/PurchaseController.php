@@ -11,10 +11,9 @@ class PurchaseController extends Controller
     public function purchaseRequisitionSummery(Request $request){
 
         $from = date('Y-m-d',strtotime($request->from));
-        $to = date('Y-m-d',strtotime($request->to));
 
-        $pReqSum = DB::select('CALL Report_B_03B_PurchaseRequisitionSummary("'.$from.'","'.$to.'")');
-        $pdf = PDF::loadView('report.purchaseRequisitionSummaryPdf', ['pReqSum' => $pReqSum],
+        $pReqSum=DB::select('CALL Report_BB_B_03C_PurchaseRequisitionSummary("'.$from.'")');
+        $pdf = PDF::loadView('report.purchaseReqSummaryPdf',['pReqSum'=>$pReqSum],
         [
             'mode'                 => '',
             'format'               => 'A4-L',
@@ -42,7 +41,7 @@ class PurchaseController extends Controller
             'pdfaauto' 		=> false,
         ]
     );
-        return $pdf->stream('report.purchaseRequisitionSummaryPdf.pdf');
+        return $pdf->stream('report.purchaseReqSummaryPdf.pdf');
     }
 
 

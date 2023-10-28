@@ -21,26 +21,32 @@ class ReceiveGateService implements ReceiveGate
     $paginate = $data['perPage'] ?? 10;
     $supplier_id = $data['supplier_id'] ?? '';
     $ms = $data['ms'] ?? false;
-    $ff = RecvMaster::query();
-    $home = [];
+    $query = RecvMaster::query()
+        ->with(['supplier', 'masterGroup'])
+        ->orderBy('grn_number', 'desc');
+
+    /**
+     * if ms is true then work for main store 
+     * other wise it's work for Gate Receive
+     */
+
     if ($ms) {
-      $ff->whereNotNull('grn_number');
+      $query->whereNotNull('grn_number')->where('grn_number', 'like', '%' . $search . '%');
     } else {
-      $ff->whereNull('grn_number');
-    }
-    if ($supplier_id) {
-      $home =  $ff->with(['supplier', 'masterGroup'])
-        ->where('supplier_id', $supplier_id)->paginate($paginate);
-    } else {
-      $home =  $ff->with(['supplier', 'masterGroup'])
-        ->where('chalan_number', 'like', '%' . $search . '%')
-        ->paginate($paginate);
+      $query->whereNull('grn_number')->where('chalan_number', 'like', '%' . $search . '%');
     }
 
+    // Filter using supplier 
+    if ($supplier_id) {
+        $query->where('supplier_id', $supplier_id);
+    } 
+
+    $receiveData = $query->paginate($paginate);
+    $suppliers = SupplierDetail::all();
 
     $suppliers = SupplierDetail::all();
     return [
-      'receive_data' => $home,
+      'receive_data' => $receiveData,
       'suppliers'    => $suppliers
     ];
   }
@@ -54,14 +60,13 @@ class ReceiveGateService implements ReceiveGate
 
   public function store($data, $item)
   {
-
     try {
       DB::beginTransaction();
       // recv master
       $master = RecvMaster::create($this->storeDto($data));
 
       // recv child 
-      $this->recvChildStore($item, $master->id, true);
+      $this->recvChildStore($item, $master->id, true,null);
 
       DB::commit();
       return $master;
@@ -79,7 +84,7 @@ class ReceiveGateService implements ReceiveGate
     return [
       'purchase_order_master_id' => $data['poId'] ?? '',
       'issue_master_id' => $data['issue_master'] ?? '',
-      'purchase_order_date' => date('Y-m-d', strtotime($data['purchase_order_date'])) ?? date('Y-m-d'),
+      'purchase_order_date' => date('Y-m-d H:i:s', strtotime($data['purchase_order_date'])) ?? date('Y-m-d H:i:s'),
       'tran_source_type_id' => $data['tran_source_type_id'] ?? 1,
       'tran_type_id' => $data['tran_type_id'] ?? 1,
       'tran_sub_type_id' => $data['tran_sub_type_id'] ?? 6,
@@ -98,18 +103,18 @@ class ReceiveGateService implements ReceiveGate
       'bank_account_type_id' => $data['bank_account_type_id'] ?? null,
       'is_reg_bank_trans' => $data['tran_source_type_id'] ?? null,
       'supplier_account_number' => $data['supplier_account_number'] ?? 1,
-      'receive_date' => date('Y-m-d', strtotime($data['recv_date'])) ?? date('Y-m-d'),
+      'receive_date' => date('Y-m-d H:i:s', strtotime($data['recv_date'])) ?? date('Y-m-d H:i:s'),
       'fiscal_year_id' => $data['fiscal_year_id'] ?? 1,
       'vat_month_id' => $data['vat_month_id'] ?? 1,
       'grn_number' => $grnNumber,
       'grn_number_bn' =>  $grnNumber,
       // 'master_group_id' => $data['master_group_id'],
-      'grn_date' => date('Y-m-d', strtotime($data['grn_date'])) ?? null,
+      'grn_date' => date('Y-m-d H:i:s', strtotime($data['grn_date'])) ?? null,
       'port_discharge' => $data['port_discharge'] ?? null,
       'chalan_type' => $data['chalan_type'] ?? 1,
       'chalan_number' => $data['chalan_number'] ?? 1,
       'chalan_number_bn' => $data['chalan_number_bn'] ?? 1,
-      'chalan_date' => date('Y-m-d', strtotime($data['chalan_date'])) ?? date('Y-m-d'),
+      'chalan_date' => date('Y-m-d H:i:s', strtotime($data['chalan_date'])) ?? date('Y-m-d H:i:s'),
       'total_cd_amount' => $data['total_cd_amount'] ?? 0,
       'total_rd_amount' => $data['total_rd_amount'] ?? 0,
       'total_sd_amount' => $data['total_sd_amount'] ?? 0,
@@ -143,12 +148,23 @@ class ReceiveGateService implements ReceiveGate
 
 
   // recv child data store 
-  public function recvChildStore($items, $master_id, $gateRecv = false, $dto = null)
-  {
-    foreach ($items as $key => $itm) {
-      if (is_array($itm)) {
-        $recvCh = RecvChild::create([
-          'receive_master_id' => $master_id,
+
+
+public function recvChildStore($items, int $masterId, bool $gateRecv = false, $dto = null)
+{
+    foreach ($items as $item) {
+        $recvChild = $this->createRecvChild($item, $masterId, $gateRecv, $dto);
+        if (!$gateRecv) {
+            $this->recv_master_po_store($item, $masterId);
+            $this->stockProcedure($item, $masterId, $recvChild->id,$dto);
+        }
+    }
+}
+
+private function createRecvChild($itm, int $masterId, bool $gateRecv, $dto = null)
+{
+    return RecvChild::create([
+         'receive_master_id' => $masterId,
           'item_info_id'      => $itm['itemId'],
           'uom_id'            => $itm['uom_id'],
           'uom_short_code'    => $itm['uom_short_code'],
@@ -161,8 +177,8 @@ class ReceiveGateService implements ReceiveGate
           'recv_quantity'     => $gateRecv ? 0 :  $itm['mrecv_qty'],
           'recv_qty_adjt'     => null,
           'itm_receive_rate'  => $itm['orderRate'],
-          'item_value_tran_curr' => $gateRecv ?  $itm['mrecv_qty'] * $itm['orderRate'] : $itm['recv_qty'] * $itm['orderRate'],
-          'item_value_local_curr' => $gateRecv ?  $itm['mrecv_qty'] * $itm['orderRate'] : $itm['recv_qty'] * $itm['orderRate'],
+          'item_value_tran_curr'  => $gateRecv ? $itm['recv_qty'] * $itm['orderRate'] :  $itm['mrecv_qty'] * $itm['orderRate'],
+          'item_value_local_curr' => $gateRecv ? $itm['recv_qty'] * $itm['orderRate'] :  $itm['mrecv_qty'] * $itm['orderRate'],
           'vat_rate_type_id' => null,
           'is_fixed_rate'     => null,
           'cd_percent'        => 0,
@@ -181,76 +197,74 @@ class ReceiveGateService implements ReceiveGate
           'supplier_vat_percent'  => 0,
           'addtional_vat_percent' => 0,
           'accessable_value' => 0,
-          'gate_entry_at'    => now(),
-          'gate_entry_by'    => Auth::user()->id,
+          'gate_entry_at'    => $gateRecv ? now() : null,
+          'gate_entry_by'    =>  $gateRecv ? Auth::user()->id : null,
           'opening_stock_remarks' => null,
           'created_by' => Auth::user()->id,
           'updated_by' => null,
-        ]);
-
-        // recv po store 
-        $gateRecv ? '' : $this->recv_master_po_store($itm, $master_id);
-        $gateRecv ? '' : $this->stockProcedure($itm, $master_id, $dto['supplier_id'], null, $dto['chalan_number'], $dto['chalan_date'], $dto['total_recv_amt_local_curr']);;
-      } else {
-        return "Item not found";
-      }
-    }
-  }
+    ]);
+}
 
   // main store data store 
 
   public function ms_store($data, $item)
-  {
-    try {
-      $grn_num = $this->grnNumber();
+  {    
+     try {
+        // DB::beginTransaction();
+        $grn_num = $this->grnNumber();
+        $dto = $this->storeDto($data, $grn_num);
+        $recvMaster = RecvMaster::where('purchase_order_master_id', $data['poId'])->first();
 
-      // DB::beginTransaction();
-      $recvExits = RecvMaster::where('purchase_order_master_id', $data['poId'])->first(); // check already po exists
-      $dto = $this->storeDto($data, $grn_num);
-      // TODO:: if  already received from gate. Now , receive master and receive child data only update 
-      if ($recvExits) {
-        $updata = RecvMaster::where('id', $recvExits->id)->update([
-          'company_id'  => Auth::user()->company_id,
-          'branch_id'   => Auth::user()->branch_id,
-          'store_id'    => Auth::user()->store_id,
-          'receive_date' => date('Y-m-d', strtotime($data['recv_date'])) ?? date('Y-m-d'),
-          'grn_number' => $grn_num,
-          'grn_number_bn' => $grn_num,
-          'grn_date'  => date('Y-m-d', strtotime($data['grn_date'])),
-          'updated_by' => Auth::user()->id,
-        ]);
+        if ($recvMaster) {
+            $this->updateRecvMaster($recvMaster, $data, $grn_num);
+            foreach ($item as $itm) {
+              
+                    $recvChild = $this->updateRecvChild($recvMaster, $itm);
 
-        // Retrieve the value of recvMasterID from the result
-        $recvMasterID = $recvExits->id;
-        foreach ($item as $key => $itm) {
-          if (is_array($itm)) {
-            RecvChild::where('receive_master_id', $recvMasterID)->where('item_info_id', $itm['itemId'])->update([
-              'recv_quantity'           => $itm['mrecv_qty'],
-              'total_amount_local_curr' => $itm['mrecv_qty'] * $itm['orderRate'],
-              'updated_by'              => Auth::user()->id,
-            ]);
-
-
-            // call po recv master qty 
-            $this->recv_master_po_store($itm, $recvMasterID);
-            $this->stockProcedure($item, $recvMasterID, $dto['supplier_id'], null, $dto['chalan_number'], $dto['chalan_date'], $dto['total_recv_amt_local_curr']);
-          }
+                    // Call functions to update related data
+                    $this->recv_master_po_store($itm, $recvMaster->id);
+                    $this->stockProcedure($item, $recvMaster->id,  $recvChild->id,$dto);
+              
+            }
+            DB::commit();
+            return $recvMaster;
+        } else {
+            $master = RecvMaster::create($this->storeDto($data, $grn_num));
+            $this->recvChildStore($item, $master->id, false, $dto);
+            DB::commit();
+            return $master;
         }
-      } else {
-        $master = RecvMaster::create($this->storeDto($data, $grn_num));
-        $this->recvChildStore($item, $master->id, false, $dto); // recv child data store 
-      }
-
-
-
-      DB::commit();
-      return $master ?? $recvExits;
     } catch (Exception $e) {
-      // DB::rollBack();
-      return $e;
+        // Roll back the transaction on error
+        // DB::rollBack();
+        return $e;
     }
   }
 
+
+  private function updateRecvMaster($recvMaster, $data, $grn_num)
+{
+    $recvMaster->company_id = Auth::user()->company_id;
+    $recvMaster->branch_id = Auth::user()->branch_id;
+    $recvMaster->store_id = Auth::user()->store_id;
+    $recvMaster->receive_date = date('Y-m-d H:i:s', strtotime($data['recv_date'])) ?? date('Y-m-d H:i:s');
+    $recvMaster->grn_number = $grn_num;
+    $recvMaster->grn_number_bn = $grn_num;
+    $recvMaster->grn_date = date('Y-m-d H:i:s', strtotime($data['grn_date']));
+    $recvMaster->updated_by = Auth::user()->id;
+    $recvMaster->save();
+}
+
+private function updateRecvChild($recvMaster, $item)
+{
+    $recvChild = RecvChild::where('receive_master_id', $recvMaster->id)->where('item_info_id', $item['itemId'])->first();
+    $recvChild->recv_quantity = $item['mrecv_qty'];
+    $recvChild->total_amount_local_curr = $item['mrecv_qty'] * $item['orderRate'];
+    $recvChild->updated_by = Auth::user()->id;
+    $recvChild->save();
+
+    return $recvChild;
+}
   // store data in trns02b1_recv_master_po_child_qty
 
   public function recv_master_po_store($itm, $recvMasterId)
@@ -300,98 +314,105 @@ class ReceiveGateService implements ReceiveGate
 
 
   // call stock procdure 
-  function stockProcedure($itm, $master_id, $P_supplier_id, $P_customer_id, $chalan_number, $chalan_date, $total_local_currency)
+  function stockProcedure($itm, $master_id, $recvChildID, $dto)
   {
     $recvMasterID = $master_id;
-    $Var_ItemInfoID = $itm['itemId'];
-    $supplier_id = $P_supplier_id;
-    $customer_id = $P_customer_id;
-    $challan_number = $chalan_number;
-    $challan_date = $chalan_date;
-    $total_local_curr = $total_local_currency;
+    $Var_ItemInfoID = $itm['itemId'] ?? null;
+    $supplier_id = $dto['supplier_id'] ?? null;
+    $customer_id = null;
+    $challan_number = $dto['chalan_number'];
+    $challan_date = $dto['chalan_date'];
+    $total_local_curr = 0;
 
     // Sanitize and format dates
-    $Var_receiveIssueDate = date('Y-m-d');  // Current date
-    $openingBalDate = date('Y-m-d'); // Current date
-    $challan_date = date('Y-m-d', strtotime($chalan_date));
+    $Var_receiveIssueDate = date('Y-m-d H:i:s');  // Current date
+    $openingBalDate = date('Y-m-d H:i:s'); // Current date
+    $challan_date = date('Y-m-d H:i:s', strtotime($dto['chalan_date']));
 
-    $sql = "CALL
-    InsertItemStockData(
-        $recvMasterID,
-         $Var_ItemInfoID,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        " . Auth::user()->company_id . ",
-        " . Auth::user()->branch_id . ",
-            1,
-       " . Auth::user()->store_id . ",
-        '$Var_receiveIssueDate',
-       '$openingBalDate',
-        0,
-        0,
-       $supplier_id,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        NULL,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-       $Var_ItemInfoID,
-       " . $itm['uom_id'] . ",
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-       '$challan_number',
-    '$challan_number',
-    '$challan_date',
-         NULL,
-        NULL,
-        '$challan_date',
-        NULL,
-        NULL,
-         " . Auth::user()->id . ",
-        1,
-          '$total_local_curr',
-       " . Auth::user()->id . ",
-    " . Auth::user()->id . ",
-        " . $itm['mrecv_qty'] . ",
-    " . $itm['orderRate'] . ",
-    " . ($itm['mrecv_qty'] * $itm['orderRate']) . ",
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-         '$total_local_curr',
-        0,
-        0,
-        0,
-        0,
-        0 
-    )";
+    try {
+      $sql = "
+      CALL InsertItemStockData(
+        '$recvMasterID', 
+         '$Var_ItemInfoID', 
+         '$master_id', 
+         ".$dto['tran_source_type_id'].", 
+         ".$dto['tran_type_id'].", 
+         ".($dto['tran_sub_type_id'] ?? 1).",           
+         ".($dto['prod_type_id'] ?? 1).",           
+         ".($dto['vat_rebate_id'] ?? 1).",           
+         ".Auth::user()->company_id.",           
+         ".Auth::user()->branch_id.",  
+         ".($dto['currency_id'] ?? 1).",  
+         ".Auth::user()->store_id.",  
+         '$Var_receiveIssueDate',  
+         '$openingBalDate',  
+         ".($dto['fiscal_year_id'] ?? 1).",  
+         ".($dto['vat_month_id'] ?? 1).",  
+         '$supplier_id',  
+         ".($dto['supplier_bin_number'] ?? 0).",  
+         ".($dto['supplier_bin_number_bn'] ?? 0).",  
+         ".($dto['bank_branch_id'] ?? 0).",  
+         ".($dto['bank_account_type_id'] ?? 0).",  
+         ".($dto['supplier_account_number'] ?? 0).",  
+         ".($dto['is_reg_bank_trans'] ?? 0).",  
+         null,  
+         0,  
+         0,  
+         0,  
+         0,  
+         0,  
+         0,  
+         '$Var_ItemInfoID',  
+         ".($itm['uom_id'] ?? 0).",  
+         0,  
+         0,  
+         0,  
+         0,  
+         0,  
+         0,  
+         0,  
+         0,  
+         '$challan_number',  
+         '$challan_number',  
+         '$challan_date',  
+         null,  
+         null,  
+         '$challan_date',  
+         null,  
+         null,  
+         ".Auth::user()->id.",  
+         1,  
+         $total_local_curr,  
+         ".Auth::user()->id.",  
+         null,  
+         ".($itm['mrecv_qty'] ?? 0).",  
+         ".($itm['orderRate'] ?? 0).",  
+         (".($itm['mrecv_qty'] ?? 0)." * ".($itm['orderRate'] ?? 0)."),  
+         0,  
+         0,  
+         0,  
+         0,  
+         0,  
+         0,  
+         0,  
+         0,  
+         0,  
+         0,  
+         0,  
+         '$total_local_curr',  
+         0,  
+         0,  
+         0,  
+         0,  
+         0,  
+         '$recvChildID'  
+    );
+    ";
+      DB::statement($sql);
+      } catch (Exception $e) {
+          throw new Exception("Stock Procedure Error: " . $e->getMessage());
 
-    DB::statement($sql);
+      }
+
   }
 }
